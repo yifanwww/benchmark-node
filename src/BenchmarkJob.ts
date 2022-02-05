@@ -2,7 +2,6 @@ import { BenchmarkRunner } from './BenchmarkRunner';
 import { StagePrefix } from './Enums';
 import { ConsoleLogger } from './tools/ConsoleLogger';
 import { Stats } from './tools/Stats';
-import { BenchmarkJobOptions, TestFn } from './types';
 import { _Nanosecond } from './types.internal';
 
 export class BenchmarkJob extends BenchmarkRunner {
@@ -10,15 +9,6 @@ export class BenchmarkJob extends BenchmarkRunner {
 
     public get stats() {
         return this._stats;
-    }
-
-    /**
-     * @param name The name used to identify this test.
-     * @param testFn The function to benchmark.
-     * @param options The options of benchmark.
-     */
-    constructor(name: string, testFn: TestFn, options: BenchmarkJobOptions = {}) {
-        super(name, testFn, options);
     }
 
     /**

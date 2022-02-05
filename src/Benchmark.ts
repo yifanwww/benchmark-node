@@ -7,13 +7,16 @@ export class Benchmark {
     private jobs: BenchmarkJob[] = [];
 
     public add(job: BenchmarkJob): this;
+    public add(testFn: TestFn, options?: BenchmarkJobOptions): this;
     public add(name: string, testFn: TestFn, options?: BenchmarkJobOptions): this;
 
-    public add(...args: [BenchmarkJob] | [string, TestFn, BenchmarkJobOptions?]): this {
-        if (args.length === 1) {
+    public add(
+        ...args: [BenchmarkJob] | [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?]
+    ): this {
+        if (args[0] instanceof BenchmarkJob) {
             this.jobs.push(args[0]);
         } else {
-            this.jobs.push(new BenchmarkJob(...args));
+            this.jobs.push(new BenchmarkJob(...(args as [string, TestFn, BenchmarkJobOptions?])));
         }
         return this;
     }

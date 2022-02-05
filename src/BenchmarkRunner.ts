@@ -7,6 +7,12 @@ import { Time } from './tools/TimeTool';
 import { BenchmarkJobCallbacks, BenchmarkJobOptions, TestFn } from './types';
 import { _Arguments, _Nanosecond } from './types.internal';
 
+interface BenchmarkRunnerConstructorProps {
+    name: string;
+    options: BenchmarkJobOptions;
+    testFn: TestFn;
+}
+
 export class BenchmarkRunner {
     protected _name: string;
     protected testFn: TestFn;
@@ -23,11 +29,20 @@ export class BenchmarkRunner {
     }
 
     /**
+     * @param testFn The function to benchmark.
+     * @param options The options of benchmark.
+     */
+    constructor(testFn: TestFn, options?: BenchmarkJobOptions);
+    /**
      * @param name The name used to identify this test.
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    constructor(name: string, testFn: TestFn, options: BenchmarkJobOptions = {}) {
+    constructor(name: string, testFn: TestFn, options?: BenchmarkJobOptions);
+
+    constructor(...args: [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?]) {
+        const { name, options, testFn } = this.parseArgs(args);
+
         this._name = name;
         this.testFn = testFn;
 
@@ -46,6 +61,33 @@ export class BenchmarkRunner {
         this.tester = CodeGen.createTester({
             argument: { count: this.testFnOptions.argsLength },
         });
+    }
+
+    private parseArgs(
+        args: [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?],
+    ): BenchmarkRunnerConstructorProps {
+        if (typeof args[0] === 'string') {
+            const _args = args as [string, TestFn, BenchmarkJobOptions?];
+            return {
+                name: _args[0],
+                options: _args[2] ?? {},
+                testFn: _args[1],
+            };
+        } else {
+            const _args = args as [TestFn, BenchmarkJobOptions?];
+            const props: BenchmarkRunnerConstructorProps = {
+                name: _args[0].name,
+                options: _args[1] ?? {},
+                testFn: _args[0],
+            };
+
+            if (props.name === '') {
+                ConsoleLogger.default.writeLineError('Cannot get name from test fn.');
+                throw new Error('Cannot get name from test fn.');
+            }
+
+            return props;
+        }
     }
 
     protected logEnvironmentInfos() {
