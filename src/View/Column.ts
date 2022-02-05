@@ -14,7 +14,7 @@ export class Column {
     }
 
     public calculateMaxLen(stats: Stats[]): void {
-        let maxLen = 0;
+        let maxLen = this._header.length;
         for (const _stats of stats) {
             const data = this._getData(_stats);
             // 3 is the length of ' ns'
