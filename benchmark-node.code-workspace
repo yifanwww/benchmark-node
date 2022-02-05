@@ -73,10 +73,6 @@
             "editor.defaultFormatter": "esbenp.prettier-vscode",
             "editor.suggest.insertMode": "replace"
         },
-        "[typescriptreact]": {
-            "editor.defaultFormatter": "esbenp.prettier-vscode",
-            "editor.suggest.insertMode": "replace"
-        },
         "[yaml]": {
             "editor.autoIndent": "advanced",
             "editor.defaultFormatter": "esbenp.prettier-vscode",

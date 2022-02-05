@@ -6,8 +6,8 @@
         "jest": true,
         "node": true
     },
-    "extends": ["airbnb", "airbnb-typescript", "airbnb/hooks", "prettier", "prettier/prettier"],
-    "ignorePatterns": ["*.cjs", "*.js", "*.mjs", "dist", "lib", "lib-commonjs"],
+    "extends": ["airbnb-base", "airbnb-typescript/base", "prettier", "prettier/prettier"],
+    "ignorePatterns": ["*.cjs", "*.js", "*.mjs", "dist", "lib", "lib-commonjs", "scripts"],
     "plugins": ["@typescript-eslint", "import", "jest", "node", "prettier"],
     "parserOptions": {
         "project": "./tsconfig.json"
@@ -136,6 +136,12 @@
         "prettier/prettier": "error"
     },
     "overrides": [
+        {
+            "files": ["test/**/*.ts"],
+            "rules": {
+                "no-console": "off"
+            }
+        },
         {
             "files": ["*.d.ts"],
             "rules": {

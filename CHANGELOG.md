@@ -1,0 +1,66 @@
+# CHANGELOG
+
+## benchmark-node v0.4.0 (Unreleased)
+
+**NOTE**: Previous Git commit history is in https://github.com/yifanwww/easy-projs/tree/%40easy/benchmark-js_v0.4.0/packages/benchmark-js
+
+## @easy/benchmark-js v0.4.0 (2022-02-03)
+### Features
+
+- Add class `Arguments` to specify the arguments passed to test fn
+- Print Node.js version
+- Add more statistic data
+  - ConfidenceInterval
+  - Q0
+  - Q1
+  - Q2
+  - Q3
+  - Q4
+- Add markdown table for printing benchmark results
+
+### Breaking Changes
+
+- Remove `Benchmark.loggerLevel`
+- Rename classes and interfaces
+  - `BenchmarkGroup`            -> `Benchmark`
+  - `Benchmark`                 -> `BenchmarkJob`
+  - `BenchmarkOptions`          -> `BenchmarkJobOptions`
+  - `BenchmarkSettings`         -> `BenchmarkJobSettings`
+  - `BenchmarkTestFnOptions`    -> `BenchmarkJobTestFnOptions`
+- Delete methods `Benchmark.writeTestersCode` and `BenchmarkJob.writeTesterCode`
+- Change stages to Jitting, Pilot and Formal
+- Change `BenchmarkJobOptions`
+
+## @easy/benchmark-js v0.3.0 (2022-02-01)
+### Features
+
+- Improve the accuracy of the minimum duration time.
+- Add method `BenchmarkGroup.setEmptyTest` to get the maximum ops as a base line.
+- Add methods `Benchmark.writeTesterCode` and `BenchmarkGroup.writeTestersCode` to print the tester source code.
+- Add support to pass arguments to `testFn`.
+- Add adjust-benchmarking stage after pre-benchmarking stage but before formal-benchmarking stage.
+- Add support to set selections for each `testFn`'s argument.
+
+### Bug Fixes
+
+- Fix a optimization problem that cause wrong performance test results.
+
+### Breaking Changes
+
+- Rename option `maxPrepareTime` to `maxPreparingTime`, and change the default value to `50`.
+
+## @easy/benchmark-js v0.2.0 (2022-01-15)
+### Features
+
+- Add `BenchmarkGroup` to do group testing.
+- Add method `writeResult` to `Benchmark`.
+- Add logs, can change logger level by setting `Benchmark.loggerLevel`.
+
+### Breaking Changes
+
+- Renamed to `@easy/benchmark-js`
+
+## @easy/benchmark-javascript v0.1.0 (2021-11-16)
+### Features
+
+- Add support to test javascript performance by using class `Benchmark`

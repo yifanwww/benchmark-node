@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test class \`Stats\` calculates 1`] = `
+"{
+    \\"_name\\": \\"name\\",
+    \\"_n\\": 19,
+    \\"_mean\\": 8.263157894736842,
+    \\"_variance\\": 98.76023391812866,
+    \\"_standardDeviation\\": 9.937818368139391,
+    \\"_standardError\\": 2.279891893999047,
+    \\"_standardErrorPercent\\": 27.59104839871458,
+    \\"_ciMargin\\": 4.790052869291998,
+    \\"_confidenceInterval\\": [
+        3.473105025444845,
+        13.05321076402884
+    ],
+    \\"_ciMarginPercent\\": 57.968792685699334,
+    \\"_q0\\": 1,
+    \\"_q1\\": 2,
+    \\"_q2\\": 3,
+    \\"_q3\\": 21,
+    \\"_q4\\": 32,
+    \\"_ops\\": 121019108.28025477
+}"
+`;
+
+exports[`test class \`Stats\` calculates 2`] = `"121,019,108 ops/sec 57.97% (19 samples)"`;
+
+exports[`test class \`Stats\` calculates 3`] = `"2: 121,019,108 ops/sec 57.97% (19 samples)"`;
