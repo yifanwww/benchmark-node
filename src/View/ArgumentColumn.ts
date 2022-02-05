@@ -12,7 +12,8 @@ export class ArgumentColumn extends Column {
     }
 
     private getArgument: GetData = (stats) => {
-        const { args } = stats;
-        return this.index < args.length ? args[this.index].toString() : '?';
+        const args = stats.args?.args ?? [];
+
+        return this.index < args.length ? String(args[this.index]) : '?';
     };
 }

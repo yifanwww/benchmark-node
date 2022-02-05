@@ -1,13 +1,14 @@
 import { Arguments } from '../ConfigOptions';
 import { BenchmarkJobTestFnOptions } from '../types';
-import { _Arguments } from '../types.internal';
 
 export class TestFnOptions {
-    private _argsArr: Arguments[];
+    private _argsArr: ReadonlyArray<Arguments>;
     private _argsLength: number;
 
-    private _jitArgsArr: Arguments[];
+    private _jitArgsArr: ReadonlyArray<Arguments>;
     private _jitArgsLength: number;
+
+    private _maxArgsLength: number;
 
     constructor(options: BenchmarkJobTestFnOptions) {
         const { args = [], jitArgs: preArgs = [] } = options;
@@ -18,9 +19,11 @@ export class TestFnOptions {
 
         this._argsLength = this.getArgsLength(this._argsArr);
         this._jitArgsLength = this.getArgsLength(this._jitArgsArr);
+
+        this._maxArgsLength = Math.max(this._argsLength, this._jitArgsLength);
     }
 
-    private getArgsLength(argsArr: Arguments[]): number {
+    private getArgsLength(argsArr: ReadonlyArray<Arguments>): number {
         let max = 0;
         for (const args of argsArr) {
             max = Math.max(max, args.args.length);
@@ -28,13 +31,13 @@ export class TestFnOptions {
         return max;
     }
 
-    private *getEnumerator(argsArr: Arguments[]) {
+    private *getEnumerator(argsArr: ReadonlyArray<Arguments>) {
         for (const args of argsArr) {
-            yield args.args as _Arguments;
+            yield args;
         }
     }
 
-    public get args(): Generator<_Arguments, void> {
+    public get args(): Generator<Arguments, void> {
         return this.getEnumerator(this._argsArr);
     }
 
@@ -46,7 +49,7 @@ export class TestFnOptions {
         return this._argsLength;
     }
 
-    public get jitArgs(): Generator<_Arguments, void> {
+    public get jitArgs(): Generator<Arguments, void> {
         return this.getEnumerator(this._jitArgsArr);
     }
 
@@ -56,5 +59,9 @@ export class TestFnOptions {
 
     public get jitArgsLength(): number {
         return this._jitArgsLength;
+    }
+
+    public get maxArgsLength(): number {
+        return this._maxArgsLength;
     }
 }

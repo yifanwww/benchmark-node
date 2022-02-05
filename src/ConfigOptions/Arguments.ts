@@ -1,7 +1,7 @@
 export class Arguments {
-    private _args: unknown[];
+    private _args: ReadonlyArray<unknown>;
 
-    public constructor(...args: unknown[]) {
+    public constructor(...args: ReadonlyArray<unknown>) {
         this._args = args;
     }
 

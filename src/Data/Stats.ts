@@ -1,6 +1,7 @@
+import { Arguments } from '../ConfigOptions';
 import { ConsoleLogger, MathTool } from '../tools';
 import { Nanosecond } from '../types';
-import { ConfidenceInterval, _Arguments } from '../types.internal';
+import { ConfidenceInterval } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.
@@ -8,7 +9,7 @@ import { ConfidenceInterval, _Arguments } from '../types.internal';
 export class Stats {
     private _name: string;
 
-    private _args: _Arguments;
+    private _args?: Arguments;
 
     private _n: number;
 
@@ -111,7 +112,7 @@ export class Stats {
         return this._ops;
     }
 
-    public constructor(name: string, measurements: Nanosecond[], ops: number, args: _Arguments = []) {
+    public constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
         this._name = name;
         this._args = args;
 

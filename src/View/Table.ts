@@ -23,7 +23,7 @@ export class Table {
     public addStats(stats: Stats[]): void {
         this._stats.push(...stats);
 
-        const maxLength = stats.reduce((prev, curr) => Math.max(prev, curr.args.length), 0);
+        const maxLength = stats.reduce((prev, curr) => Math.max(prev, curr.args?.args.length ?? 0), 0);
         for (let i = this._argColumns.length; i < maxLength; i++) {
             this._argColumns.push(new ArgumentColumn(i));
         }

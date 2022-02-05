@@ -1,9 +1,9 @@
+import { Arguments } from './ConfigOptions';
 import { TestFunction } from './Data';
 import { Stage } from './Enums';
 import { Settings, TestFnOptions } from './options';
 import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
 import { BenchmarkJobCallbacks, BenchmarkJobOptions, Nanosecond, TestFn } from './types';
-import { _Arguments } from './types.internal';
 
 interface BenchmarkRunnerConstructorProps {
     name: string;
@@ -57,7 +57,7 @@ export class BenchmarkRunner {
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
         // See "src/test/dynamicCall.ts".
         this.tester = CodeGen.createTester({
-            argument: { count: this.testFnOptions.argsLength },
+            argument: { count: this.testFnOptions.maxArgsLength },
         });
     }
 
@@ -111,7 +111,7 @@ export class BenchmarkRunner {
         workload: boolean,
         order: number,
         ops: number,
-        argsGenerator?: Generator<_Arguments, void>,
+        argsGenerator?: Generator<Arguments, void>,
     ): void {
         const testerContext: TesterContext = {
             ops,
@@ -124,7 +124,7 @@ export class BenchmarkRunner {
             used = Time.hrtime2ns(this.tester(testerContext).elapsed);
         } else {
             for (const args of argsGenerator) {
-                testerContext.args = args;
+                testerContext.args = args.args;
                 used += Time.hrtime2ns(this.tester(testerContext).elapsed);
             }
         }
@@ -134,19 +134,19 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    protected benchmarkJitting1(argsGenerator?: Generator<_Arguments, void>): void {
+    protected benchmarkJitting1(argsGenerator?: Generator<Arguments, void>): void {
         this.benchmarkJitting(false, 1, 1, argsGenerator);
         this.benchmarkJitting(true, 1, 1, argsGenerator);
     }
 
-    protected benchmarkJitting2(argsGenerator?: Generator<_Arguments, void>): void {
+    protected benchmarkJitting2(argsGenerator?: Generator<Arguments, void>): void {
         this.benchmarkJitting(false, 2, this.settings.initOps, argsGenerator);
         this.benchmarkJitting(true, 2, this.settings.initOps, argsGenerator);
     }
 
-    protected benchmarkPilot(args?: _Arguments): number {
+    protected benchmarkPilot(args?: Arguments): number {
         const testerContext: TesterContext = {
-            args,
+            args: args?.args,
             ops: this.settings.initOps,
             testFn: this.testFunction.fn,
             workload: true,
@@ -173,9 +173,9 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    protected benchmarkWarmup(workload: boolean, ops: number, args?: _Arguments): void {
+    protected benchmarkWarmup(workload: boolean, ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
-            args,
+            args: args?.args,
             ops,
             testFn: this.testFunction.fn,
             workload,
@@ -191,9 +191,9 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkOverheadActual(ops: number, args?: _Arguments): Nanosecond {
+    protected benchmarkOverheadActual(ops: number, args?: Arguments): Nanosecond {
         const testerContext: TesterContext = {
-            args,
+            args: args?.args,
             ops,
             testFn: this.testFunction.fn,
             workload: false,
@@ -214,9 +214,9 @@ export class BenchmarkRunner {
         return total / this.settings.measurementCount;
     }
 
-    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: _Arguments): void {
+    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
-            args,
+            args: args?.args,
             ops,
             testFn: this.testFunction.fn,
             workload: true,

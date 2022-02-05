@@ -1,8 +1,8 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
+import { Arguments } from './ConfigOptions';
 import { Stats } from './Data';
 import { ConsoleLogger } from './tools';
 import { Nanosecond } from './types';
-import { _Arguments } from './types.internal';
 
 export class BenchmarkJob extends BenchmarkRunner {
     private _stats: Stats[] = [];
@@ -50,11 +50,11 @@ export class BenchmarkJob extends BenchmarkRunner {
         return this;
     }
 
-    private _run(args?: _Arguments): void {
+    private _run(args?: Arguments): void {
         const logger = ConsoleLogger.default;
 
         if (args) {
-            logger.writeLineInfo(`// arguments: ${args.toString()}`);
+            logger.writeLineInfo(`// arguments: ${args.args.toString()}`);
             logger.writeLine();
         }
 

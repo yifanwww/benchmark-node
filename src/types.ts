@@ -1,4 +1,4 @@
-import { Arguments } from './ConfigOptions/Arguments';
+import { Arguments } from './ConfigOptions';
 
 /**
  * The type representing millisecond.
@@ -62,11 +62,11 @@ export interface BenchmarkJobTestFnOptions {
     /**
      * Used for pilot benchmarking and formal benchmarking.
      */
-    args?: Arguments | Arguments[];
+    args?: Arguments | ReadonlyArray<Arguments>;
     /**
      * Used for jitting benchmarking. The arguments provided in `args` will be also added into `preArgs`.
      */
-    jitArgs?: Arguments | Arguments[];
+    jitArgs?: Arguments | ReadonlyArray<Arguments>;
 }
 
 export interface BenchmarkJobOptions extends BenchmarkJobCallbacks, BenchmarkJobSettings, BenchmarkJobTestFnOptions {}

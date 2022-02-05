@@ -1,10 +1,10 @@
 import { TestFn } from '../types';
-import { Hrtime, _Arguments } from '../types.internal';
+import { Hrtime } from '../types.internal';
 
 export interface TesterContext {
-    args?: _Arguments;
+    args?: ReadonlyArray<unknown>;
     ops: number;
-    restArgs?: _Arguments;
+    restArgs?: ReadonlyArray<unknown>;
     setup?: () => void;
     teardown?: () => void;
     testFn: TestFn;
@@ -42,10 +42,12 @@ export class CodeGen {
         const code: string[] = [];
 
         for (let i = 0; i < this.argument.count; i++) {
+            // No need to check `context#.args` exists or not.
             code.push(`const arg${i}_# = context#.args[${i}];`);
         }
 
         if (this.argument.rest) {
+            // No need to check `context#.restArgs` exists or not.
             code.push('const restArg# = context#.restArgs;');
         }
 
