@@ -37,7 +37,6 @@ export class Benchmark {
         for (const job of this.jobs) job.run();
 
         const table = new Table();
-        table.addColumn(new Column('Function', (stats) => stats.name));
         table.addColumn(new Column('Mean', (stats) => Column.drawTime(stats.mean)));
         table.addColumn(new Column('StdErr', (stats) => Column.drawTime(stats.standardError)));
         table.addColumn(new Column('StdDev', (stats) => Column.drawTime(stats.standardDeviation)));

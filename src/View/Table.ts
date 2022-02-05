@@ -6,14 +6,14 @@ import { Column } from './Column';
 
 export class Table {
     private _argColumns: ArgumentColumn[] = [];
-    private _fnNameColumns: Column;
+    private _fnNameColumn: Column;
 
     private _perfColumns: Column[] = [];
 
     private _stats: Stats[] = [];
 
     public constructor() {
-        this._fnNameColumns = new Column('Function', (stats) => stats.name);
+        this._fnNameColumn = new Column('Function', (stats) => stats.name);
     }
 
     public addColumn(column: Column): void {
@@ -23,15 +23,14 @@ export class Table {
     public addStats(stats: Stats[]): void {
         this._stats.push(...stats);
 
-        for (const _stats of this._stats) {
-            for (let i = this._argColumns.length; i < _stats.args.length; i++) {
-                this._argColumns.push(new ArgumentColumn(i));
-            }
+        const maxLength = stats.reduce((prev, curr) => Math.max(prev, curr.args.length), 0);
+        for (let i = this._argColumns.length; i < maxLength; i++) {
+            this._argColumns.push(new ArgumentColumn(i));
         }
     }
 
     public draw(): void {
-        const columns = [this._fnNameColumns, ...this._argColumns, ...this._perfColumns];
+        const columns = [this._fnNameColumn, ...this._argColumns, ...this._perfColumns];
 
         for (const column of columns) {
             column.calculateMaxLen(this._stats);
