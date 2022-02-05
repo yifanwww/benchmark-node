@@ -1,0 +1,46 @@
+# Editors and IDEs
+
+/*.code-workspace
+/.vscode
+
+# Git
+
+/.gitattributes
+/.github
+/.gitignore
+
+# Documentation
+
+/docs
+
+# Source
+
+/scripts
+/src
+/test
+
+# NPM
+
+/node_modules
+
+# Configs
+
+/.eslintrc.json
+/.lintstagedrc
+/.prettierignore
+/.prettierrc
+/tsconfigs
+/tsconfig.json
+
+# Compilation
+
+/dist
+
+# Test
+
+/coverage
+
+# Misc
+
+/.husky
+/.eslintcache
