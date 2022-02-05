@@ -77,7 +77,7 @@ export class CodeGen {
     public createTester(): Tester {
         const body = this.removeEmptyLines(
             `
-context#.setup?.();
+if (context#.setup) context#.setup();
 
 const testFn# = context#.testFn;
 
@@ -91,7 +91,7 @@ return# = ${this.generateTestFnCall()};
 }
 const elapsed# = process.hrtime(begin#);
 
-context#.teardown?.();
+if (context#.teardown) context#.teardown();
 
 return { elapsed: elapsed#, _internal_return: return# };
 `,
