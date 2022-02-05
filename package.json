@@ -26,6 +26,7 @@
         "dev": "npm run build:cjs -- --watch",
         "format": "format-code",
         "lint": "eslint .",
+        "postinstall": "husky install",
         "pre-commit": "lint-staged",
         "test": "unit-test",
         "test-full": "npm run test-full --workspaces --if-present"
