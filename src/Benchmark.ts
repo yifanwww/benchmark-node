@@ -21,8 +21,8 @@ export class Benchmark {
         return this;
     }
 
-    public setEmptyTest(name: string = 'EmptyTest'): this {
-        this.jobs = [new BenchmarkJob(name, () => {}), ...this.jobs];
+    public setNoopTest(name: string = 'noop'): this {
+        this.jobs.splice(0, 0, new BenchmarkJob(name, () => {}));
         return this;
     }
 
