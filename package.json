@@ -26,8 +26,8 @@
         "dev": "npm run build:cjs -- --watch",
         "format": "prettier --write \"**/*.{cjs,js,mjs,json,ts,yaml,yml}\"",
         "lint": "eslint .",
-        "postinstall": "husky install",
         "pre-commit": "lint-staged",
+        "prepare": "husky install",
         "test": "node scripts/unit-test.js",
         "test-full": "node scripts/unit-test.js"
     },
