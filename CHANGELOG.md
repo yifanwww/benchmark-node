@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## benchmark-node v0.4.2 (2022-02-05)
+### Bug Fixes
+
+- Use npm script `prepare` to install husky
+
 ## benchmark-node v0.4.1 (2022-02-05)
 ### Changes
 
