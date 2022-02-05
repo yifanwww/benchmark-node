@@ -1,4 +1,5 @@
 import { _Nanosecond } from '../../types.internal';
+
 import { Stats } from '../Stats';
 
 describe(`test class \`${Stats.name}\``, () => {

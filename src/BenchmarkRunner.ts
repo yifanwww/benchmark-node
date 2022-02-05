@@ -1,9 +1,7 @@
+import { TestFunction } from './Data';
 import { Stage } from './Enums';
 import { Settings, TestFnOptions } from './options';
-import { CodeGen, Tester, TesterContext } from './tools/CodeGen';
-import { ConsoleLogger } from './tools/ConsoleLogger';
-import { Formatter } from './tools/Formatter';
-import { Time } from './tools/TimeTool';
+import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
 import { BenchmarkJobCallbacks, BenchmarkJobOptions, TestFn } from './types';
 import { _Arguments, _Nanosecond } from './types.internal';
 
@@ -15,7 +13,7 @@ interface BenchmarkRunnerConstructorProps {
 
 export class BenchmarkRunner {
     protected _name: string;
-    protected testFn: TestFn;
+    protected testFunction: TestFunction;
     protected tester: Tester;
 
     protected onComplete: Optional<BenchmarkJobCallbacks['onComplete']>;
@@ -44,7 +42,7 @@ export class BenchmarkRunner {
         const { name, options, testFn } = this.parseArgs(args);
 
         this._name = name;
-        this.testFn = testFn;
+        this.testFunction = new TestFunction(testFn);
 
         const { onComplete = null, onStart = null } = options;
 
@@ -117,7 +115,7 @@ export class BenchmarkRunner {
     ): void {
         const testerContext: TesterContext = {
             ops,
-            testFn: this.testFn,
+            testFn: this.testFunction.fn,
             workload,
         };
 
@@ -150,7 +148,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args,
             ops: this.settings.initOps,
-            testFn: this.testFn,
+            testFn: this.testFunction.fn,
             workload: true,
         };
 
@@ -179,7 +177,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args,
             ops,
-            testFn: this.testFn,
+            testFn: this.testFunction.fn,
             workload,
         };
 
@@ -197,7 +195,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args,
             ops,
-            testFn: this.testFn,
+            testFn: this.testFunction.fn,
             workload: false,
         };
 
@@ -220,7 +218,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args,
             ops,
-            testFn: this.testFn,
+            testFn: this.testFunction.fn,
             workload: true,
         };
 

@@ -1,24 +1,26 @@
-import { Stats } from '../tools/Stats';
+import { Stats } from '../Data';
 
-export type GetData = (stats: Stats) => string | number;
+export type GetData = (stats: Stats) => string;
 
 export class Column {
-    private _header: string;
-    private _getData: GetData;
+    protected _header: string;
+    protected _getData: GetData;
 
-    private _maxLen: number = 0;
+    protected _maxLen: number = 0;
 
     public constructor(header: string, getData: GetData) {
         this._header = header;
         this._getData = getData;
     }
 
+    public static drawTime = (time: number) => `${time.toFixed(4)} ns`;
+
     public calculateMaxLen(stats: Stats[]): void {
         let maxLen = this._header.length;
+
         for (const _stats of stats) {
             const data = this._getData(_stats);
-            // 3 is the length of ' ns'
-            maxLen = Math.max(maxLen, typeof data === 'string' ? data.length : data.toFixed(4).length + 3);
+            maxLen = Math.max(maxLen, data.length);
         }
 
         this._maxLen = maxLen;
@@ -34,10 +36,6 @@ export class Column {
 
     public draw(stats: Stats): string {
         const data = this._getData(stats);
-        if (typeof data === 'string') {
-            return data.padStart(this._maxLen);
-        } else {
-            return `${data.toFixed(4)} ns`.padStart(this._maxLen);
-        }
+        return data.padStart(this._maxLen);
     }
 }

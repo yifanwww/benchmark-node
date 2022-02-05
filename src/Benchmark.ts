@@ -38,12 +38,12 @@ export class Benchmark {
 
         const table = new Table();
         table.addColumn(new Column('Function', (stats) => stats.name));
-        table.addColumn(new Column('Mean', (stats) => stats.mean));
-        table.addColumn(new Column('StdErr', (stats) => stats.standardError));
-        table.addColumn(new Column('StdDev', (stats) => stats.standardDeviation));
-        table.addColumn(new Column('Median', (stats) => stats.median));
-        table.addColumn(new Column('Min', (stats) => stats.min));
-        table.addColumn(new Column('Max', (stats) => stats.max));
+        table.addColumn(new Column('Mean', (stats) => Column.drawTime(stats.mean)));
+        table.addColumn(new Column('StdErr', (stats) => Column.drawTime(stats.standardError)));
+        table.addColumn(new Column('StdDev', (stats) => Column.drawTime(stats.standardDeviation)));
+        table.addColumn(new Column('Median', (stats) => Column.drawTime(stats.median)));
+        table.addColumn(new Column('Min', (stats) => Column.drawTime(stats.min)));
+        table.addColumn(new Column('Max', (stats) => Column.drawTime(stats.max)));
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
     }

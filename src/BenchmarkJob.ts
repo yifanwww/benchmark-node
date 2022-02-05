@@ -1,6 +1,6 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
-import { ConsoleLogger } from './tools/ConsoleLogger';
-import { Stats } from './tools/Stats';
+import { Stats } from './Data';
+import { ConsoleLogger } from './tools';
 import { _Arguments, _Nanosecond } from './types.internal';
 
 export class BenchmarkJob extends BenchmarkRunner {
@@ -76,7 +76,7 @@ export class BenchmarkJob extends BenchmarkRunner {
         this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Stats(this._name, measurements, ops);
+        const stats = new Stats(this._name, measurements, ops, args);
         this._stats.push(stats);
         stats.log();
     }

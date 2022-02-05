@@ -1,14 +1,13 @@
-import { ConfidenceInterval, _Nanosecond } from '../types.internal';
-
-import { ConsoleLogger } from './ConsoleLogger';
-import { MathTool } from './MathTool';
-import { Time } from './TimeTool';
+import { ConsoleLogger, MathTool, Time } from '../tools';
+import { ConfidenceInterval, _Arguments, _Nanosecond } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.
  */
 export class Stats {
     private _name: string;
+
+    private _args: _Arguments;
 
     private _n: number;
 
@@ -32,6 +31,10 @@ export class Stats {
 
     public get name() {
         return this._name;
+    }
+
+    public get args() {
+        return this._args;
     }
 
     /**
@@ -107,8 +110,9 @@ export class Stats {
         return this._ops;
     }
 
-    public constructor(name: string, measurements: _Nanosecond[], ops: number) {
+    public constructor(name: string, measurements: _Nanosecond[], ops: number, args: _Arguments = []) {
         this._name = name;
+        this._args = args;
 
         measurements.sort((a, b) => a - b);
         measurements = measurements.map((used) => Time.ns(used / ops));
