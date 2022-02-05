@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## benchmark-node v0.4.3 (2022-02-05)
+### Bug Fixes
+
+- Correct the lowest Node.js version support to 9
+
 ## benchmark-node v0.4.2 (2022-02-05)
 ### Bug Fixes
 
