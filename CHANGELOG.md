@@ -1,11 +1,25 @@
 # CHANGELOG
 
-## benchmark-node v0.4.0 (Unreleased)
+## benchmark-node v0.4.1 (2022-02-05)
+### Changes
 
-**NOTE**: Previous Git commit history is in https://github.com/yifanwww/easy-projs/tree/%40easy/benchmark-js_v0.4.0/packages/benchmark-js
+- Add npm.js keywords
 
-## @easy/benchmark-js v0.4.0 (2022-02-03)
-### Features
+## benchmark-node v0.4.0 (2022-02-05)
+
+Ref to [CHANGELOG:@easy/benchmark-js] to see previous changelogs.
+
+Check [@easy/benchmark-js in easy-projs] for previous Git commit history.
+
+[changelog:@easy/benchmark-js]: https://github.com/yifanwww/benchmark-node/blob/main/CHANGELOG.md#easybenchmark-js-v040-2022-02-03
+[@easy/benchmark-js in easy-projs]: https://github.com/yifanwww/easy-projs/tree/%40easy/benchmark-js_v0.4.0/packages/benchmark-js
+
+-----
+
+## Appended Changelogs from @easy/benchmark-js
+
+### @easy/benchmark-js v0.4.0 (2022-02-03)
+#### Features
 
 - Add class `Arguments` to specify the arguments passed to test fn
 - Print Node.js version
@@ -18,7 +32,7 @@
   - Q4
 - Add markdown table for printing benchmark results
 
-### Breaking Changes
+#### Breaking Changes
 
 - Remove `Benchmark.loggerLevel`
 - Rename classes and interfaces
@@ -31,8 +45,8 @@
 - Change stages to Jitting, Pilot and Formal
 - Change `BenchmarkJobOptions`
 
-## @easy/benchmark-js v0.3.0 (2022-02-01)
-### Features
+### @easy/benchmark-js v0.3.0 (2022-02-01)
+#### Features
 
 - Improve the accuracy of the minimum duration time.
 - Add method `BenchmarkGroup.setEmptyTest` to get the maximum ops as a base line.
@@ -41,26 +55,26 @@
 - Add adjust-benchmarking stage after pre-benchmarking stage but before formal-benchmarking stage.
 - Add support to set selections for each `testFn`'s argument.
 
-### Bug Fixes
+#### Bug Fixes
 
 - Fix a optimization problem that cause wrong performance test results.
 
-### Breaking Changes
+#### Breaking Changes
 
 - Rename option `maxPrepareTime` to `maxPreparingTime`, and change the default value to `50`.
 
-## @easy/benchmark-js v0.2.0 (2022-01-15)
-### Features
+### @easy/benchmark-js v0.2.0 (2022-01-15)
+#### Features
 
 - Add `BenchmarkGroup` to do group testing.
 - Add method `writeResult` to `Benchmark`.
 - Add logs, can change logger level by setting `Benchmark.loggerLevel`.
 
-### Breaking Changes
+#### Breaking Changes
 
 - Renamed to `@easy/benchmark-js`
 
-## @easy/benchmark-javascript v0.1.0 (2021-11-16)
-### Features
+### @easy/benchmark-javascript v0.1.0 (2021-11-16)
+#### Features
 
 - Add support to test javascript performance by using class `Benchmark`
