@@ -1,8 +1,7 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
-import { StagePrefix } from './Enums';
 import { ConsoleLogger } from './tools/ConsoleLogger';
 import { Stats } from './tools/Stats';
-import { _Nanosecond } from './types.internal';
+import { _Arguments, _Nanosecond } from './types.internal';
 
 export class BenchmarkJob extends BenchmarkRunner {
     private _stats: Stats[] = [];
@@ -27,45 +26,58 @@ export class BenchmarkJob extends BenchmarkRunner {
         this.onStart?.();
 
         if (this.testFnOptions.jitArgsCount === 0) {
-            this.benchmarkJitting1(StagePrefix.Jitting);
-            this.benchmarkJitting2(StagePrefix.Jitting);
+            this.benchmarkJitting1();
+            logger.writeLine();
+            this.benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(StagePrefix.Jitting, this.testFnOptions.jitArgs);
-            this.benchmarkJitting2(StagePrefix.Jitting, this.testFnOptions.jitArgs);
+            this.benchmarkJitting1(this.testFnOptions.jitArgs);
+            logger.writeLine();
+            this.benchmarkJitting2(this.testFnOptions.jitArgs);
         }
-        ConsoleLogger.default.writeLine();
+        logger.writeLine();
 
         if (this.testFnOptions.argsCount === 0) {
-            const ops = this.benchmarkPilot(StagePrefix.Pilot);
-            ConsoleLogger.default.writeLine();
-
-            const measurements: _Nanosecond[] = [];
-            this.benchmarkFormal(StagePrefix.Formal, measurements, ops);
-            ConsoleLogger.default.writeLine();
-
-            const stats = new Stats(this._name, measurements);
-            this._stats.push(stats);
-            stats.log();
+            this._run();
         } else {
             for (const args of this.testFnOptions.args) {
-                ConsoleLogger.default.writeLineInfo(`// arguments: ${args.toString()}`);
-                ConsoleLogger.default.writeLine();
-
-                const ops = this.benchmarkPilot(StagePrefix.Pilot, args);
-                ConsoleLogger.default.writeLine();
-
-                const measurements: _Nanosecond[] = [];
-                this.benchmarkFormal(StagePrefix.Formal, measurements, ops, args);
-                ConsoleLogger.default.writeLine();
-
-                const stats = new Stats(this._name, measurements);
-                this._stats.push(stats);
-                stats.log();
+                this._run(args);
             }
         }
 
         this.onComplete?.();
 
         return this;
+    }
+
+    private _run(args?: _Arguments): void {
+        const logger = ConsoleLogger.default;
+
+        if (args) {
+            logger.writeLineInfo(`// arguments: ${args.toString()}`);
+            logger.writeLine();
+        }
+
+        const ops = this.benchmarkPilot(args);
+        logger.writeLine();
+
+        this.benchmarkWarmup(false, ops, args);
+        logger.writeLine();
+
+        const overhead = this.benchmarkOverheadActual(ops, args);
+        logger.writeLine();
+
+        this.benchmarkWarmup(true, ops, args);
+        logger.writeLine();
+
+        const measurements: _Nanosecond[] = [];
+        this.benchmarkWorkloadActual(measurements, ops, args);
+        logger.writeLine();
+
+        this.benchmarkWorkloadResult(measurements, overhead, ops);
+        logger.writeLine();
+
+        const stats = new Stats(this._name, measurements, ops);
+        this._stats.push(stats);
+        stats.log();
     }
 }

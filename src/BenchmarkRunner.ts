@@ -1,4 +1,4 @@
-import { StagePrefix } from './Enums';
+import { Stage } from './Enums';
 import { Settings, TestFnOptions } from './options';
 import { CodeGen, Tester, TesterContext } from './tools/CodeGen';
 import { ConsoleLogger } from './tools/ConsoleLogger';
@@ -110,7 +110,7 @@ export class BenchmarkRunner {
     }
 
     private benchmarkJitting(
-        prefix: StagePrefix,
+        workload: boolean,
         order: number,
         ops: number,
         argsGenerator?: Generator<_Arguments, void>,
@@ -118,38 +118,40 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             ops,
             testFn: this.testFn,
+            workload,
         };
 
+        let used: _Nanosecond = Time.ns(0);
         if (!argsGenerator) {
-            const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
-            const elapsed = Time.ns(used / ops);
-
-            this.logOpsData(prefix, order, ops, used, elapsed);
+            used = Time.hrtime2ns(this.tester(testerContext).elapsed);
         } else {
-            let used: _Nanosecond = Time.ns(0);
             for (const args of argsGenerator) {
                 testerContext.args = args;
-                used = Time.hrtime2ns(this.tester(testerContext).elapsed);
+                used = Time.ns(used + Time.hrtime2ns(this.tester(testerContext).elapsed));
             }
-            const elapsed = Time.ns(used / ops);
-
-            this.logOpsData(prefix, order, ops, used, elapsed);
         }
+
+        const elapsed = Time.ns(used / ops);
+
+        this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    protected benchmarkJitting1(prefix: StagePrefix, argsGenerator?: Generator<_Arguments, void>): void {
-        this.benchmarkJitting(prefix, 1, 1, argsGenerator);
+    protected benchmarkJitting1(argsGenerator?: Generator<_Arguments, void>): void {
+        this.benchmarkJitting(false, 1, 1, argsGenerator);
+        this.benchmarkJitting(true, 1, 1, argsGenerator);
     }
 
-    protected benchmarkJitting2(prefix: StagePrefix, argsGenerator?: Generator<_Arguments, void>): void {
-        this.benchmarkJitting(prefix, 2, this.settings.initOps, argsGenerator);
+    protected benchmarkJitting2(argsGenerator?: Generator<_Arguments, void>): void {
+        this.benchmarkJitting(false, 2, this.settings.initOps, argsGenerator);
+        this.benchmarkJitting(true, 2, this.settings.initOps, argsGenerator);
     }
 
-    protected benchmarkPilot(prefix: StagePrefix, args?: _Arguments): number {
+    protected benchmarkPilot(args?: _Arguments): number {
         const testerContext: TesterContext = {
             args,
             ops: this.settings.initOps,
             testFn: this.testFn,
+            workload: true,
         };
 
         for (let index = 1; ; index++) {
@@ -157,7 +159,7 @@ export class BenchmarkRunner {
 
             const elapsed = Time.ns(used / testerContext.ops);
 
-            this.logOpsData(prefix, index, testerContext.ops, used, elapsed);
+            this.logOpsData(Stage.WorkloadPilot, index, testerContext.ops, used, elapsed);
 
             // Calculate how many more iterations it will take to achieve the `minTime`.
             // After stage Pilot, we should get a good count number.
@@ -173,26 +175,74 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    protected benchmarkFormal(prefix: StagePrefix, measurements: _Nanosecond[], ops: number, args?: _Arguments): void {
+    protected benchmarkWarmup(workload: boolean, ops: number, args?: _Arguments): void {
         const testerContext: TesterContext = {
             args,
             ops,
             testFn: this.testFn,
+            workload,
         };
 
-        for (let index = 1; index <= this.settings.measurementCount; index++) {
+        for (let index = 1; index <= this.settings.warmupCount; index++) {
             const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
             const elapsed = Time.ns(used / ops);
 
-            this.logOpsData(prefix, index, ops, used, elapsed);
-
-            measurements.push(elapsed);
+            this.logOpsData(workload ? Stage.WarmupWorkload : Stage.WarmupOverhead, index, ops, used, elapsed);
 
             Time.sleep(this.settings.delay);
         }
     }
 
-    private logOpsData(prefix: StagePrefix, index: number, ops: number, used: _Nanosecond, elapsed: _Nanosecond) {
+    protected benchmarkOverheadActual(ops: number, args?: _Arguments): _Nanosecond {
+        const testerContext: TesterContext = {
+            args,
+            ops,
+            testFn: this.testFn,
+            workload: false,
+        };
+
+        let total: _Nanosecond = Time.ns(0);
+
+        for (let index = 1; index <= this.settings.measurementCount; index++) {
+            const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
+
+            this.logOpsData(Stage.ActualOverhead, index, ops, used, Time.ns(used / ops));
+
+            total = Time.ns(total + used);
+
+            Time.sleep(this.settings.delay);
+        }
+
+        return Time.ns(total / this.settings.measurementCount);
+    }
+
+    protected benchmarkWorkloadActual(measurements: _Nanosecond[], ops: number, args?: _Arguments): void {
+        const testerContext: TesterContext = {
+            args,
+            ops,
+            testFn: this.testFn,
+            workload: true,
+        };
+
+        for (let index = 1; index <= this.settings.measurementCount; index++) {
+            const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
+
+            this.logOpsData(Stage.ActualWorkload, index, ops, used, Time.ns(used / ops));
+
+            measurements.push(used);
+
+            Time.sleep(this.settings.delay);
+        }
+    }
+
+    protected benchmarkWorkloadResult(measurements: _Nanosecond[], overhead: _Nanosecond, ops: number): void {
+        for (let i = 0; i < measurements.length; i++) {
+            measurements[i] = Time.ns(Math.max(measurements[i] - overhead, 0));
+            this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], Time.ns(measurements[i] / ops));
+        }
+    }
+
+    private logOpsData(prefix: Stage, index: number, ops: number, used: _Nanosecond, elapsed: _Nanosecond) {
         const len = this.settings.measurementCount.toString().length;
 
         ConsoleLogger.default.writeLine(
@@ -200,7 +250,7 @@ export class BenchmarkRunner {
                 prefix,
                 `${index.toString().padStart(len)}: `,
                 `${ops} op, `,
-                `${used} ns, `,
+                `${used.toFixed(0)} ns, `,
                 `${elapsed.toFixed(4)} ns/op`,
             ].join(''),
         );

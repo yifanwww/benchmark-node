@@ -50,6 +50,12 @@ export interface BenchmarkJobSettings {
      * Default is `100`.
      */
     minMeasurementTime?: Millisecond;
+    /**
+     * Warm up before formal benchmarking.
+     *
+     * Default is `7`
+     */
+    warmupCount?: number;
 }
 
 export interface BenchmarkJobTestFnOptions {

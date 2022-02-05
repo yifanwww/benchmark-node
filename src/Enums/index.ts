@@ -1,1 +1,1 @@
-export * from './StagePrefix';
+export * from './Stages';

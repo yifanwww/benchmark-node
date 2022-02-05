@@ -8,6 +8,7 @@ export interface TesterContext {
     setup?: () => void;
     teardown?: () => void;
     testFn: TestFn;
+    workload: boolean;
 }
 
 export type Tester = (context: TesterContext) => { elapsed: Hrtime };
@@ -80,6 +81,7 @@ export class CodeGen {
 if (context#.setup) context#.setup();
 
 const testFn# = context#.testFn;
+const workload# = context#.workload;
 
 ${this.generatePickArguments()}
 
@@ -87,7 +89,11 @@ let return#;
 
 const begin# = process.hrtime();
 for (let i# = 0; i# < context#.ops; i#++) {
-return# = ${this.generateTestFnCall()};
+    if (workload#) {
+        return# = ${this.generateTestFnCall()};
+    } else {
+        return# = undefined;
+    }
 }
 const elapsed# = process.hrtime(begin#);
 
