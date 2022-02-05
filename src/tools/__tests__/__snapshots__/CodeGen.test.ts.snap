@@ -3,7 +3,7 @@
 exports[`test method \`CodeGen\` create tester with 0 argument 1`] = `
 "function anonymous(context1
 ) {
-context1.setup?.();
+if (context1.setup) context1.setup();
 const testFn1 = context1.testFn;
 let return1;
 const begin1 = process.hrtime();
@@ -11,7 +11,7 @@ for (let i1 = 0; i1 < context1.ops; i1++) {
 return1 = testFn1();
 }
 const elapsed1 = process.hrtime(begin1);
-context1.teardown?.();
+if (context1.teardown) context1.teardown();
 return { elapsed: elapsed1, _internal_return: return1 };
 }"
 `;
@@ -19,7 +19,7 @@ return { elapsed: elapsed1, _internal_return: return1 };
 exports[`test method \`CodeGen\` create tester with 1 argument 1`] = `
 "function anonymous(context2
 ) {
-context2.setup?.();
+if (context2.setup) context2.setup();
 const testFn2 = context2.testFn;
 const arg0_2 = context2.args[0];
 let return2;
@@ -28,7 +28,7 @@ for (let i2 = 0; i2 < context2.ops; i2++) {
 return2 = testFn2(arg0_2);
 }
 const elapsed2 = process.hrtime(begin2);
-context2.teardown?.();
+if (context2.teardown) context2.teardown();
 return { elapsed: elapsed2, _internal_return: return2 };
 }"
 `;
@@ -36,7 +36,7 @@ return { elapsed: elapsed2, _internal_return: return2 };
 exports[`test method \`CodeGen\` create tester with 2 arguments 1`] = `
 "function anonymous(context3
 ) {
-context3.setup?.();
+if (context3.setup) context3.setup();
 const testFn3 = context3.testFn;
 const arg0_3 = context3.args[0];
 const arg1_3 = context3.args[1];
@@ -46,7 +46,7 @@ for (let i3 = 0; i3 < context3.ops; i3++) {
 return3 = testFn3(arg0_3, arg1_3);
 }
 const elapsed3 = process.hrtime(begin3);
-context3.teardown?.();
+if (context3.teardown) context3.teardown();
 return { elapsed: elapsed3, _internal_return: return3 };
 }"
 `;
@@ -54,7 +54,7 @@ return { elapsed: elapsed3, _internal_return: return3 };
 exports[`test method \`CodeGen\` create tester with 3 arguments 1`] = `
 "function anonymous(context4
 ) {
-context4.setup?.();
+if (context4.setup) context4.setup();
 const testFn4 = context4.testFn;
 const arg0_4 = context4.args[0];
 const arg1_4 = context4.args[1];
@@ -65,7 +65,7 @@ for (let i4 = 0; i4 < context4.ops; i4++) {
 return4 = testFn4(arg0_4, arg1_4, arg2_4);
 }
 const elapsed4 = process.hrtime(begin4);
-context4.teardown?.();
+if (context4.teardown) context4.teardown();
 return { elapsed: elapsed4, _internal_return: return4 };
 }"
 `;
@@ -73,7 +73,7 @@ return { elapsed: elapsed4, _internal_return: return4 };
 exports[`test method \`CodeGen\` create tester with 4 arguments 1`] = `
 "function anonymous(context5
 ) {
-context5.setup?.();
+if (context5.setup) context5.setup();
 const testFn5 = context5.testFn;
 const arg0_5 = context5.args[0];
 const arg1_5 = context5.args[1];
@@ -85,7 +85,7 @@ for (let i5 = 0; i5 < context5.ops; i5++) {
 return5 = testFn5(arg0_5, arg1_5, arg2_5, arg3_5);
 }
 const elapsed5 = process.hrtime(begin5);
-context5.teardown?.();
+if (context5.teardown) context5.teardown();
 return { elapsed: elapsed5, _internal_return: return5 };
 }"
 `;
@@ -93,7 +93,7 @@ return { elapsed: elapsed5, _internal_return: return5 };
 exports[`test method \`CodeGen\` create tester with rest arguments 1`] = `
 "function anonymous(context6
 ) {
-context6.setup?.();
+if (context6.setup) context6.setup();
 const testFn6 = context6.testFn;
 const restArg6 = context6.restArgs;
 let return6;
@@ -102,7 +102,7 @@ for (let i6 = 0; i6 < context6.ops; i6++) {
 return6 = testFn6(restArg6);
 }
 const elapsed6 = process.hrtime(begin6);
-context6.teardown?.();
+if (context6.teardown) context6.teardown();
 return { elapsed: elapsed6, _internal_return: return6 };
 }"
 `;

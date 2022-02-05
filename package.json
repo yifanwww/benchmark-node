@@ -32,7 +32,7 @@
         "test-full": "node scripts/unit-test.js"
     },
     "engines": {
-        "node": ">=16"
+        "node": ">=9"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.16.11",
