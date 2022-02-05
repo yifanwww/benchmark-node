@@ -1,0 +1,10 @@
+# Compilation
+
+/dist
+
+/lib
+/lib-commonjs
+
+# Running and Testing
+
+/coverage
