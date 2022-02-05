@@ -2,8 +2,8 @@ import { TestFunction } from './Data';
 import { Stage } from './Enums';
 import { Settings, TestFnOptions } from './options';
 import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
-import { BenchmarkJobCallbacks, BenchmarkJobOptions, TestFn } from './types';
-import { _Arguments, _Nanosecond } from './types.internal';
+import { BenchmarkJobCallbacks, BenchmarkJobOptions, Nanosecond, TestFn } from './types';
+import { _Arguments } from './types.internal';
 
 interface BenchmarkRunnerConstructorProps {
     name: string;
@@ -119,17 +119,17 @@ export class BenchmarkRunner {
             workload,
         };
 
-        let used: _Nanosecond = Time.ns(0);
+        let used: Nanosecond = 0;
         if (!argsGenerator) {
             used = Time.hrtime2ns(this.tester(testerContext).elapsed);
         } else {
             for (const args of argsGenerator) {
                 testerContext.args = args;
-                used = Time.ns(used + Time.hrtime2ns(this.tester(testerContext).elapsed));
+                used += Time.hrtime2ns(this.tester(testerContext).elapsed);
             }
         }
 
-        const elapsed = Time.ns(used / ops);
+        const elapsed = used / ops;
 
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
@@ -155,7 +155,7 @@ export class BenchmarkRunner {
         for (let index = 1; ; index++) {
             const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
 
-            const elapsed = Time.ns(used / testerContext.ops);
+            const elapsed = used / testerContext.ops;
 
             this.logOpsData(Stage.WorkloadPilot, index, testerContext.ops, used, elapsed);
 
@@ -183,7 +183,7 @@ export class BenchmarkRunner {
 
         for (let index = 1; index <= this.settings.warmupCount; index++) {
             const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
-            const elapsed = Time.ns(used / ops);
+            const elapsed = used / ops;
 
             this.logOpsData(workload ? Stage.WarmupWorkload : Stage.WarmupOverhead, index, ops, used, elapsed);
 
@@ -191,7 +191,7 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkOverheadActual(ops: number, args?: _Arguments): _Nanosecond {
+    protected benchmarkOverheadActual(ops: number, args?: _Arguments): Nanosecond {
         const testerContext: TesterContext = {
             args,
             ops,
@@ -199,22 +199,22 @@ export class BenchmarkRunner {
             workload: false,
         };
 
-        let total: _Nanosecond = Time.ns(0);
+        let total: Nanosecond = 0;
 
         for (let index = 1; index <= this.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ActualOverhead, index, ops, used, Time.ns(used / ops));
+            this.logOpsData(Stage.ActualOverhead, index, ops, used, used / ops);
 
-            total = Time.ns(total + used);
+            total += used;
 
             Time.sleep(this.settings.delay);
         }
 
-        return Time.ns(total / this.settings.measurementCount);
+        return total / this.settings.measurementCount;
     }
 
-    protected benchmarkWorkloadActual(measurements: _Nanosecond[], ops: number, args?: _Arguments): void {
+    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: _Arguments): void {
         const testerContext: TesterContext = {
             args,
             ops,
@@ -225,7 +225,7 @@ export class BenchmarkRunner {
         for (let index = 1; index <= this.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ActualWorkload, index, ops, used, Time.ns(used / ops));
+            this.logOpsData(Stage.ActualWorkload, index, ops, used, used / ops);
 
             measurements.push(used);
 
@@ -233,14 +233,14 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkWorkloadResult(measurements: _Nanosecond[], overhead: _Nanosecond, ops: number): void {
+    protected benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
         for (let i = 0; i < measurements.length; i++) {
-            measurements[i] = Time.ns(Math.max(measurements[i] - overhead, 0));
-            this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], Time.ns(measurements[i] / ops));
+            measurements[i] = Math.max(measurements[i] - overhead, 0);
+            this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], measurements[i] / ops);
         }
     }
 
-    private logOpsData(prefix: Stage, index: number, ops: number, used: _Nanosecond, elapsed: _Nanosecond) {
+    private logOpsData(prefix: Stage, index: number, ops: number, used: Nanosecond, elapsed: Nanosecond) {
         const len = this.settings.measurementCount.toString().length;
 
         ConsoleLogger.default.writeLine(

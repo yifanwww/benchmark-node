@@ -1,7 +1,8 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { Stats } from './Data';
 import { ConsoleLogger } from './tools';
-import { _Arguments, _Nanosecond } from './types.internal';
+import { Nanosecond } from './types';
+import { _Arguments } from './types.internal';
 
 export class BenchmarkJob extends BenchmarkRunner {
     private _stats: Stats[] = [];
@@ -69,7 +70,7 @@ export class BenchmarkJob extends BenchmarkRunner {
         this.benchmarkWarmup(true, ops, args);
         logger.writeLine();
 
-        const measurements: _Nanosecond[] = [];
+        const measurements: Nanosecond[] = [];
         this.benchmarkWorkloadActual(measurements, ops, args);
         logger.writeLine();
 

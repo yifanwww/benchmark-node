@@ -1,5 +1,6 @@
-import { ConsoleLogger, MathTool, Time } from '../tools';
-import { ConfidenceInterval, _Arguments, _Nanosecond } from '../types.internal';
+import { ConsoleLogger, MathTool } from '../tools';
+import { Nanosecond } from '../types';
+import { ConfidenceInterval, _Arguments } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.
@@ -11,21 +12,21 @@ export class Stats {
 
     private _n: number;
 
-    private _mean: _Nanosecond;
+    private _mean: Nanosecond;
     private _variance: number;
-    private _standardDeviation: _Nanosecond;
-    private _standardError: _Nanosecond;
+    private _standardDeviation: Nanosecond;
+    private _standardError: Nanosecond;
     private _standardErrorPercent: number;
 
     private _confidenceInterval: ConfidenceInterval;
-    private _ciMargin: _Nanosecond;
+    private _ciMargin: Nanosecond;
     private _ciMarginPercent: number;
 
-    private _q0: _Nanosecond;
-    private _q1: _Nanosecond;
-    private _q2: _Nanosecond;
-    private _q3: _Nanosecond;
-    private _q4: _Nanosecond;
+    private _q0: Nanosecond;
+    private _q1: Nanosecond;
+    private _q2: Nanosecond;
+    private _q3: Nanosecond;
+    private _q4: Nanosecond;
 
     private _ops: number;
 
@@ -110,23 +111,23 @@ export class Stats {
         return this._ops;
     }
 
-    public constructor(name: string, measurements: _Nanosecond[], ops: number, args: _Arguments = []) {
+    public constructor(name: string, measurements: Nanosecond[], ops: number, args: _Arguments = []) {
         this._name = name;
         this._args = args;
 
         measurements.sort((a, b) => a - b);
-        measurements = measurements.map((used) => Time.ns(used / ops));
+        measurements = measurements.map((used) => used / ops);
 
         this._n = measurements.length;
 
         this._mean = MathTool.mean(measurements);
         this._variance = MathTool.variance(measurements, this._mean);
-        this._standardDeviation = Math.sqrt(this._variance) as _Nanosecond;
-        this._standardError = (this._standardDeviation / Math.sqrt(this._n)) as _Nanosecond;
+        this._standardDeviation = Math.sqrt(this._variance);
+        this._standardError = this._standardDeviation / Math.sqrt(this._n);
         this._standardErrorPercent = (this._standardError / this._mean) * 100;
 
         const criticalValue = MathTool.getTDistributionCriticalValue(this._n - 1);
-        this._ciMargin = (this._standardError * criticalValue) as _Nanosecond;
+        this._ciMargin = this._standardError * criticalValue;
         this._confidenceInterval = [this._mean - this._ciMargin, this._mean + this._ciMargin] as ConfidenceInterval;
         this._ciMarginPercent = (this._ciMargin / this._mean) * 100;
 

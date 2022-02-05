@@ -1,12 +1,11 @@
 import { Time } from '../tools/TimeTool';
-import { BenchmarkJobSettings } from '../types';
-import { _Nanosecond } from '../types.internal';
+import { BenchmarkJobSettings, Nanosecond } from '../types';
 
 export class Settings {
-    private _delay: _Nanosecond;
+    private _delay: Nanosecond;
     private _initOps: number;
     private _measurementCount: number;
-    private _minMeasurementTime: _Nanosecond;
+    private _minMeasurementTime: Nanosecond;
     private _warmupCount: number;
 
     public constructor(settings: BenchmarkJobSettings) {
@@ -19,7 +18,7 @@ export class Settings {
         this._warmupCount = warmupCount;
     }
 
-    public get delay(): _Nanosecond {
+    public get delay(): Nanosecond {
         return this._delay;
     }
 
@@ -31,7 +30,7 @@ export class Settings {
         return this._measurementCount;
     }
 
-    public get minMeasurementTime(): _Nanosecond {
+    public get minMeasurementTime(): Nanosecond {
         return this._minMeasurementTime;
     }
 
