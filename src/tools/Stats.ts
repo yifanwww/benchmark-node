@@ -1,7 +1,6 @@
 import { ConfidenceInterval, _Nanosecond } from '../types.internal';
 
 import { ConsoleLogger } from './ConsoleLogger';
-import { Formatter } from './Formatter';
 import { MathTool } from './MathTool';
 import { Time } from './TimeTool';
 
@@ -134,18 +133,6 @@ export class Stats {
         this._q4 = measurements[this._n - 1];
 
         this._ops = 1e9 / this._mean;
-    }
-
-    public toString(order?: number): string {
-        const opsStr = Formatter.beautifyNumber(this._ops.toFixed(this._ops < 100 ? 2 : 0));
-        const rmeStr = this._ciMarginPercent.toFixed(2);
-
-        return [
-            order === undefined ? '' : `${order}: `,
-            `${opsStr} ops/sec`,
-            ` ${rmeStr}%`,
-            ` (${this._n} sample${this._n > 1 ? 's' : ''})`,
-        ].join('');
     }
 
     public log(): void {

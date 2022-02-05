@@ -3,13 +3,15 @@ import { Stats } from '../Stats';
 
 describe(`test class \`${Stats.name}\``, () => {
     it('calculates', () => {
-        const stats = new Stats('name', [
-            1, 2, 3, 4, 3, 23, 21, 2, 3, 3, 2, 21, 1, 2, 23, 3, 4, 4, 32,
-        ] as _Nanosecond[]);
+        const stats = new Stats(
+            'name',
+            [
+                37051080, 33390980, 33920080, 33423180, 33684980, 34514380, 33498580, 34333480, 33923280, 34479480,
+                33398680, 33242780, 33088980, 33790080, 33530180,
+            ] as _Nanosecond[],
+            141386309,
+        );
 
         expect(JSON.stringify(stats, undefined, 4)).toMatchSnapshot();
-
-        expect(stats.toString()).toMatchSnapshot();
-        expect(stats.toString(2)).toMatchSnapshot();
     });
 });
