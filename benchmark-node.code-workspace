@@ -1,0 +1,87 @@
+{
+    "folders": [
+        {
+            "name": "benchmark-node",
+            "path": "."
+        }
+    ],
+    "settings": {
+        // --------------------------------------------------------------------------------- Visual Studio Code Settings
+
+        "editor.insertSpaces": true,
+        "editor.rulers": [120],
+        "editor.tabSize": 4,
+
+        "files.associations": {
+            ".eslintcache": "json",
+            ".lintstagedrc": "json",
+            ".stylelintcache": "json"
+        },
+        "files.exclude": {
+            "**/.DS_Store": true,
+            "**/.git": true,
+            "**/.hg": true,
+            "**/.svn": true,
+            "**/CVS": true,
+            "**/node_modules": true
+        },
+
+        "git.enabled": true,
+
+        "search.exclude": {
+            "**/bower_components": true,
+            "**/node_modules": true,
+            "**/*.code-search": true,
+            // additional
+            "**/coverage": true,
+            "**/dist": true,
+            "**/lib": true,
+            "**/lib-commonjs": true,
+            "**/*.js": true,
+            "**/*.map": true,
+            "**/*.tsbuildinfo": true
+        },
+
+        "typescript.enablePromptUseWorkspaceTsdk": true,
+        "typescript.tsdk": "benchmark-node/node_modules/typescript/lib",
+
+        "[css]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[json]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[jsonc]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[html]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[scss]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[typescript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[typescriptreact]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.suggest.insertMode": "replace"
+        },
+        "[yaml]": {
+            "editor.autoIndent": "advanced",
+            "editor.defaultFormatter": "esbenp.prettier-vscode",
+            "editor.insertSpaces": true,
+            "editor.tabSize": 2
+        }
+    }
+}
