@@ -7,7 +7,7 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.delay).toBe(5_000_000);
         expect(settings.initOps).toBe(16);
         expect(settings.measurementCount).toBe(15);
-        expect(settings.minMeasurementTime).toBe(100_000_000);
+        expect(settings.minMeasurementTime).toBe(250_000_000);
         expect(settings.warmupCount).toBe(7);
     });
 

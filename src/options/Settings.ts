@@ -9,7 +9,7 @@ export class Settings {
     private _warmupCount: number;
 
     public constructor(settings: BenchmarkJobSettings) {
-        const { delay = 5, initOps = 16, measurementCount = 15, minMeasurementTime = 100, warmupCount = 7 } = settings;
+        const { delay = 5, initOps = 16, measurementCount = 15, minMeasurementTime = 250, warmupCount = 7 } = settings;
 
         this._delay = Time.ms2ns(delay);
         this._initOps = initOps;
