@@ -1,8 +1,8 @@
 import { Arguments } from '../ConfigOptions';
 import { BenchmarkJobTestFnOptions, TestFn } from '../types';
 
-export class TestFunction {
-    private _fn: TestFn;
+export class TestFunction<T extends TestFn> {
+    private _fn: T;
 
     private _argNames: Optional<string[]> = null;
 
@@ -14,10 +14,10 @@ export class TestFunction {
         return this._argNames;
     }
 
-    private _argsArr: ReadonlyArray<Arguments>;
+    private _argsArr: ReadonlyArray<Arguments<Parameters<T>>>;
     private _argsLength: number;
 
-    private _jitArgsArr: ReadonlyArray<Arguments>;
+    private _jitArgsArr: ReadonlyArray<Arguments<Parameters<T>>>;
     private _jitArgsLength: number;
 
     private _maxArgsLength: number;
@@ -33,7 +33,7 @@ export class TestFunction {
         return this._cleanup;
     }
 
-    public constructor(testFn: TestFn, options: BenchmarkJobTestFnOptions) {
+    public constructor(testFn: T, options: BenchmarkJobTestFnOptions<T>) {
         this._fn = testFn;
 
         const { args = [], cleanup, jitArgs: preArgs = [], setup } = options;
@@ -51,7 +51,7 @@ export class TestFunction {
         this._cleanup = cleanup;
     }
 
-    private getArgsLength(argsArr: ReadonlyArray<Arguments>): number {
+    private getArgsLength(argsArr: ReadonlyArray<Arguments<Parameters<T>>>): number {
         let max = 0;
         for (const args of argsArr) {
             max = Math.max(max, args.args.length);
@@ -59,7 +59,7 @@ export class TestFunction {
         return max;
     }
 
-    private *getEnumerator(argsArr: ReadonlyArray<Arguments>) {
+    private *getEnumerator(argsArr: ReadonlyArray<Arguments<Parameters<T>>>) {
         for (const args of argsArr) {
             yield args;
         }
@@ -67,7 +67,7 @@ export class TestFunction {
 
     public getJitArgsGenerator = () => this.getEnumerator(this._jitArgsArr);
 
-    public get args(): Generator<Arguments, void> {
+    public get args(): Generator<Arguments<Parameters<T>>, void> {
         return this.getEnumerator(this._argsArr);
     }
 
@@ -79,7 +79,7 @@ export class TestFunction {
         return this._argsLength;
     }
 
-    public get jitArgs(): Generator<Arguments, void> {
+    public get jitArgs(): Generator<Arguments<Parameters<T>>, void> {
         return this.getJitArgsGenerator();
     }
 
@@ -99,7 +99,7 @@ export class TestFunction {
     private static delimiterExpression = /,\s*/i;
 
     // TODO: Maybe can display the argument names in Performance Table.
-    private static getArgumentNames(fn: TestFn): string[] {
+    private static getArgumentNames<T extends TestFn>(fn: T): string[] {
         const matching = TestFunction.functionExpression.exec(fn.toString());
 
         if (matching) {

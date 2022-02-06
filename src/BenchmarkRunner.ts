@@ -14,15 +14,15 @@ enum Stage {
     WorkloadResult /*  */ = 'WorkloadResult  ',
 }
 
-interface BenchmarkRunnerConstructorProps {
+interface BenchmarkRunnerConstructorProps<T extends TestFn> {
     name: string;
-    options: BenchmarkJobOptions;
-    testFn: TestFn;
+    options: BenchmarkJobOptions<T>;
+    testFn: T;
 }
 
-export class BenchmarkRunner {
+export class BenchmarkRunner<T extends TestFn> {
     protected _name: string;
-    protected testFunction: TestFunction;
+    protected testFunction: TestFunction<T>;
     protected tester: Tester;
 
     protected settings: Settings;
@@ -35,15 +35,15 @@ export class BenchmarkRunner {
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    constructor(testFn: TestFn, options?: BenchmarkJobOptions);
+    constructor(testFn: T, options?: BenchmarkJobOptions<T>);
     /**
      * @param name The name used to identify this test.
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    constructor(name: string, testFn: TestFn, options?: BenchmarkJobOptions);
+    constructor(name: string, testFn: T, options?: BenchmarkJobOptions<T>);
 
-    constructor(...args: [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?]) {
+    constructor(...args: [T, BenchmarkJobOptions<T>?] | [string, T, BenchmarkJobOptions<T>?]) {
         const { name, options, testFn } = this.parseArgs(args);
 
         this._name = name;
@@ -60,18 +60,18 @@ export class BenchmarkRunner {
     }
 
     private parseArgs(
-        args: [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?],
-    ): BenchmarkRunnerConstructorProps {
+        args: [T, BenchmarkJobOptions<T>?] | [string, T, BenchmarkJobOptions<T>?],
+    ): BenchmarkRunnerConstructorProps<T> {
         if (typeof args[0] === 'string') {
-            const _args = args as [string, TestFn, BenchmarkJobOptions?];
+            const _args = args as [string, T, BenchmarkJobOptions<T>?];
             return {
                 name: _args[0],
                 options: _args[2] ?? {},
                 testFn: _args[1],
             };
         } else {
-            const _args = args as [TestFn, BenchmarkJobOptions?];
-            const props: BenchmarkRunnerConstructorProps = {
+            const _args = args as [T, BenchmarkJobOptions<T>?];
+            const props: BenchmarkRunnerConstructorProps<T> = {
                 name: _args[0].name,
                 options: _args[1] ?? {},
                 testFn: _args[0],
@@ -109,7 +109,7 @@ export class BenchmarkRunner {
         workload: boolean,
         order: number,
         ops: number,
-        argsGenerator?: Generator<Arguments, void>,
+        argsGenerator?: Generator<Arguments<Parameters<T>>, void>,
     ): void {
         const testerContext: TesterContext = {
             ops,
@@ -132,17 +132,17 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    protected benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments, void>): void {
+    protected benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments<Parameters<T>>, void>): void {
         this.benchmarkJitting(false, 1, 1, getArgsGenerator?.());
         this.benchmarkJitting(true, 1, 1, getArgsGenerator?.());
     }
 
-    protected benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments, void>): void {
+    protected benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments<Parameters<T>>, void>): void {
         this.benchmarkJitting(false, 2, this.settings.initOps, getArgsGenerator?.());
         this.benchmarkJitting(true, 2, this.settings.initOps, getArgsGenerator?.());
     }
 
-    protected benchmarkPilot(args?: Arguments): number {
+    protected benchmarkPilot(args?: Arguments<Parameters<T>>): number {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this.settings.initOps,
@@ -171,7 +171,7 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    protected benchmarkWarmup(workload: boolean, ops: number, args?: Arguments): void {
+    protected benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<Parameters<T>>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -189,7 +189,7 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkOverheadActual(ops: number, args?: Arguments): Nanosecond {
+    protected benchmarkOverheadActual(ops: number, args?: Arguments<Parameters<T>>): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -212,7 +212,7 @@ export class BenchmarkRunner {
         return total / this.settings.measurementCount;
     }
 
-    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments): void {
+    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<Parameters<T>>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,

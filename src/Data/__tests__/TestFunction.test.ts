@@ -35,22 +35,26 @@ describe(`Test class \`${TestFunction.name}\``, () => {
                 c /* comments */ /* comments */,
             ) {}),
         ).toStrictEqual(target);
-        expect(get(function fn(a = 'a', b = 'b', c = 'c') {})).toStrictEqual(target);
-        expect(
-            get(function fn(a /* comments */ = 'a', b /* comments */ = 'b', c /* comments */ = 'c') {}),
-        ).toStrictEqual(target);
+        expect(get(function fn(a: string = 'a', b: string = 'b', c: string = 'c') {})).toStrictEqual(target);
         expect(
             get(function fn(
-                a /* comments */ = /* comments */ 'a',
-                b /* comments */ = /* comments */ 'b',
-                c /* comments */ = /* comments */ 'c',
+                a: string /* comments */ = 'a',
+                b: string /* comments */ = 'b',
+                c: string /* comments */ = 'c',
             ) {}),
         ).toStrictEqual(target);
         expect(
             get(function fn(
-                /* comments */ a = /* comments */ 'a',
-                /* comments */ b = /* comments */ 'b',
-                /* comments */ c = /* comments */ 'c',
+                a: string /* comments */ = /* comments */ 'a',
+                b: string /* comments */ = /* comments */ 'b',
+                c: string /* comments */ = /* comments */ 'c',
+            ) {}),
+        ).toStrictEqual(target);
+        expect(
+            get(function fn(
+                /* comments */ a: string = /* comments */ 'a',
+                /* comments */ b: string = /* comments */ 'b',
+                /* comments */ c: string = /* comments */ 'c',
             ) {}),
         ).toStrictEqual(target);
 
@@ -79,22 +83,26 @@ describe(`Test class \`${TestFunction.name}\``, () => {
                 c /* comments */ /* comments */,
             ) {}),
         ).toStrictEqual(target);
-        expect(get(function (a = 'a', b = 'b', c = 'c') {})).toStrictEqual(target);
-        expect(get(function (a /* comments */ = 'a', b /* comments */ = 'b', c /* comments */ = 'c') {})).toStrictEqual(
-            target,
-        );
+        expect(get(function (a: string = 'a', b: string = 'b', c: string = 'c') {})).toStrictEqual(target);
         expect(
             get(function (
-                a /* comments */ = /* comments */ 'a',
-                b /* comments */ = /* comments */ 'b',
-                c /* comments */ = /* comments */ 'c',
+                a: string /* comments */ = 'a',
+                b: string /* comments */ = 'b',
+                c: string /* comments */ = 'c',
             ) {}),
         ).toStrictEqual(target);
         expect(
             get(function (
-                /* comments */ a = /* comments */ 'a',
-                /* comments */ b = /* comments */ 'b',
-                /* comments */ c = /* comments */ 'c',
+                a: string /* comments */ = /* comments */ 'a',
+                b: string /* comments */ = /* comments */ 'b',
+                c: string /* comments */ = /* comments */ 'c',
+            ) {}),
+        ).toStrictEqual(target);
+        expect(
+            get(function (
+                /* comments */ a: string = /* comments */ 'a',
+                /* comments */ b: string = /* comments */ 'b',
+                /* comments */ c: string = /* comments */ 'c',
             ) {}),
         ).toStrictEqual(target);
 
@@ -129,25 +137,25 @@ describe(`Test class \`${TestFunction.name}\``, () => {
                 ) => {},
             ),
         ).toStrictEqual(target);
-        expect(get((a = 'a', b = 'b', c = 'c') => {})).toStrictEqual(target);
-        expect(get((a /* comments */ = 'a', b /* comments */ = 'b', c /* comments */ = 'c') => {})).toStrictEqual(
-            target,
-        );
+        expect(get((a: string = 'a', b: string = 'b', c: string = 'c') => {})).toStrictEqual(target);
+        expect(
+            get((a: string /* comments */ = 'a', b: string /* comments */ = 'b', c: string /* comments */ = 'c') => {}),
+        ).toStrictEqual(target);
         expect(
             get(
                 (
-                    a /* comments */ = /* comments */ 'a',
-                    b /* comments */ = /* comments */ 'b',
-                    c /* comments */ = /* comments */ 'c',
+                    a: string /* comments */ = /* comments */ 'a',
+                    b: string /* comments */ = /* comments */ 'b',
+                    c: string /* comments */ = /* comments */ 'c',
                 ) => {},
             ),
         ).toStrictEqual(target);
         expect(
             get(
                 (
-                    /* comments */ a = /* comments */ 'a',
-                    /* comments */ b = /* comments */ 'b',
-                    /* comments */ c = /* comments */ 'c',
+                    /* comments */ a: string = /* comments */ 'a',
+                    /* comments */ b: string = /* comments */ 'b',
+                    /* comments */ c: string = /* comments */ 'c',
                 ) => {},
             ),
         ).toStrictEqual(target);

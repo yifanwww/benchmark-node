@@ -4,22 +4,25 @@ import { BenchmarkJobOptions, TestFn } from './types';
 import { PerfColumn, PerfColumnType, Table } from './View';
 
 export class Benchmark {
-    private jobs: BenchmarkJob[] = [];
+    private jobs: BenchmarkJob<TestFn>[] = [];
 
     private _setupArr: Array<() => void> = [];
     private _cleanupArr: Array<() => void> = [];
 
-    public add(job: BenchmarkJob): this;
-    public add(testFn: TestFn, options?: BenchmarkJobOptions): this;
-    public add(name: string, testFn: TestFn, options?: BenchmarkJobOptions): this;
+    public add<T extends TestFn>(job: BenchmarkJob<T>): this;
+    public add<T extends TestFn>(testFn: T, options?: BenchmarkJobOptions<T>): this;
+    public add<T extends TestFn>(name: string, testFn: T, options?: BenchmarkJobOptions<T>): this;
 
     public add(
-        ...args: [BenchmarkJob] | [TestFn, BenchmarkJobOptions?] | [string, TestFn, BenchmarkJobOptions?]
+        ...args:
+            | [BenchmarkJob<TestFn>]
+            | [TestFn, BenchmarkJobOptions<TestFn>?]
+            | [string, TestFn, BenchmarkJobOptions<TestFn>?]
     ): this {
         if (args[0] instanceof BenchmarkJob) {
             this.jobs.push(args[0]);
         } else {
-            this.jobs.push(new BenchmarkJob(...(args as [string, TestFn, BenchmarkJobOptions?])));
+            this.jobs.push(new BenchmarkJob(...(args as [string, TestFn, BenchmarkJobOptions<TestFn>?])));
         }
         return this;
     }

@@ -47,15 +47,15 @@ export interface BenchmarkJobSettings {
     warmupCount?: number;
 }
 
-export interface BenchmarkJobTestFnOptions {
+export interface BenchmarkJobTestFnOptions<T extends TestFn> {
     /**
      * Used for pilot benchmarking and formal benchmarking.
      */
-    args?: Arguments | ReadonlyArray<Arguments>;
+    args?: Arguments<Parameters<T>> | ReadonlyArray<Arguments<Parameters<T>>>;
     /**
      * Used for jitting benchmarking. The arguments provided in `args` will be also added into `preArgs`.
      */
-    jitArgs?: Arguments | ReadonlyArray<Arguments>;
+    jitArgs?: Arguments<Parameters<T>> | ReadonlyArray<Arguments<Parameters<T>>>;
     /**
      * A callback to be executed exactly once before each benchmark.
      */
@@ -66,4 +66,4 @@ export interface BenchmarkJobTestFnOptions {
     cleanup?: () => void;
 }
 
-export interface BenchmarkJobOptions extends BenchmarkJobSettings, BenchmarkJobTestFnOptions {}
+export interface BenchmarkJobOptions<T extends TestFn> extends BenchmarkJobSettings, BenchmarkJobTestFnOptions<T> {}

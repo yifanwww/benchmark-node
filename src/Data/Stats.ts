@@ -9,7 +9,7 @@ import { ConfidenceInterval } from '../types.internal';
 export class Stats {
     private _name: string;
 
-    private _args?: Arguments;
+    private _args?: Arguments<ReadonlyArray<unknown>>;
 
     private _n: number;
 
@@ -112,7 +112,12 @@ export class Stats {
         return this._ops;
     }
 
-    public constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
+    public constructor(
+        name: string,
+        measurements: Nanosecond[],
+        ops: number,
+        args?: Arguments<ReadonlyArray<unknown>>,
+    ) {
         this._name = name;
         this._args = args;
 

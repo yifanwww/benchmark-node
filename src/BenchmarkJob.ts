@@ -2,9 +2,9 @@ import { BenchmarkRunner } from './BenchmarkRunner';
 import { Arguments } from './ConfigOptions';
 import { Stats } from './Data';
 import { ConsoleLogger, Formatter } from './tools';
-import { Nanosecond } from './types';
+import { Nanosecond, TestFn } from './types';
 
-export class BenchmarkJob extends BenchmarkRunner {
+export class BenchmarkJob<T extends TestFn> extends BenchmarkRunner<T> {
     private _stats: Stats[] = [];
 
     public get stats() {
@@ -46,7 +46,7 @@ export class BenchmarkJob extends BenchmarkRunner {
         return this;
     }
 
-    private _run(args?: Arguments): void {
+    private _run(args?: Arguments<Parameters<T>>): void {
         const logger = ConsoleLogger.default;
 
         if (args) {
