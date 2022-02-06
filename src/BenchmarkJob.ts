@@ -24,28 +24,24 @@ export class BenchmarkJob extends BenchmarkRunner {
         this.logConfigs();
         logger.writeLine();
 
-        this.onStart?.();
-
-        if (this.testFnOptions.jitArgsCount === 0) {
+        if (this.testFunction.jitArgsCount === 0) {
             this.benchmarkJitting1();
             logger.writeLine();
             this.benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(this.testFnOptions.getJitArgsGenerator);
+            this.benchmarkJitting1(this.testFunction.getJitArgsGenerator);
             logger.writeLine();
-            this.benchmarkJitting2(this.testFnOptions.getJitArgsGenerator);
+            this.benchmarkJitting2(this.testFunction.getJitArgsGenerator);
         }
         logger.writeLine();
 
-        if (this.testFnOptions.argsCount === 0) {
+        if (this.testFunction.argsCount === 0) {
             this._run();
         } else {
-            for (const args of this.testFnOptions.args) {
+            for (const args of this.testFunction.args) {
                 this._run(args);
             }
         }
-
-        this.onComplete?.();
 
         return this;
     }

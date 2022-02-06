@@ -1,4 +1,5 @@
-import { TestFn } from '../types';
+import { Arguments } from '../ConfigOptions';
+import { BenchmarkJobTestFnOptions, TestFn } from '../types';
 
 export class TestFunction {
     private _fn: TestFn;
@@ -13,8 +14,85 @@ export class TestFunction {
         return this._argNames;
     }
 
-    public constructor(testFn: TestFn) {
+    private _argsArr: ReadonlyArray<Arguments>;
+    private _argsLength: number;
+
+    private _jitArgsArr: ReadonlyArray<Arguments>;
+    private _jitArgsLength: number;
+
+    private _maxArgsLength: number;
+
+    private _setup?: () => void;
+    private _cleanup?: () => void;
+
+    public get setup() {
+        return this._setup;
+    }
+
+    public get cleanup() {
+        return this._cleanup;
+    }
+
+    public constructor(testFn: TestFn, options: BenchmarkJobTestFnOptions) {
         this._fn = testFn;
+
+        const { args = [], cleanup, jitArgs: preArgs = [], setup } = options;
+
+        this._argsArr = Array.isArray(args) ? args : [args];
+        const jitArgsArr = Array.isArray(preArgs) ? preArgs : [preArgs];
+        this._jitArgsArr = [...jitArgsArr, ...this._argsArr];
+
+        this._argsLength = this.getArgsLength(this._argsArr);
+        this._jitArgsLength = this.getArgsLength(this._jitArgsArr);
+
+        this._maxArgsLength = Math.max(this._argsLength, this._jitArgsLength);
+
+        this._setup = setup;
+        this._cleanup = cleanup;
+    }
+
+    private getArgsLength(argsArr: ReadonlyArray<Arguments>): number {
+        let max = 0;
+        for (const args of argsArr) {
+            max = Math.max(max, args.args.length);
+        }
+        return max;
+    }
+
+    private *getEnumerator(argsArr: ReadonlyArray<Arguments>) {
+        for (const args of argsArr) {
+            yield args;
+        }
+    }
+
+    public getJitArgsGenerator = () => this.getEnumerator(this._jitArgsArr);
+
+    public get args(): Generator<Arguments, void> {
+        return this.getEnumerator(this._argsArr);
+    }
+
+    public get argsCount(): number {
+        return this._argsArr.length;
+    }
+
+    public get argsLength(): number {
+        return this._argsLength;
+    }
+
+    public get jitArgs(): Generator<Arguments, void> {
+        return this.getJitArgsGenerator();
+    }
+
+    public get jitArgsCount(): number {
+        return this._jitArgsArr.length;
+    }
+
+    public get jitArgsLength(): number {
+        return this._jitArgsLength;
+    }
+
+    public get maxArgsLength(): number {
+        return this._maxArgsLength;
     }
 
     private static functionExpression = /^(?:function(?:\s?[^(]+)?)?\(\s*([^)]*\s*)\)/i;

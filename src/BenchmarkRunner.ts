@@ -1,8 +1,7 @@
 import { Arguments } from './ConfigOptions';
-import { TestFunction } from './Data';
-import { Settings, TestFnOptions } from './options';
+import { Settings, TestFunction } from './Data';
 import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
-import { BenchmarkJobCallbacks, BenchmarkJobOptions, Nanosecond, TestFn } from './types';
+import { BenchmarkJobOptions, Nanosecond, TestFn } from './types';
 
 enum Stage {
     ActualOverhead /*  */ = 'OverheadActual  ',
@@ -26,11 +25,7 @@ export class BenchmarkRunner {
     protected testFunction: TestFunction;
     protected tester: Tester;
 
-    protected onComplete: Optional<BenchmarkJobCallbacks['onComplete']>;
-    protected onStart: Optional<BenchmarkJobCallbacks['onStart']>;
-
     protected settings: Settings;
-    protected testFnOptions: TestFnOptions;
 
     public get name(): string {
         return this._name;
@@ -52,22 +47,15 @@ export class BenchmarkRunner {
         const { name, options, testFn } = this.parseArgs(args);
 
         this._name = name;
-        this.testFunction = new TestFunction(testFn);
-
-        const { onComplete = null, onStart = null } = options;
-
-        this.onComplete = onComplete;
-        this.onStart = onStart;
+        this.testFunction = new TestFunction(testFn, options);
 
         this.settings = new Settings(options);
-
-        this.testFnOptions = new TestFnOptions(options);
 
         // Gets a totally new function to test the performance of `testFn`.
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
         // See "src/test/perf-DynamicFnCall.ts".
         this.tester = CodeGen.createTester({
-            argument: { count: this.testFnOptions.maxArgsLength },
+            argument: { count: this.testFunction.maxArgsLength },
         });
     }
 
@@ -113,8 +101,8 @@ export class BenchmarkRunner {
         logger.writeLineInfo(`//   initial ops         : ${Formatter.beautifyNumber(initOps)}`);
         logger.writeLineInfo(`//   measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
         logger.writeLineInfo(`//   min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
-        logger.writeLineInfo(`//   ${this.onComplete ? 'Has' : 'No'} callback \`onComplete\``);
-        logger.writeLineInfo(`//   ${this.onStart ? 'Has' : 'No'} callback \`onStart\``);
+        logger.writeLineInfo(`//   ${this.testFunction.setup ? 'Has' : 'No'} callback \`setup\``);
+        logger.writeLineInfo(`//   ${this.testFunction.cleanup ? 'Has' : 'No'} callback \`cleanup\``);
     }
 
     private benchmarkJitting(

@@ -1,14 +1,28 @@
-import { TestFn } from '../types';
+import type { TestFn } from '../types';
 import { Hrtime } from '../types.internal';
 
+enum TesterContextEnum {
+    TestFn = 'testFn',
+
+    Args = 'args',
+    RestArgs = 'restArgs',
+    Ops = 'ops',
+    Workload = 'workload',
+
+    Setup = 'setup',
+    Cleanup = 'cleanup',
+}
+
 export interface TesterContext {
-    args?: ReadonlyArray<unknown>;
-    ops: number;
-    restArgs?: ReadonlyArray<unknown>;
-    setup?: () => void;
-    teardown?: () => void;
-    testFn: TestFn;
-    workload: boolean;
+    [TesterContextEnum.TestFn]: TestFn;
+
+    [TesterContextEnum.Args]?: ReadonlyArray<unknown>;
+    [TesterContextEnum.RestArgs]?: ReadonlyArray<unknown>;
+    [TesterContextEnum.Ops]: number;
+    [TesterContextEnum.Workload]: boolean;
+
+    [TesterContextEnum.Setup]?: () => void;
+    [TesterContextEnum.Cleanup]?: () => void;
 }
 
 export type Tester = (context: TesterContext) => { elapsed: Hrtime };
@@ -42,13 +56,13 @@ export class CodeGen {
         const code: string[] = [];
 
         for (let i = 0; i < this.argument.count; i++) {
-            // No need to check `context#.args` exists or not.
-            code.push(`const arg${i}_# = context#.args[${i}];`);
+            // No need to check `context#.${TesterContextEnum.Args}` exists or not.
+            code.push(`const arg${i}_# = context#.${TesterContextEnum.Args}[${i}];`);
         }
 
         if (this.argument.rest) {
-            // No need to check `context#.restArgs` exists or not.
-            code.push('const restArg# = context#.restArgs;');
+            // No need to check `context#.${TesterContextEnum.RestArgs}` exists or not.
+            code.push(`const restArg# = context#.${TesterContextEnum.RestArgs};`);
         }
 
         return code.join('\n');
@@ -80,17 +94,17 @@ export class CodeGen {
     public createTester(): Tester {
         const body = this.removeEmptyLines(
             `
-if (context#.setup) context#.setup();
+if (context#.${TesterContextEnum.Setup}) context#.${TesterContextEnum.Setup}();
 
-const testFn# = context#.testFn;
-const workload# = context#.workload;
+const testFn# = context#.${TesterContextEnum.TestFn};
+const workload# = context#.${TesterContextEnum.Workload};
 
 ${this.generatePickArguments()}
 
 let return#;
 
 const begin# = process.hrtime();
-for (let i# = 0; i# < context#.ops; i#++) {
+for (let i# = 0; i# < context#.${TesterContextEnum.Ops}; i#++) {
     if (workload#) {
         return# = ${this.generateTestFnCall()};
     } else {
@@ -99,7 +113,7 @@ for (let i# = 0; i# < context#.ops; i#++) {
 }
 const elapsed# = process.hrtime(begin#);
 
-if (context#.teardown) context#.teardown();
+if (context#.${TesterContextEnum.Cleanup}) context#.${TesterContextEnum.Cleanup}();
 
 return { elapsed: elapsed#, _internal_return: return# };
 `,

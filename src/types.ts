@@ -14,17 +14,6 @@ export type Nanosecond = number & {};
 
 export type TestFn = (...args: never[]) => void;
 
-export interface BenchmarkJobCallbacks {
-    /**
-     * Called when benchmark starts running.
-     */
-    onStart?: () => void;
-    /**
-     * Called when the benchmark completes running.
-     */
-    onComplete?: () => void;
-}
-
 export interface BenchmarkJobSettings {
     /**
      * The delay between test cycles (ms).
@@ -67,6 +56,14 @@ export interface BenchmarkJobTestFnOptions {
      * Used for jitting benchmarking. The arguments provided in `args` will be also added into `preArgs`.
      */
     jitArgs?: Arguments | ReadonlyArray<Arguments>;
+    /**
+     * A callback to be executed exactly once before each benchmark.
+     */
+    setup?: () => void;
+    /**
+     * A callback to be executed exactly once after each benchmark.
+     */
+    cleanup?: () => void;
 }
 
-export interface BenchmarkJobOptions extends BenchmarkJobCallbacks, BenchmarkJobSettings, BenchmarkJobTestFnOptions {}
+export interface BenchmarkJobOptions extends BenchmarkJobSettings, BenchmarkJobTestFnOptions {}

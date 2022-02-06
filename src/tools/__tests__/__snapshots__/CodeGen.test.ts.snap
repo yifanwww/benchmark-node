@@ -16,7 +16,7 @@ for (let i1 = 0; i1 < context1.ops; i1++) {
     }
 }
 const elapsed1 = process.hrtime(begin1);
-if (context1.teardown) context1.teardown();
+if (context1.cleanup) context1.cleanup();
 return { elapsed: elapsed1, _internal_return: return1 };
 }"
 `;
@@ -38,7 +38,7 @@ for (let i2 = 0; i2 < context2.ops; i2++) {
     }
 }
 const elapsed2 = process.hrtime(begin2);
-if (context2.teardown) context2.teardown();
+if (context2.cleanup) context2.cleanup();
 return { elapsed: elapsed2, _internal_return: return2 };
 }"
 `;
@@ -61,7 +61,7 @@ for (let i3 = 0; i3 < context3.ops; i3++) {
     }
 }
 const elapsed3 = process.hrtime(begin3);
-if (context3.teardown) context3.teardown();
+if (context3.cleanup) context3.cleanup();
 return { elapsed: elapsed3, _internal_return: return3 };
 }"
 `;
@@ -85,7 +85,7 @@ for (let i4 = 0; i4 < context4.ops; i4++) {
     }
 }
 const elapsed4 = process.hrtime(begin4);
-if (context4.teardown) context4.teardown();
+if (context4.cleanup) context4.cleanup();
 return { elapsed: elapsed4, _internal_return: return4 };
 }"
 `;
@@ -110,7 +110,7 @@ for (let i5 = 0; i5 < context5.ops; i5++) {
     }
 }
 const elapsed5 = process.hrtime(begin5);
-if (context5.teardown) context5.teardown();
+if (context5.cleanup) context5.cleanup();
 return { elapsed: elapsed5, _internal_return: return5 };
 }"
 `;
@@ -132,7 +132,7 @@ for (let i6 = 0; i6 < context6.ops; i6++) {
     }
 }
 const elapsed6 = process.hrtime(begin6);
-if (context6.teardown) context6.teardown();
+if (context6.cleanup) context6.cleanup();
 return { elapsed: elapsed6, _internal_return: return6 };
 }"
 `;
