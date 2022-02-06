@@ -1,7 +1,7 @@
 import { BenchmarkJob } from './BenchmarkJob';
-import { ConsoleLogger, LogKind } from './tools/ConsoleLogger';
+import { ConsoleLogger, LogKind } from './tools';
 import { BenchmarkJobOptions, TestFn } from './types';
-import { Column, Table } from './View';
+import { PerfColumn, PerfColumnType, Table } from './View';
 
 export class Benchmark {
     private jobs: BenchmarkJob[] = [];
@@ -37,12 +37,11 @@ export class Benchmark {
         for (const job of this.jobs) job.run();
 
         const table = new Table();
-        table.addColumn(new Column('Mean', (stats) => Column.drawTime(stats.mean)));
-        table.addColumn(new Column('StdErr', (stats) => Column.drawTime(stats.standardError)));
-        table.addColumn(new Column('StdDev', (stats) => Column.drawTime(stats.standardDeviation)));
-        table.addColumn(new Column('Median', (stats) => Column.drawTime(stats.median)));
-        table.addColumn(new Column('Min', (stats) => Column.drawTime(stats.min)));
-        table.addColumn(new Column('Max', (stats) => Column.drawTime(stats.max)));
+        table.addPerfColumn(new PerfColumn(PerfColumnType.StdErr, (stats) => stats.standardError));
+        table.addPerfColumn(new PerfColumn(PerfColumnType.StdDev, (stats) => stats.standardDeviation));
+        table.addPerfColumn(new PerfColumn(PerfColumnType.Median, (stats) => stats.median));
+        table.addPerfColumn(new PerfColumn(PerfColumnType.Min, (stats) => stats.min));
+        table.addPerfColumn(new PerfColumn(PerfColumnType.Max, (stats) => stats.max));
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
     }

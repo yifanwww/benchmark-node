@@ -3,12 +3,26 @@ import { Hrtime } from '../types.internal';
 
 import { MathTool } from './MathTool';
 
+export enum TimeUnit {
+    NS,
+    US,
+    MS,
+    S,
+}
+
+export const TimeUnitStr = {
+    [TimeUnit.NS]: 'ns',
+    [TimeUnit.US]: 'us',
+    [TimeUnit.MS]: 'ms',
+    [TimeUnit.S]: 's',
+};
+
 export class TimeTool {
-    private static accuracy = 1e6;
+    public static convert(time: number, from: TimeUnit, to: TimeUnit): number {
+        return time * 1e3 ** (from - to);
+    }
 
-    private static _minResolution = 0;
-
-    public static ms2ns = (ms: Millisecond): Nanosecond => ms * TimeTool.accuracy;
+    public static ms2ns = (ms: Millisecond): Nanosecond => TimeTool.convert(ms, TimeUnit.MS, TimeUnit.NS);
 
     public static hrtime2ns = (hrtime: Hrtime): Nanosecond => hrtime[0] * 1e9 + hrtime[1];
 
@@ -19,6 +33,8 @@ export class TimeTool {
             duration = process.hrtime(begin);
         } while (TimeTool.hrtime2ns(duration) < ns);
     }
+
+    private static _minResolution = 0;
 
     /**
      * Gets the current timer's minimum resolution.

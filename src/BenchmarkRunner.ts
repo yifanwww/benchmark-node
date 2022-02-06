@@ -1,9 +1,19 @@
 import { Arguments } from './ConfigOptions';
 import { TestFunction } from './Data';
-import { Stage } from './Enums';
 import { Settings, TestFnOptions } from './options';
 import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
 import { BenchmarkJobCallbacks, BenchmarkJobOptions, Nanosecond, TestFn } from './types';
+
+enum Stage {
+    ActualOverhead /*  */ = 'OverheadActual  ',
+    ActualWorkload /*  */ = 'WorkloadActual  ',
+    JittingOverhead /* */ = 'OverheadJitting ',
+    JittingWorkload /* */ = 'WorkloadJitting ',
+    WarmupOverhead /*  */ = 'OverheadWarmup  ',
+    WarmupWorkload /*  */ = 'WorkloadWarmup  ',
+    WorkloadPilot /*   */ = 'WorkloadPilot   ',
+    WorkloadResult /*  */ = 'WorkloadResult  ',
+}
 
 interface BenchmarkRunnerConstructorProps {
     name: string;

@@ -1,25 +1,30 @@
 import { Stats } from '../Data';
 
-export type GetData = (stats: Stats) => string;
+export type GetData<Value> = (stats: Stats) => Value;
 
-export class Column {
+export class Column<Value> {
     protected _header: string;
-    protected _getData: GetData;
+    protected _getData: Optional<GetData<Value>>;
 
     protected _maxLen: number = 0;
 
-    public constructor(header: string, getData: GetData) {
+    public constructor(header: string, getData?: GetData<Value>) {
         this._header = header;
-        this._getData = getData;
+        this._getData = getData ?? null;
     }
 
-    public static drawTime = (time: number) => `${time.toFixed(4)} ns`;
+    protected getDataWrapper(stats: Stats): string {
+        if (!this._getData) return '';
+
+        const data = this._getData(stats);
+        return typeof data === 'string' ? data : String(data);
+    }
 
     public calculateMaxLen(stats: Stats[]): void {
         let maxLen = this._header.length;
 
         for (const _stats of stats) {
-            const data = this._getData(_stats);
+            const data = this.getDataWrapper(_stats);
             maxLen = Math.max(maxLen, data.length);
         }
 
@@ -35,7 +40,7 @@ export class Column {
     }
 
     public draw(stats: Stats): string {
-        const data = this._getData(stats);
+        const data = this.getDataWrapper(stats);
         return data.padStart(this._maxLen);
     }
 }

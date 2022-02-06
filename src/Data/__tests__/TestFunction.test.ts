@@ -1,6 +1,6 @@
 import { TestFunction } from '../TestFunction';
 
-describe(`test class \`${TestFunction.name}\``, () => {
+describe(`Test class \`${TestFunction.name}\``, () => {
     /* eslint-disable func-names */
     /* eslint-disable @typescript-eslint/dot-notation */
     /* eslint-disable @typescript-eslint/no-unused-vars */

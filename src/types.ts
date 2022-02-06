@@ -12,7 +12,7 @@ export type Millisecond = number & {};
  */
 export type Nanosecond = number & {};
 
-export type TestFn = (...args: unknown[]) => void;
+export type TestFn = (...args: never[]) => void;
 
 export interface BenchmarkJobCallbacks {
     /**

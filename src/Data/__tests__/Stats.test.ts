@@ -1,6 +1,6 @@
 import { Stats } from '../Stats';
 
-describe(`test class \`${Stats.name}\``, () => {
+describe(`Test class \`${Stats.name}\``, () => {
     it('calculates', () => {
         const stats = new Stats(
             'name',

@@ -1,6 +1,6 @@
 import { CodeGen } from '../CodeGen';
 
-describe(`test method \`${CodeGen.name}\``, () => {
+describe(`Test method \`${CodeGen.name}\``, () => {
     it('create tester with 0 argument', () => {
         const tester = CodeGen.createTester({ argument: { count: 0 } });
         expect(tester.toString()).toMatchSnapshot();

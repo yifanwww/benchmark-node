@@ -1,7 +1,7 @@
 import { Arguments } from '../../ConfigOptions';
 import { TestFnOptions } from '../TestFnOptions';
 
-describe(`test class \`${TestFnOptions.name}\``, () => {
+describe(`Test class \`${TestFnOptions.name}\``, () => {
     it('receives no options', () => {
         const options = new TestFnOptions({});
 
@@ -11,6 +11,7 @@ describe(`test class \`${TestFnOptions.name}\``, () => {
         expect([...options.jitArgs]).toStrictEqual([]);
         expect(options.jitArgsCount).toBe(0);
         expect(options.jitArgsLength).toBe(0);
+        expect(options.maxArgsLength).toBe(0);
     });
 
     it('receives args', () => {
@@ -22,6 +23,7 @@ describe(`test class \`${TestFnOptions.name}\``, () => {
         expect([...options.jitArgs].map((arg) => arg.args)).toStrictEqual([[1, 2, 3]]);
         expect(options.jitArgsCount).toBe(1);
         expect(options.jitArgsLength).toBe(3);
+        expect(options.maxArgsLength).toBe(3);
     });
 
     it('receives args and preArgs', () => {
@@ -39,6 +41,7 @@ describe(`test class \`${TestFnOptions.name}\``, () => {
         ]);
         expect(options.jitArgsCount).toBe(2);
         expect(options.jitArgsLength).toBe(3);
+        expect(options.maxArgsLength).toBe(3);
     });
 
     it('receives complex args and complex preArgs', () => {
@@ -61,5 +64,6 @@ describe(`test class \`${TestFnOptions.name}\``, () => {
         ]);
         expect(options.jitArgsCount).toBe(4);
         expect(options.jitArgsLength).toBe(5);
+        expect(options.maxArgsLength).toBe(5);
     });
 });

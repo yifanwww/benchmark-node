@@ -1,19 +1,32 @@
-import { Column, GetData } from './Column';
+import { Stats } from '../Data';
+import { Formatter } from '../tools';
 
-export class ArgumentColumn extends Column {
+import { Column } from './Column';
+
+export class ArgumentColumn extends Column<string> {
     private index: number;
 
     public constructor(index: number) {
-        // @ts-ignore
         super(`arg ${index}`);
-        this._getData = this.getArgument;
 
         this.index = index;
     }
 
-    private getArgument: GetData = (stats) => {
-        const args = stats.args?.args ?? [];
+    protected override getDataWrapper(stats: Stats): string {
+        const args = stats.args?.args;
 
-        return this.index < args.length ? String(args[this.index]) : '?';
-    };
+        let arg;
+
+        // Gets argument from arguments
+        if (!args) {
+            arg = '?';
+        } else {
+            arg = this.index < args.length ? String(args[this.index]) : '?';
+        }
+
+        // If argument is too long
+        arg = Formatter.limitStringLength(arg);
+
+        return arg;
+    }
 }

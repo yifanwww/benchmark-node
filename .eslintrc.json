@@ -94,8 +94,7 @@
             { "selector": "typeParameter", "format": ["PascalCase"] },
             {
                 "selector": "variable",
-                // `UPPER_CASE` for constant variables.
-                "format": ["camelCase", "UPPER_CASE"],
+                "format": ["camelCase", "PascalCase", "UPPER_CASE"],
                 "leadingUnderscore": "allow"
             }
         ],

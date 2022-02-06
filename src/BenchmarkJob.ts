@@ -1,7 +1,7 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { Arguments } from './ConfigOptions';
 import { Stats } from './Data';
-import { ConsoleLogger } from './tools';
+import { ConsoleLogger, Formatter } from './tools';
 import { Nanosecond } from './types';
 
 export class BenchmarkJob extends BenchmarkRunner {
@@ -54,7 +54,7 @@ export class BenchmarkJob extends BenchmarkRunner {
         const logger = ConsoleLogger.default;
 
         if (args) {
-            logger.writeLineInfo(`// arguments: ${args.args.toString()}`);
+            logger.writeLineInfo(`// arguments: ${args.args.map((arg) => Formatter.limitStringLength(String(arg)))}`);
             logger.writeLine();
         }
 
