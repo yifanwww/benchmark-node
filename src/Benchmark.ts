@@ -6,6 +6,9 @@ import { PerfColumn, PerfColumnType, Table } from './View';
 export class Benchmark {
     private jobs: BenchmarkJob[] = [];
 
+    private _setupArr: Array<() => void> = [];
+    private _cleanupArr: Array<() => void> = [];
+
     public add(job: BenchmarkJob): this;
     public add(testFn: TestFn, options?: BenchmarkJobOptions): this;
     public add(name: string, testFn: TestFn, options?: BenchmarkJobOptions): this;
@@ -26,7 +29,21 @@ export class Benchmark {
         return this;
     }
 
+    public addSetup(setup: () => void): this {
+        this._setupArr.push(setup);
+        return this;
+    }
+
+    public addCleanup(cleanup: () => void): this {
+        this._cleanupArr.push(cleanup);
+        return this;
+    }
+
     public run(): void {
+        for (const setup of this._setupArr) {
+            setup();
+        }
+
         const logger = ConsoleLogger.default;
         logger.writeLineInfo(`// Found ${this.jobs.length} ${this.jobs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const job of this.jobs) {
@@ -44,5 +61,9 @@ export class Benchmark {
         table.addPerfColumn(new PerfColumn(PerfColumnType.Max, (stats) => stats.max));
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
+
+        for (const cleanup of this._cleanupArr) {
+            cleanup();
+        }
     }
 }
