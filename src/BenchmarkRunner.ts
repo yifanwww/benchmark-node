@@ -55,7 +55,7 @@ export class BenchmarkRunner {
 
         // Gets a totally new function to test the performance of `testFn`.
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
-        // See "src/test/dynamicCall.ts".
+        // See "src/test/perf-DynamicFnCall.ts".
         this.tester = CodeGen.createTester({
             argument: { count: this.testFnOptions.maxArgsLength },
         });
@@ -134,14 +134,14 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    protected benchmarkJitting1(argsGenerator?: Generator<Arguments, void>): void {
-        this.benchmarkJitting(false, 1, 1, argsGenerator);
-        this.benchmarkJitting(true, 1, 1, argsGenerator);
+    protected benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments, void>): void {
+        this.benchmarkJitting(false, 1, 1, getArgsGenerator?.());
+        this.benchmarkJitting(true, 1, 1, getArgsGenerator?.());
     }
 
-    protected benchmarkJitting2(argsGenerator?: Generator<Arguments, void>): void {
-        this.benchmarkJitting(false, 2, this.settings.initOps, argsGenerator);
-        this.benchmarkJitting(true, 2, this.settings.initOps, argsGenerator);
+    protected benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments, void>): void {
+        this.benchmarkJitting(false, 2, this.settings.initOps, getArgsGenerator?.());
+        this.benchmarkJitting(true, 2, this.settings.initOps, getArgsGenerator?.());
     }
 
     protected benchmarkPilot(args?: Arguments): number {

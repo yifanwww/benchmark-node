@@ -1,3 +1,4 @@
+// Added for '--isolatedModules`
 export {};
 
 // You can run `node --print-opt-code ./dist/test/dynamicCall.js > opt-code` to see how V8 compiles this function.

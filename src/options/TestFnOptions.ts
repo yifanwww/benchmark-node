@@ -37,6 +37,8 @@ export class TestFnOptions {
         }
     }
 
+    public getJitArgsGenerator = () => this.getEnumerator(this._jitArgsArr);
+
     public get args(): Generator<Arguments, void> {
         return this.getEnumerator(this._argsArr);
     }
@@ -50,7 +52,7 @@ export class TestFnOptions {
     }
 
     public get jitArgs(): Generator<Arguments, void> {
-        return this.getEnumerator(this._jitArgsArr);
+        return this.getJitArgsGenerator();
     }
 
     public get jitArgsCount(): number {

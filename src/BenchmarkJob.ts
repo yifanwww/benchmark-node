@@ -31,9 +31,9 @@ export class BenchmarkJob extends BenchmarkRunner {
             logger.writeLine();
             this.benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(this.testFnOptions.jitArgs);
+            this.benchmarkJitting1(this.testFnOptions.getJitArgsGenerator);
             logger.writeLine();
-            this.benchmarkJitting2(this.testFnOptions.jitArgs);
+            this.benchmarkJitting2(this.testFnOptions.getJitArgsGenerator);
         }
         logger.writeLine();
 
