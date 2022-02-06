@@ -1,4 +1,32 @@
 # CHANGELOG
+## benchmark-node v0.5.0 (2022-02-06)
+### Features
+
+- Add `BenchmarkJob` constructor overloading `BenchmarkJob(testFn, options)`
+- Add support to benchmark overhead performance and workload performance to get the real performance of test function
+- Add support to display arguments in Summary Table
+- Add support to automatically change time units to improve readability
+- Add callbacks `setup` and `cleanup` in Benchmark and BenchmarkJob
+- Use generic types to check testFn's arguments and Arguments array
+
+### Changes
+
+- Changes stages
+  1. `OverheadJitting`
+  2. `WorkloadJitting`
+  3. `WorkloadPilot`
+  4. `OverheadWarmup`
+  5. `OverheadActual`
+  6. `WorkloadWarmup`
+  7. `WorkloadActual`
+  8. `WorkloadResult`
+
+### Breaking Changes
+
+- Rename `Benchmark`'s method `setEmptyTest` to `SetNoopTest`
+- Change default value of `minMeasurementTime` to 250
+- Delete callbacks `onStart` and `onComplete`
+
 ## benchmark-node v0.4.4 (2022-02-06)
 ### Bug Fixes
 
