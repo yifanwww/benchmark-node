@@ -1,4 +1,8 @@
 # CHANGELOG
+## benchmark-node v0.4.4 (2022-02-06)
+### Bug Fixes
+
+- Move `chalk` into dependencies
 
 ## benchmark-node v0.4.3 (2022-02-05)
 ### Bug Fixes
