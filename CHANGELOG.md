@@ -1,4 +1,10 @@
 # CHANGELOG
+## benchmark-node v0.5.1 (2022-02-07)
+### Bug Fixes
+
+- Fix the return type of `TestFn` to `unknown` for Typescript to infer the type of test function
+- No global.d.ts anymore, for Typescript to load package types successfully
+
 ## benchmark-node v0.5.0 (2022-02-06)
 ### Features
 
