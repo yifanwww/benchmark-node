@@ -177,7 +177,9 @@ describe(`Test class \`${TestFunction.name}\``, () => {
     });
 
     it('receives args', () => {
-        const options = new TestFunction(() => {}, { args: new Arguments(1, 2, 3) });
+        const options = new TestFunction((arg1: number, arg2: number, arg3: number) => arg3, {
+            args: new Arguments(1, 2, 3),
+        });
 
         expect([...options.args].map((arg) => arg.args)).toStrictEqual([[1, 2, 3]]);
         expect(options.argsCount).toBe(1);
@@ -189,10 +191,13 @@ describe(`Test class \`${TestFunction.name}\``, () => {
     });
 
     it('receives args and preArgs', () => {
-        const options = new TestFunction(() => {}, {
-            args: new Arguments(1, 2, 3),
-            jitArgs: new Arguments('1', '2', '3'),
-        });
+        const options = new TestFunction(
+            (arg1: number | string, arg2: number | string, arg3: number | string) => arg3,
+            {
+                args: new Arguments(1, 2, 3),
+                jitArgs: new Arguments('1', '2', '3'),
+            },
+        );
 
         expect([...options.args].map((arg) => arg.args)).toStrictEqual([[1, 2, 3]]);
         expect(options.argsCount).toBe(1);
@@ -207,10 +212,14 @@ describe(`Test class \`${TestFunction.name}\``, () => {
     });
 
     it('receives complex args and complex preArgs', () => {
-        const options = new TestFunction(() => {}, {
-            args: [new Arguments(1, 2, 3), new Arguments(2, 2)],
-            jitArgs: [new Arguments('1', '2', '3'), new Arguments('a', 'b', 'c', 'd', 'e')],
-        });
+        const options = new TestFunction(
+            (arg1: number | string, arg2: number | string, arg3?: number | string, arg4?: string, arg5?: string) =>
+                arg5,
+            {
+                args: [new Arguments(1, 2, 3), new Arguments(2, 2)],
+                jitArgs: [new Arguments('1', '2', '3'), new Arguments('a', 'b', 'c', 'd', 'e')],
+            },
+        );
 
         expect([...options.args].map((arg) => arg.args)).toStrictEqual([
             [1, 2, 3],
