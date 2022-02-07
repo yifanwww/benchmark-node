@@ -3,19 +3,34 @@
 A Node.js benchmarking library for accurate performance test.
 
 ## Usage
-### `Benchmark`
+
+It's easy to write benchmarks.
 
 ```ts
 import { Arguments, Benchmark } from 'benchmark-node';
+import crypto from 'crypto';
+
+let testStr: Buffer;
 
 const benchmark = new Benchmark();
 
-benchmark.add('Benchmark-1', () => {});
-benchmark.add('Benchmark-2', (arg1, arg2, arg3) => arg3, {
-    args: [new Arguments(1, 2, 3), new Arguments('a', 'b', 'c')],
+benchmark.addSetup(() => {
+    testStr = crypto.randomBytes(10_000);
 });
 
+benchmark.add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'));
+benchmark.add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'));
+
 benchmark.run();
+```
+
+`benchmark-node` will run the benchmarks, aggregates the measurements and print a summary table.
+
+```md
+| Function |       Mean |    StdErr |    StdDev |     Median |        Min |        Max |
+|----------|------------|-----------|-----------|------------|------------|------------|
+|   sha256 |  6.0104 us | 0.0146 us | 0.0564 us |  6.0148 us |  5.9302 us |  6.1005 us |
+|      md5 | 12.5607 us | 0.0281 us | 0.1089 us | 12.6098 us | 12.3578 us | 12.7009 us |
 ```
 
 ## Develop this package
