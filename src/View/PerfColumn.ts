@@ -1,19 +1,23 @@
+import { Column } from '../ConfigOptions';
 import { Stats } from '../Data';
 import { Formatter, TimeTool, TimeUnit, TimeUnitStr } from '../tools';
 
-import { Column, GetData } from './Column';
+import { TableColumn, GetData } from './TableColumn';
 
-export enum PerfColumnType {
-    Mean = 'Mean',
-    StdErr = 'StdErr',
-    StdDev = 'StdDev',
-    Median = 'Median',
-    Min = 'Min',
-    Max = 'Max',
-}
+const perfColumnHeader = {
+    [Column.Mean]: 'Mean',
+    [Column.StdError]: 'StdErr',
+    [Column.StdDev]: 'StdDev',
 
-export class PerfColumn extends Column<number> {
-    private _type: PerfColumnType;
+    [Column.Min]: 'Min',
+    [Column.Q1]: 'Q1',
+    [Column.Median]: 'Median',
+    [Column.Q3]: 'Q3',
+    [Column.Max]: 'Max',
+};
+
+export class PerfColumn extends TableColumn<number> {
+    private _type: Column;
 
     private _unit: TimeUnit = TimeUnit.NS;
     private _fractionDigit: number = 4;
@@ -26,10 +30,37 @@ export class PerfColumn extends Column<number> {
         this._unit = value;
     }
 
-    public constructor(type: PerfColumnType, getData: GetData<number>) {
-        super(type, getData);
+    public constructor(type: Column, getData: GetData<number>) {
+        super(perfColumnHeader[type], getData);
 
         this._type = type;
+    }
+
+    public static column(column: Column): PerfColumn {
+        let never: never;
+        switch (column) {
+            case Column.Mean:
+                return new PerfColumn(column, (stats) => stats.mean);
+            case Column.StdError:
+                return new PerfColumn(column, (stats) => stats.standardError);
+            case Column.StdDev:
+                return new PerfColumn(column, (stats) => stats.standardDeviation);
+
+            case Column.Min:
+                return new PerfColumn(column, (stats) => stats.min);
+            case Column.Q1:
+                return new PerfColumn(column, (stats) => stats.q1);
+            case Column.Median:
+                return new PerfColumn(column, (stats) => stats.median);
+            case Column.Q3:
+                return new PerfColumn(column, (stats) => stats.q3);
+            case Column.Max:
+                return new PerfColumn(column, (stats) => stats.max);
+
+            default:
+                never = column;
+                return never;
+        }
     }
 
     protected override getDataWrapper(stats: Stats): string {

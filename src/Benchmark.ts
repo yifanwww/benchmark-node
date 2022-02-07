@@ -1,13 +1,28 @@
 import { BenchmarkJob } from './BenchmarkJob';
+import { Column } from './ConfigOptions';
 import { ConsoleLogger, LogKind } from './tools';
 import { BenchmarkJobOptions, TestFn } from './types';
-import { PerfColumn, PerfColumnType, Table } from './View';
+import { PerfColumn, PerfColumnOrder, Table } from './View';
+
+export interface BenchmarkOptions {
+    order?: Column[];
+}
 
 export class Benchmark {
     private jobs: BenchmarkJob<TestFn>[] = [];
 
     private _setupArr: Array<() => void> = [];
     private _cleanupArr: Array<() => void> = [];
+
+    private _perfColumnOrder: PerfColumnOrder = new PerfColumnOrder();
+
+    public constructor(options?: BenchmarkOptions) {
+        const { order } = options ?? {};
+
+        if (order) {
+            this.setColumnOrder(order);
+        }
+    }
 
     public add<T extends TestFn>(job: BenchmarkJob<T>): this;
     public add<T extends TestFn>(testFn: T, options?: BenchmarkJobOptions<T>): this;
@@ -42,6 +57,11 @@ export class Benchmark {
         return this;
     }
 
+    public setColumnOrder(order: Column[]): this {
+        this._perfColumnOrder.setOrder(order);
+        return this;
+    }
+
     public run(): void {
         for (const setup of this._setupArr) {
             setup();
@@ -57,11 +77,9 @@ export class Benchmark {
         for (const job of this.jobs) job.run();
 
         const table = new Table();
-        table.addPerfColumn(new PerfColumn(PerfColumnType.StdErr, (stats) => stats.standardError));
-        table.addPerfColumn(new PerfColumn(PerfColumnType.StdDev, (stats) => stats.standardDeviation));
-        table.addPerfColumn(new PerfColumn(PerfColumnType.Median, (stats) => stats.median));
-        table.addPerfColumn(new PerfColumn(PerfColumnType.Min, (stats) => stats.min));
-        table.addPerfColumn(new PerfColumn(PerfColumnType.Max, (stats) => stats.max));
+        for (const column of this._perfColumnOrder.getOrder()) {
+            table.addPerfColumn(PerfColumn.column(column));
+        }
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
 

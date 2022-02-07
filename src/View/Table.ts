@@ -1,23 +1,21 @@
+import { Column } from '../ConfigOptions';
 import { Stats } from '../Data';
 import { ConsoleLogger } from '../tools';
 
 import { ArgumentColumn } from './ArgumentColumn';
-import { Column } from './Column';
-import { PerfColumn, PerfColumnType } from './PerfColumn';
+import { PerfColumn } from './PerfColumn';
+import { TableColumn } from './TableColumn';
 
 export class Table {
+    private _fnNameColumn = new TableColumn('Function', (stats) => stats.name);
+
     private _argColumns: ArgumentColumn[] = [];
-
-    private _fnNameColumn = new Column('Function', (stats) => stats.name);
-
-    private _perfColumns: Partial<Record<PerfColumnType, PerfColumn>> = {
-        [PerfColumnType.Mean]: new PerfColumn(PerfColumnType.Mean, (stats) => stats.mean),
-    };
+    private _perfColumns: PerfColumn[] = [];
 
     private _stats: Stats[] = [];
 
     public addPerfColumn(column: PerfColumn): void {
-        this._perfColumns[column.type] = column;
+        this._perfColumns.push(column);
     }
 
     public addStats(stats: Stats[]): void {
@@ -29,26 +27,16 @@ export class Table {
         }
     }
 
-    private getColumns(): Column<unknown>[] {
-        const columns: Column<unknown>[] = [];
-
-        columns.push(this._fnNameColumn);
-        columns.push(...this._argColumns);
-
-        for (const type in this._perfColumns) {
-            columns.push(this._perfColumns[type as PerfColumnType]!);
-        }
-
-        return columns;
-    }
-
     public draw(): void {
-        const unit = this._perfColumns[PerfColumnType.Mean]!.findMinTimeUnit(this._stats);
+        for (const column of this._perfColumns) {
+            column.findMinTimeUnit(this._stats);
+        }
+        const unit = this._perfColumns[Column.Mean]!.findMinTimeUnit(this._stats);
         for (const type in this._perfColumns) {
-            this._perfColumns[type as PerfColumnType]!.setUnit(unit);
+            this._perfColumns[type as unknown as Column]!.setUnit(unit);
         }
 
-        const columns = this.getColumns();
+        const columns = [this._fnNameColumn, ...this._argColumns, ...this._perfColumns];
 
         for (const column of columns) {
             column.calculateMaxLen(this._stats);

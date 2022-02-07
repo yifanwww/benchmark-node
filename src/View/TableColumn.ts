@@ -2,7 +2,7 @@ import { Stats } from '../Data';
 
 export type GetData<Value> = (stats: Stats) => Value;
 
-export class Column<Value> {
+export class TableColumn<Value> {
     protected _header: string;
     protected _getData: Optional<GetData<Value>>;
 

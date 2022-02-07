@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 
-import { Benchmark } from '../src';
+import { Benchmark, Column } from '../src';
 
 let testStr: Buffer;
 
-const benchmark = new Benchmark();
+const benchmark = new Benchmark({ order: [Column.Median, Column.Min, Column.Max] });
 
 benchmark.addSetup(() => {
     testStr = crypto.randomBytes(10_000);

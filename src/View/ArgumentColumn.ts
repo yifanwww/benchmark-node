@@ -1,9 +1,9 @@
 import { Stats } from '../Data';
 import { Formatter } from '../tools';
 
-import { Column } from './Column';
+import { TableColumn } from './TableColumn';
 
-export class ArgumentColumn extends Column<string> {
+export class ArgumentColumn extends TableColumn<string> {
     private index: number;
 
     public constructor(index: number) {
