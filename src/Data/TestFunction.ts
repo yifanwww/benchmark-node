@@ -1,5 +1,6 @@
 import { Arguments } from '../ConfigOptions';
 import { BenchmarkJobTestFnOptions, TestFn } from '../types';
+import { Optional } from '../types.internal';
 
 export class TestFunction<T extends TestFn> {
     private _fn: T;

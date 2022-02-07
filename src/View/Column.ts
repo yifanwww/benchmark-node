@@ -1,4 +1,5 @@
 import { Stats } from '../Data';
+import { Optional } from '../types.internal';
 
 export type GetData<Value> = (stats: Stats) => Value;
 
