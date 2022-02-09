@@ -3,9 +3,9 @@
 import { Benchmark, Column } from '../../src';
 import { Stats } from '../../src/Data';
 import { TimeUnit } from '../../src/Tools/TimeTool';
-import { PerfColumn } from '../../src/View';
+import { StatisticColumn } from '../../src/View';
 
-let columns: PerfColumn[];
+let columns: StatisticColumn[];
 let stats: Stats[];
 let unit: TimeUnit;
 
@@ -25,7 +25,11 @@ function arrayFind() {
 const benchmark = new Benchmark();
 
 benchmark.addSetup(() => {
-    columns = [PerfColumn.column(Column.StdError), PerfColumn.column(Column.StdDev), PerfColumn.column(Column.Mean)];
+    columns = [
+        StatisticColumn.column(Column.StdError),
+        StatisticColumn.column(Column.StdDev),
+        StatisticColumn.column(Column.Mean),
+    ];
 
     stats = [
         new Stats(

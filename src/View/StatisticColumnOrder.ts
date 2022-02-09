@@ -1,6 +1,6 @@
 import { Column } from '../ConfigOptions';
 
-export class PerfColumnOrder {
+export class StatisticColumnOrder {
     private _id: number = 0;
     private _order: Partial<Record<Column, number>> = {};
 

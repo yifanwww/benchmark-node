@@ -1,3 +1,3 @@
-export * from './PerfColumn';
-export * from './PerfColumnOrder';
+export * from './StatisticColumn';
+export * from './StatisticColumnOrder';
 export * from './Table';

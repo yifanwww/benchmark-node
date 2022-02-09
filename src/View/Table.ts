@@ -3,19 +3,19 @@ import { Stats } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 
 import { ArgumentColumn } from './ArgumentColumn';
-import { PerfColumn } from './PerfColumn';
+import { StatisticColumn } from './StatisticColumn';
 import { TableColumn } from './TableColumn';
 
 export class Table {
     private _fnNameColumn = new TableColumn('Function', (stats) => stats.name);
 
     private _argColumns: ArgumentColumn[] = [];
-    private _perfColumns: PerfColumn[] = [];
+    private _statisticColumns: StatisticColumn[] = [];
 
     private _stats: Stats[] = [];
 
-    public addPerfColumn(column: PerfColumn): void {
-        this._perfColumns.push(column);
+    public addStatisticColumn(column: StatisticColumn): void {
+        this._statisticColumns.push(column);
     }
 
     public addStats(stats: Stats[]): void {
@@ -28,13 +28,13 @@ export class Table {
     }
 
     public draw(): void {
-        const unit = this._perfColumns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(this._stats);
-        for (const column of this._perfColumns) {
+        const unit = this._statisticColumns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(this._stats);
+        for (const column of this._statisticColumns) {
             column.setUnit(unit);
             column.findFractionDigit(this._stats);
         }
 
-        const columns = [this._fnNameColumn, ...this._argColumns, ...this._perfColumns];
+        const columns = [this._fnNameColumn, ...this._argColumns, ...this._statisticColumns];
 
         for (const column of columns) {
             column.calculateMaxLen(this._stats);

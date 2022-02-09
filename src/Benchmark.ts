@@ -2,7 +2,7 @@ import { BenchmarkJob } from './BenchmarkJob';
 import { Column } from './ConfigOptions';
 import { ConsoleLogger, LogKind } from './Tools/ConsoleLogger';
 import { BenchmarkJobOptions, TestFn } from './types';
-import { PerfColumn, PerfColumnOrder, Table } from './View';
+import { StatisticColumn, StatisticColumnOrder, Table } from './View';
 
 export interface BenchmarkOptions {
     order?: Column[];
@@ -14,7 +14,7 @@ export class Benchmark {
     private _setupArr: Array<() => void> = [];
     private _cleanupArr: Array<() => void> = [];
 
-    private _perfColumnOrder: PerfColumnOrder = new PerfColumnOrder();
+    private _statisticColumnOrder: StatisticColumnOrder = new StatisticColumnOrder();
 
     public constructor(options?: BenchmarkOptions) {
         const { order } = options ?? {};
@@ -58,7 +58,7 @@ export class Benchmark {
     }
 
     public setColumnOrder(order: Column[]): this {
-        this._perfColumnOrder.setOrder(order);
+        this._statisticColumnOrder.setOrder(order);
         return this;
     }
 
@@ -77,8 +77,8 @@ export class Benchmark {
         for (const job of this.jobs) job.run();
 
         const table = new Table();
-        for (const column of this._perfColumnOrder.getOrder()) {
-            table.addPerfColumn(PerfColumn.column(column));
+        for (const column of this._statisticColumnOrder.getOrder()) {
+            table.addStatisticColumn(StatisticColumn.column(column));
         }
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
