@@ -18,8 +18,11 @@ benchmark.addSetup(() => {
     testStr = crypto.randomBytes(10_000);
 });
 
-benchmark.add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'));
 benchmark.add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'));
+benchmark.add('sha1', () => crypto.createHash('sha1').update(testStr).digest('hex'));
+benchmark.add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'));
+benchmark.add('sha384', () => crypto.createHash('sha384').update(testStr).digest('hex'));
+benchmark.add('sha512', () => crypto.createHash('sha512').update(testStr).digest('hex'));
 
 benchmark.run();
 ```
@@ -27,10 +30,13 @@ benchmark.run();
 `benchmark-node` will run the benchmarks, aggregates the measurements and print a summary table.
 
 ```md
-| Function |       Mean |    StdErr |    StdDev |     Median |        Min |        Max |
-|----------|------------|-----------|-----------|------------|------------|------------|
-|   sha256 |  6.0104 us | 0.0146 us | 0.0564 us |  6.0148 us |  5.9302 us |  6.1005 us |
-|      md5 | 12.5607 us | 0.0281 us | 0.1089 us | 12.6098 us | 12.3578 us | 12.7009 us |
+| Function |      Mean |    StdErr |    StdDev |    Median |       Min |       Max |
+|----------|-----------|-----------|-----------|-----------|-----------|-----------|
+|      md5 | 12.647 us | 0.0230 us | 0.0892 us | 12.663 us | 12.491 us | 12.792 us |
+|     sha1 |  5.763 us | 0.0113 us | 0.0440 us |  5.757 us |  5.691 us |  5.852 us |
+|   sha256 |  6.062 us | 0.0160 us | 0.0620 us |  6.069 us |  5.965 us |  6.193 us |
+|   sha384 | 11.698 us | 0.0248 us | 0.0959 us | 11.718 us | 11.522 us | 11.865 us |
+|   sha512 | 11.694 us | 0.0308 us | 0.1195 us | 11.694 us | 11.470 us | 11.928 us |
 ```
 
 ## Develop this package

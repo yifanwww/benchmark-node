@@ -29,8 +29,9 @@ export class Table {
 
     public draw(): void {
         const unit = this._perfColumns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(this._stats);
-        for (const type in this._perfColumns) {
-            this._perfColumns[type as unknown as Column]!.setUnit(unit);
+        for (const column of this._perfColumns) {
+            column.setUnit(unit);
+            column.findFractionDigit(this._stats);
         }
 
         const columns = [this._fnNameColumn, ...this._argColumns, ...this._perfColumns];

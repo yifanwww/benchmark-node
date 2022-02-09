@@ -94,5 +94,17 @@ export class PerfColumn extends TableColumn<number> {
             const data = TimeTool.convert(this._getData!(_stats), TimeUnit.NS, this._unit);
             min = Math.min(min, data);
         }
+
+        if (min <= 1) {
+            this._fractionDigit = 4;
+        } else if (min <= 10) {
+            this._fractionDigit = 3;
+        } else if (min <= 100) {
+            this._fractionDigit = 2;
+        } else if (min <= 1000) {
+            this._fractionDigit = 1;
+        } else {
+            this._fractionDigit = 0;
+        }
     }
 }
