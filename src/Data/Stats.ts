@@ -1,5 +1,6 @@
 import { Arguments } from '../ConfigOptions';
-import { ConsoleLogger, MathTool } from '../tools';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { MathTool } from '../Tools/MathTool';
 import { Nanosecond } from '../types';
 import { ConfidenceInterval } from '../types.internal';
 

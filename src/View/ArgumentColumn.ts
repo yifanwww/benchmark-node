@@ -1,5 +1,5 @@
 import { Stats } from '../Data';
-import { Formatter } from '../tools';
+import { Formatter } from '../Tools/Formatter';
 
 import { TableColumn } from './TableColumn';
 

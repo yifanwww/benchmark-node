@@ -1,6 +1,6 @@
 import { BenchmarkJob } from './BenchmarkJob';
 import { Column } from './ConfigOptions';
-import { ConsoleLogger, LogKind } from './tools';
+import { ConsoleLogger, LogKind } from './Tools/ConsoleLogger';
 import { BenchmarkJobOptions, TestFn } from './types';
 import { PerfColumn, PerfColumnOrder, Table } from './View';
 

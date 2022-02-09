@@ -2,7 +2,7 @@
 
 import { Benchmark, Column } from '../../src';
 import { Stats } from '../../src/Data';
-import { TimeUnit } from '../../src/tools';
+import { TimeUnit } from '../../src/Tools/TimeTool';
 import { PerfColumn } from '../../src/View';
 
 let columns: PerfColumn[];

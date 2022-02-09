@@ -1,7 +1,8 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { Arguments } from './ConfigOptions';
 import { Stats } from './Data';
-import { ConsoleLogger, Formatter } from './tools';
+import { ConsoleLogger } from './Tools/ConsoleLogger';
+import { Formatter } from './Tools/Formatter';
 import { Nanosecond, TestFn } from './types';
 
 export class BenchmarkJob<T extends TestFn> extends BenchmarkRunner<T> {

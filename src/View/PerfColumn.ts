@@ -1,6 +1,7 @@
 import { Column } from '../ConfigOptions';
 import { Stats } from '../Data';
-import { Formatter, TimeTool, TimeUnit, TimeUnitStr } from '../tools';
+import { Formatter } from '../Tools/Formatter';
+import { TimeTool, TimeUnit, TimeUnitStr } from '../Tools/TimeTool';
 
 import { TableColumn, GetData } from './TableColumn';
 

@@ -1,4 +1,4 @@
-import { Time } from '../tools/TimeTool';
+import { Time } from '../Tools/TimeTool';
 import { BenchmarkJobSettings, Nanosecond } from '../types';
 
 export class Settings {

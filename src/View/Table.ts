@@ -1,6 +1,6 @@
 import { Column } from '../ConfigOptions';
 import { Stats } from '../Data';
-import { ConsoleLogger } from '../tools';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
 
 import { ArgumentColumn } from './ArgumentColumn';
 import { PerfColumn } from './PerfColumn';

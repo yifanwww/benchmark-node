@@ -1,6 +1,9 @@
 import { Arguments } from './ConfigOptions';
 import { Settings, TestFunction } from './Data';
-import { CodeGen, ConsoleLogger, Formatter, Tester, TesterContext, Time } from './tools';
+import { CodeGen, Tester, TesterContext } from './Tools/CodeGen';
+import { ConsoleLogger } from './Tools/ConsoleLogger';
+import { Formatter } from './Tools/Formatter';
+import { Time } from './Tools/TimeTool';
 import { BenchmarkJobOptions, Nanosecond, TestFn } from './types';
 
 enum Stage {
