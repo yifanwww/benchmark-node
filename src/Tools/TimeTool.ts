@@ -1,7 +1,6 @@
+import { MathTool } from '../MathTool';
 import { Millisecond, Nanosecond } from '../types';
 import { Hrtime } from '../types.internal';
-
-import { MathTool } from './MathTool';
 
 export enum TimeUnit {
     NS,

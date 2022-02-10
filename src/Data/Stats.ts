@@ -1,6 +1,6 @@
 import { Arguments } from '../ConfigOptions';
+import { MathTool } from '../MathTool';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { MathTool } from '../Tools/MathTool';
 import { Nanosecond } from '../types';
 import { ConfidenceInterval } from '../types.internal';
 
@@ -133,7 +133,7 @@ export class Stats {
         this._standardError = this._standardDeviation / Math.sqrt(this._n);
         this._standardErrorPercent = (this._standardError / this._mean) * 100;
 
-        const criticalValue = MathTool.getTDistributionCriticalValue(this._n - 1);
+        const criticalValue = MathTool.getStudentTDistributionCriticalValue(this._n - 1);
         this._ciMargin = this._standardError * criticalValue;
         this._confidenceInterval = [this._mean - this._ciMargin, this._mean + this._ciMargin] as ConfidenceInterval;
         this._ciMarginPercent = (this._ciMargin / this._mean) * 100;
