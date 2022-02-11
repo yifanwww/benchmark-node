@@ -32,21 +32,31 @@ export class Benchmark {
         return this;
     }
 
+    /**
+     * Adds global setup.
+     * The global setup function will be executed only once before all the benchmark function invocations.
+     *
+     * @param setup A callback function that does some setup work.
+     * @returns The benchmark instance itself.
+     */
     public addSetup(setup: () => void): this {
         this._setupArr.push(setup);
         return this;
     }
 
+    /**
+     * Adds global cleanup.
+     * The global cleanup function will be executed only once after all the benchmark function invocations.
+     *
+     * @param cleanup A callback function that does some cleanup work.
+     * @returns The benchmark instance itself.
+     */
     public addCleanup(cleanup: () => void): this {
         this._cleanupArr.push(cleanup);
         return this;
     }
 
     public run(): void {
-        for (const setup of this._setupArr) {
-            setup();
-        }
-
         const logger = ConsoleLogger.default;
         logger.writeLineInfo(`// Found ${this.jobs.length} ${this.jobs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const job of this.jobs) {
@@ -54,7 +64,11 @@ export class Benchmark {
         }
         logger.writeLine();
 
+        for (const setup of this._setupArr) setup();
+
         for (const job of this.jobs) job.run();
+
+        for (const cleanup of this._cleanupArr) cleanup();
 
         const table = new Table();
         table.addPerfColumn(new PerfColumn(PerfColumnType.StdErr, (stats) => stats.standardError));
@@ -64,9 +78,5 @@ export class Benchmark {
         table.addPerfColumn(new PerfColumn(PerfColumnType.Max, (stats) => stats.max));
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
-
-        for (const cleanup of this._cleanupArr) {
-            cleanup();
-        }
     }
 }

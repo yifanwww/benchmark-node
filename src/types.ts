@@ -57,11 +57,13 @@ export interface BenchmarkJobTestFnOptions<T extends TestFn> {
      */
     jitArgs?: Arguments<Parameters<T>> | ReadonlyArray<Arguments<Parameters<T>>>;
     /**
-     * A callback to be executed exactly once before each benchmark.
+     * Set iteration setup.
+     * A callback function to be executed exactly once before each benchmark function invocation.
      */
     setup?: () => void;
     /**
-     * A callback to be executed exactly once after each benchmark.
+     * Set iteration cleanup.
+     * A callback function to be executed exactly once after each benchmark function invocation.
      */
     cleanup?: () => void;
 }
