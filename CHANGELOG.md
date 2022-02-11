@@ -1,4 +1,9 @@
 # CHANGELOG
+## benchmark-node v0.5.2 (2022-02-11)
+### Bug Fixes
+
+- Fix iteration setup and iteration cleanup not executing
+
 ## benchmark-node v0.5.1 (2022-02-07)
 ### Bug Fixes
 

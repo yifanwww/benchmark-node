@@ -30,6 +30,9 @@ export class BenchmarkRunner<T extends TestFn> {
 
     protected settings: Settings;
 
+    protected _setup?: () => void;
+    protected _cleanup?: () => void;
+
     public get name(): string {
         return this._name;
     }
@@ -53,6 +56,9 @@ export class BenchmarkRunner<T extends TestFn> {
         this.testFunction = new TestFunction(testFn, options);
 
         this.settings = new Settings(options);
+
+        this._setup = options.setup;
+        this._cleanup = options.cleanup;
 
         // Gets a totally new function to test the performance of `testFn`.
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
@@ -118,6 +124,9 @@ export class BenchmarkRunner<T extends TestFn> {
             ops,
             testFn: this.testFunction.fn,
             workload,
+
+            setup: this._setup,
+            cleanup: this._cleanup,
         };
 
         let used: Nanosecond = 0;
@@ -151,6 +160,9 @@ export class BenchmarkRunner<T extends TestFn> {
             ops: this.settings.initOps,
             testFn: this.testFunction.fn,
             workload: true,
+
+            setup: this._setup,
+            cleanup: this._cleanup,
         };
 
         for (let index = 1; ; index++) {
@@ -180,6 +192,9 @@ export class BenchmarkRunner<T extends TestFn> {
             ops,
             testFn: this.testFunction.fn,
             workload,
+
+            setup: this._setup,
+            cleanup: this._cleanup,
         };
 
         for (let index = 1; index <= this.settings.warmupCount; index++) {
@@ -198,6 +213,9 @@ export class BenchmarkRunner<T extends TestFn> {
             ops,
             testFn: this.testFunction.fn,
             workload: false,
+
+            setup: this._setup,
+            cleanup: this._cleanup,
         };
 
         let total: Nanosecond = 0;
@@ -221,6 +239,9 @@ export class BenchmarkRunner<T extends TestFn> {
             ops,
             testFn: this.testFunction.fn,
             workload: true,
+
+            setup: this._setup,
+            cleanup: this._cleanup,
         };
 
         for (let index = 1; index <= this.settings.measurementCount; index++) {
