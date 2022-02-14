@@ -9,12 +9,14 @@ exports[`Test class \`Stats\` calculates 1`] = `
     \\"_standardDeviation\\": 0.006809131045845519,
     \\"_standardError\\": 0.001758110076180239,
     \\"_standardErrorPercent\\": 0.7321438437400208,
-    \\"_ciMargin\\": 0.0037711461134066126,
-    \\"_confidenceInterval\\": [
-        0.2363606382637262,
-        0.24390293049053943
-    ],
-    \\"_ciMarginPercent\\": 1.5704485448223444,
+    \\"_confidenceInterval\\": {
+        \\"_confidenceLevel\\": 0.95,
+        \\"_degreeOfFreedom\\": 14,
+        \\"_margin\\": 0.0037707710872855148,
+        \\"_lower\\": 0.2363610132898473,
+        \\"_upper\\": 0.24390255546441833,
+        \\"_marginPercent\\": 1.5702923696945619
+    },
     \\"_q0\\": 0.2340324196453845,
     \\"_q1\\": 0.2363961562926153,
     \\"_q2\\": 0.23899117417373134,
