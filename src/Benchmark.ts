@@ -5,6 +5,12 @@ import { BenchmarkJobOptions, TestFn } from './types';
 import { StatisticColumn, StatisticColumnOrder, Table } from './View';
 
 export interface BenchmarkOptions {
+    /**
+     * The order how Benchmark displays the statistic data.
+     *
+     * By default Benchmark will display that statistic data Mean, Standard Error and Standard Deviation, and you cannot
+     * disable them.
+     */
     order?: Column[];
 }
 

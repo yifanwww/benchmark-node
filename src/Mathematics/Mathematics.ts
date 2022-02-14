@@ -1,4 +1,4 @@
-export class MathTool {
+export class Mathematics {
     public static sum<T extends number>(arr: T[]): T {
         let sum = 0;
         for (const num of arr) sum += num;
@@ -6,7 +6,7 @@ export class MathTool {
     }
 
     public static mean<T extends number>(arr: T[]): T {
-        return (MathTool.sum(arr) / arr.length) as T;
+        return (Mathematics.sum(arr) / arr.length) as T;
     }
 
     public static variance(arr: number[], mean: number): number {
@@ -14,9 +14,9 @@ export class MathTool {
     }
 
     public static getStudentTDistributionCriticalValue(degreeOfFreedom: number): number {
-        return degreeOfFreedom in MathTool.tDistributionTable
-            ? MathTool.tDistributionTable[degreeOfFreedom]
-            : MathTool.tDistributionTable.infinity;
+        return degreeOfFreedom in Mathematics.tDistributionTable
+            ? Mathematics.tDistributionTable[degreeOfFreedom]
+            : Mathematics.tDistributionTable.infinity;
     }
 
     /**

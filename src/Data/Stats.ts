@@ -1,8 +1,7 @@
 import { Arguments } from '../ConfigOptions';
-import { MathTool } from '../MathTool';
+import { ConfidenceInterval, ConfidenceLevel, Mathematics } from '../Mathematics';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Nanosecond } from '../types';
-import { ConfidenceInterval } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.
@@ -21,8 +20,6 @@ export class Stats {
     private _standardErrorPercent: number;
 
     private _confidenceInterval: ConfidenceInterval;
-    private _ciMargin: Nanosecond;
-    private _ciMarginPercent: number;
 
     private _q0: Nanosecond;
     private _q1: Nanosecond;
@@ -79,7 +76,7 @@ export class Stats {
      * The margin of error in nanoseconds.
      */
     public get margin() {
-        return this._ciMargin;
+        return this._confidenceInterval.margin;
     }
 
     public get confidenceInterval() {
@@ -127,16 +124,18 @@ export class Stats {
 
         this._n = measurements.length;
 
-        this._mean = MathTool.mean(measurements);
-        this._variance = MathTool.variance(measurements, this._mean);
+        this._mean = Mathematics.mean(measurements);
+        this._variance = Mathematics.variance(measurements, this._mean);
         this._standardDeviation = Math.sqrt(this._variance);
         this._standardError = this._standardDeviation / Math.sqrt(this._n);
         this._standardErrorPercent = (this._standardError / this._mean) * 100;
 
-        const criticalValue = MathTool.getStudentTDistributionCriticalValue(this._n - 1);
-        this._ciMargin = this._standardError * criticalValue;
-        this._confidenceInterval = [this._mean - this._ciMargin, this._mean + this._ciMargin] as ConfidenceInterval;
-        this._ciMarginPercent = (this._ciMargin / this._mean) * 100;
+        this._confidenceInterval = new ConfidenceInterval(
+            this._n,
+            this._mean,
+            this._standardError,
+            ConfidenceLevel.L95,
+        );
 
         this._q0 = measurements[0];
         this._q1 = measurements[Math.round(this._n * 0.25)];
@@ -169,11 +168,13 @@ export class Stats {
             ].join(', '),
         );
 
-        const [left, right] = this._confidenceInterval;
+        const [lower, upper] = [this._confidenceInterval.lower, this._confidenceInterval.upper];
+        const margin = this._confidenceInterval.margin.toFixed(3);
+        const marginPercent = this._confidenceInterval.marginPercent.toFixed(2);
         logger.writeLineStatistic(
             [
-                `ConfidenceInterval = [${left.toFixed(3)} ns; ${right.toFixed(3)} ns] (CI 95%)`,
-                `Margin = ${this._ciMargin.toFixed(3)} ns (${this._ciMarginPercent.toFixed(2)}% of Mean)`,
+                `ConfidenceInterval = [${lower.toFixed(3)} ns; ${upper.toFixed(3)} ns] (CI 95%)`,
+                `Margin = ${margin} ns (${marginPercent}% of Mean)`,
             ].join(', '),
         );
 

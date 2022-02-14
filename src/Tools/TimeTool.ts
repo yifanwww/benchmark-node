@@ -1,4 +1,4 @@
-import { MathTool } from '../MathTool';
+import { Mathematics } from '../Mathematics';
 import { Millisecond, Nanosecond } from '../types';
 import { Hrtime } from '../types.internal';
 
@@ -54,7 +54,7 @@ export class TimeTool {
         }
 
         // Calculate the average value.
-        return MathTool.mean(samples);
+        return Mathematics.mean(samples);
     }
 
     public static get minResolution() {

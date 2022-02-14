@@ -28,7 +28,6 @@ export class Table {
     }
 
     public draw(): void {
-        // "test/perfs/array-find.ts"
         const unit = this._statisticColumns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(this._stats);
         for (const column of this._statisticColumns) {
             column.setUnit(unit);
