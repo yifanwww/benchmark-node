@@ -1,10 +1,6 @@
-import { Column } from '../Columns';
+import { ArgumentColumn, Column, StatisticColumn, TableColumn } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-
-import { ArgumentColumn } from './ArgumentColumn';
-import { StatisticColumn } from './StatisticColumn';
-import { TableColumn } from './TableColumn';
 
 export class Table {
     private _fnNameColumn = new TableColumn('Function', (stats) => stats.name);
@@ -28,9 +24,7 @@ export class Table {
     }
 
     public draw(): void {
-        const unit = this._statisticColumns
-            .find((column) => column.type === Column.Mean)!
-            .findMinTimeUnit(this._statsArr);
+        const unit = this._statisticColumns.find((column) => column === Column.Mean)!.findMinTimeUnit(this._statsArr);
         for (const column of this._statisticColumns) {
             column.setUnit(unit);
             column.findFractionDigit(this._statsArr);

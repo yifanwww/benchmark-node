@@ -4,13 +4,13 @@ import { Optional } from '../types.internal';
 export type GetData<Value> = (stats: Statistics) => Value;
 
 export class TableColumn<Value> {
-    protected _header: string;
+    protected _columnName: string;
     protected _getData: Optional<GetData<Value>>;
 
     protected _maxLen: number = 0;
 
-    public constructor(header: string, getData?: GetData<Value>) {
-        this._header = header;
+    public constructor(columnName: string, getData?: GetData<Value>) {
+        this._columnName = columnName;
         this._getData = getData ?? null;
     }
 
@@ -22,7 +22,7 @@ export class TableColumn<Value> {
     }
 
     public calculateMaxLen(statsArr: Statistics[]): void {
-        let maxLen = this._header.length;
+        let maxLen = this._columnName.length;
 
         for (const _stats of statsArr) {
             const data = this.getDataWrapper(_stats);
@@ -33,7 +33,7 @@ export class TableColumn<Value> {
     }
 
     public drawHeader(): string {
-        return this._header.padStart(this._maxLen);
+        return this._columnName.padStart(this._maxLen);
     }
 
     public drawSperator(): string {

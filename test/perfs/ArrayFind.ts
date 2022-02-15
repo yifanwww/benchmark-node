@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { Benchmark, Column } from '../../src';
+import { Benchmark, Column, StatisticColumn } from '../../src';
 import { Statistics } from '../../src/Data';
 import { TimeUnit } from '../../src/Tools/TimeTool';
-import { StatisticColumn } from '../../src/View';
 
 let columns: StatisticColumn[];
 let stats: Statistics[];
@@ -11,7 +10,7 @@ let unit: TimeUnit;
 
 function forofFind() {
     for (const column of columns) {
-        if (column.type === Column.Mean) {
+        if (column === Column.Mean) {
             unit = column.findMinTimeUnit(stats);
             break;
         }
@@ -19,17 +18,13 @@ function forofFind() {
 }
 
 function arrayFind() {
-    unit = columns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(stats);
+    unit = columns.find((column) => column === Column.Mean)!.findMinTimeUnit(stats);
 }
 
 const benchmark = new Benchmark();
 
 benchmark.addSetup(() => {
-    columns = [
-        StatisticColumn.column(Column.StdError),
-        StatisticColumn.column(Column.StdDev),
-        StatisticColumn.column(Column.Mean),
-    ];
+    columns = [Column.StdErr, Column.StdDev, Column.Mean];
 
     stats = [
         new Statistics(

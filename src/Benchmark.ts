@@ -1,8 +1,8 @@
 import { BenchmarkJob } from './BenchmarkJob';
-import { Column } from './Columns';
+import { StatisticColumn } from './Columns';
 import { ConsoleLogger, LogKind } from './Tools/ConsoleLogger';
 import { BenchmarkJobOptions, TestFn } from './types';
-import { StatisticColumn, StatisticColumnOrder, Table } from './View';
+import { StatisticColumnOrder, Table } from './View';
 
 export interface BenchmarkOptions {
     /**
@@ -11,7 +11,7 @@ export interface BenchmarkOptions {
      * By default Benchmark will display that statistic data Mean, Standard Error and Standard Deviation, and you cannot
      * disable them.
      */
-    order?: Column[];
+    order?: StatisticColumn[];
 }
 
 export class Benchmark {
@@ -77,7 +77,7 @@ export class Benchmark {
         return this;
     }
 
-    public setColumnOrder(order: Column[]): this {
+    public setColumnOrder(order: StatisticColumn[]): this {
         this._statisticColumnOrder.setOrder(order);
         return this;
     }
@@ -98,7 +98,7 @@ export class Benchmark {
 
         const table = new Table();
         for (const column of this._statisticColumnOrder.getOrder()) {
-            table.addStatisticColumn(StatisticColumn.column(column));
+            table.addStatisticColumn(column);
         }
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();

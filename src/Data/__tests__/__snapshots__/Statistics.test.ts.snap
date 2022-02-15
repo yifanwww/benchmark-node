@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test class \`Stats\` calculates 1`] = `
+exports[`Test class \`Statistics\` calculates 1`] = `
 "{
     \\"_name\\": \\"name\\",
     \\"_n\\": 15,

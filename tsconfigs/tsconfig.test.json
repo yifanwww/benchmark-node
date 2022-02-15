@@ -1,8 +1,11 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
+        "declaration": true,
+        "declarationDir": "../dist",
         "module": "CommonJS",
         "outDir": "../dist",
+        "removeComments": true,
         "rootDir": "..",
         "sourceMap": false
     },
