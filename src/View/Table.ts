@@ -1,4 +1,4 @@
-import { ArgumentColumn, Column, StatisticColumn, TableColumn } from '../Columns';
+import { ArgumentColumn, StatisticColumn, StatisticColumnExt, TableColumn, TableColumnExt } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 
@@ -10,8 +10,12 @@ export class Table {
 
     private _statsArr: Statistics[] = [];
 
-    public addStatisticColumn(column: StatisticColumn): void {
-        this._statisticColumns.push(column);
+    private _maxLengthMap: Record<string, number> = {};
+
+    public addStatisticColumns(columns: StatisticColumn[]): void {
+        for (const column of columns) {
+            this._statisticColumns.push(column);
+        }
     }
 
     public addStats(statsArr: Statistics[]): void {
@@ -24,23 +28,38 @@ export class Table {
     }
 
     public draw(): void {
-        const unit = this._statisticColumns.find((column) => column === Column.Mean)!.findMinTimeUnit(this._statsArr);
+        const minTime = Math.min(
+            ...this._statisticColumns.map((column) => StatisticColumnExt.findMinNumber(column, this._statsArr)),
+        );
+        const timeUnit = StatisticColumnExt.chooseTimeUnit(minTime);
         for (const column of this._statisticColumns) {
-            column.setUnit(unit);
-            column.findFractionDigit(this._statsArr);
+            column.timeUnit = timeUnit;
+            column.setFractionDigit(StatisticColumnExt.findFractionDigit(column, this._statsArr));
         }
 
         const columns = [this._fnNameColumn, ...this._argColumns, ...this._statisticColumns];
 
         for (const column of columns) {
-            column.calculateMaxLen(this._statsArr);
+            this._maxLengthMap[column.columnName] = TableColumnExt.calculateMaxLen(column, this._statsArr);
         }
 
         const logger = ConsoleLogger.default;
-        logger.writeLineStatistic(`| ${columns.map((column) => column.drawHeader()).join(' | ')} |`);
-        logger.writeLineStatistic(`|-${columns.map((column) => column.drawSperator()).join('-|-')}-|`);
+
+        const columnNameLine = columns
+            .map((column) => TableColumnExt.drawColumnName(column, this._maxLengthMap[column.columnName]))
+            .join(' | ');
+        logger.writeLineStatistic(`| ${columnNameLine} |`);
+
+        const speratorLine = columns
+            .map((column) => TableColumnExt.drawSperator(this._maxLengthMap[column.columnName]))
+            .join('-|-');
+        logger.writeLineStatistic(`|-${speratorLine}-|`);
+
         for (const stats of this._statsArr) {
-            logger.writeLineStatistic(`| ${columns.map((column) => column.draw(stats)).join(' | ')} |`);
+            const benchLine = columns
+                .map((column) => TableColumnExt.draw(column, this._maxLengthMap[column.columnName], stats))
+                .join(' | ');
+            logger.writeLineStatistic(`| ${benchLine} |`);
         }
     }
 }

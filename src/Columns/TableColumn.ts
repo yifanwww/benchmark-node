@@ -1,47 +1,28 @@
 import { Statistics } from '../Data';
-import { Optional } from '../types.internal';
 
 export type GetData<Value> = (stats: Statistics) => Value;
 
 export class TableColumn<Value> {
     protected _columnName: string;
-    protected _getData: Optional<GetData<Value>>;
+    protected _getData: GetData<Value>;
 
     protected _maxLen: number = 0;
 
-    public constructor(columnName: string, getData?: GetData<Value>) {
-        this._columnName = columnName;
-        this._getData = getData ?? null;
+    public get columnName() {
+        return this._columnName;
     }
 
-    protected getDataWrapper(stats: Statistics): string {
-        if (!this._getData) return '';
+    public get getData() {
+        return this._getData;
+    }
 
+    public constructor(columnName: string, getData: GetData<Value>) {
+        this._columnName = columnName;
+        this._getData = getData;
+    }
+
+    public format(stats: Statistics): string {
         const data = this._getData(stats);
         return typeof data === 'string' ? data : String(data);
-    }
-
-    public calculateMaxLen(statsArr: Statistics[]): void {
-        let maxLen = this._columnName.length;
-
-        for (const _stats of statsArr) {
-            const data = this.getDataWrapper(_stats);
-            maxLen = Math.max(maxLen, data.length);
-        }
-
-        this._maxLen = maxLen;
-    }
-
-    public drawHeader(): string {
-        return this._columnName.padStart(this._maxLen);
-    }
-
-    public drawSperator(): string {
-        return ''.padEnd(this._maxLen, '-');
-    }
-
-    public draw(stats: Statistics): string {
-        const data = this.getDataWrapper(stats);
-        return data.padStart(this._maxLen);
     }
 }

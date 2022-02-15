@@ -97,9 +97,7 @@ export class Benchmark {
         for (const cleanup of this._cleanupArr) cleanup();
 
         const table = new Table();
-        for (const column of this._statisticColumnOrder.getOrder()) {
-            table.addStatisticColumn(column);
-        }
+        table.addStatisticColumns(this._statisticColumnOrder.getOrder());
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
     }
