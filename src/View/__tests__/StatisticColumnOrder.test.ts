@@ -1,4 +1,4 @@
-import { Column } from '../../ConfigOptions';
+import { Column } from '../../Columns';
 import { StatisticColumnOrder } from '../StatisticColumnOrder';
 
 describe(`Test class \`${StatisticColumnOrder.name}\``, () => {

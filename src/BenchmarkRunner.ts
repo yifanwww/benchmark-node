@@ -1,5 +1,5 @@
-import { Arguments } from './ConfigOptions';
 import { Settings, TestFunction } from './Data';
+import { Arguments } from './Parameterization';
 import { CodeGen, Tester, TesterContext } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';

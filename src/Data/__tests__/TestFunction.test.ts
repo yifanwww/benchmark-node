@@ -1,4 +1,4 @@
-import { Arguments } from '../../ConfigOptions';
+import { Arguments } from '../../Parameterization';
 import { TestFunction } from '../TestFunction';
 
 describe(`Test class \`${TestFunction.name}\``, () => {

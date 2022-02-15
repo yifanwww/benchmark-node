@@ -1,5 +1,5 @@
 import { BenchmarkJob } from './BenchmarkJob';
-import { Column } from './ConfigOptions';
+import { Column } from './Columns';
 import { ConsoleLogger, LogKind } from './Tools/ConsoleLogger';
 import { BenchmarkJobOptions, TestFn } from './types';
 import { StatisticColumn, StatisticColumnOrder, Table } from './View';

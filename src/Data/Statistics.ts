@@ -1,5 +1,5 @@
-import { Arguments } from '../ConfigOptions';
 import { ConfidenceInterval, ConfidenceLevel, Mathematics } from '../Mathematics';
+import { Arguments } from '../Parameterization';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Nanosecond } from '../types';
 

@@ -1,4 +1,4 @@
-import { Column } from '../ConfigOptions';
+import { Column } from '../Columns';
 import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
 import { TimeTool, TimeUnit, TimeUnitStr } from '../Tools/TimeTool';

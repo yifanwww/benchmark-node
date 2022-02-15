@@ -1,4 +1,4 @@
-import { Column } from '../ConfigOptions';
+import { Column } from '../Columns';
 
 export class StatisticColumnOrder {
     private _id: number = 0;

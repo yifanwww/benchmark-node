@@ -1,4 +1,4 @@
-import { Arguments } from '../ConfigOptions';
+import { Arguments } from '../Parameterization';
 import { BenchmarkJobTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';
 

@@ -1,6 +1,6 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
-import { Arguments } from './ConfigOptions';
 import { Statistics } from './Data';
+import { Arguments } from './Parameterization';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
 import { Nanosecond, TestFn } from './types';

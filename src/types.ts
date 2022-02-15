@@ -1,4 +1,4 @@
-import { Arguments } from './ConfigOptions';
+import { Arguments } from './Parameterization';
 
 /**
  * The type representing millisecond.
