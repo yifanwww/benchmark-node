@@ -6,8 +6,8 @@
 import { NumberExt } from '../../../Numeric';
 import { Precision } from '../Precision';
 
-describe(`Test class ${Precision.name}`, () => {
-    it(`tests static method ${Precision.magnitude.name}`, () => {
+describe(`Test class \`${Precision.name}\``, () => {
+    it(`tests static method \`${Precision.magnitude.name}\``, () => {
         // ref: https://github.com/mathnet/mathnet-numerics/blob/v5.0.0-alpha09/src/Numerics.Tests/PrecisionTest.cs#L77
         expect(Precision.magnitude(1.1e5)).toBe(5);
         expect(Precision.magnitude(2.2e-5)).toBe(-5);
@@ -15,7 +15,7 @@ describe(`Test class ${Precision.name}`, () => {
         expect(Precision.magnitude(4.4e-11)).toBe(-11);
     });
 
-    it(`tests static method ${Precision.increment.name}`, () => {
+    it(`tests static method \`${Precision.increment.name}\``, () => {
         // ref: https://github.com/mathnet/mathnet-numerics/blob/v5.0.0-alpha09/src/Numerics.Tests/PrecisionTest.cs#L165
         let x = -2 * NumberExt.EPSILON;
         expect(x).toBe(-2 * NumberExt.EPSILON);
@@ -37,7 +37,7 @@ describe(`Test class ${Precision.name}`, () => {
         expect(x).toBeGreaterThan(Number.MIN_VALUE);
     });
 
-    it(`tests static method ${Precision.decrement.name}`, () => {
+    it(`tests static method \`${Precision.decrement.name}\``, () => {
         // ref: https://github.com/mathnet/mathnet-numerics/blob/v5.0.0-alpha09/src/Numerics.Tests/PrecisionTest.cs#L181
         let x = 2 * NumberExt.EPSILON;
         expect(x).toBe(2 * NumberExt.EPSILON);
@@ -59,5 +59,28 @@ describe(`Test class ${Precision.name}`, () => {
         x = Precision.decrement(x);
         // FIXME: This test fails.
         // expect(x).toBe(-1.0 / 0.0);
+    });
+
+    it(`tests \`${Precision.increment.name}\` and \`${Precision.decrement.name}\` together with count`, () => {
+        // ref: https://github.com/mathnet/mathnet-numerics/blob/d1e3b8adaea4b636cf66cf34121f34bafa5dc3fb/src/Numerics.Tests/PrecisionTest.cs#L197
+        const x = -2 * NumberExt.EPSILON;
+        expect(x).toBe(-2 * NumberExt.EPSILON);
+        // FIXME: These tests fail.
+        // x = Precision.increment(x, 2);
+        // expect(x).toBe(0.0);
+        // x = Precision.increment(x, 2);
+        // expect(x).toBe(2 * NumberExt.EPSILON);
+        // x = Precision.decrement(x, 2);
+        // expect(x).toBe(0.0);
+        // x = Precision.decrement(x, 2);
+        // expect(x).toBe(-2 * NumberExt.EPSILON);
+        // x = Precision.decrement(x, -2);
+        // expect(x).toBe(0.0);
+        // x = Precision.decrement(x, -2);
+        // expect(x).toBe(2 * NumberExt.EPSILON);
+        // x = Precision.increment(x, -2);
+        // expect(x).toBe(0.0);
+        // x = Precision.increment(x, -2);
+        // expect(x).toBe(-2 * NumberExt.EPSILON);
     });
 });

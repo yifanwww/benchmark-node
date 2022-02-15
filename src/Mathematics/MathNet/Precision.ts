@@ -103,7 +103,8 @@ export class Precision {
         }
 
         if (count < 0) {
-            return Precision.decrement(value, -count);
+            // https://github.com/mathnet/mathnet-numerics/issues/904
+            return Precision.increment(value, -count);
         }
 
         // Translate the bit pattern of the double to an integer.
