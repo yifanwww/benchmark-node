@@ -1,5 +1,5 @@
 import { Column } from '../ConfigOptions';
-import { Stats } from '../Data';
+import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 
 import { ArgumentColumn } from './ArgumentColumn';
@@ -12,38 +12,40 @@ export class Table {
     private _argColumns: ArgumentColumn[] = [];
     private _statisticColumns: StatisticColumn[] = [];
 
-    private _stats: Stats[] = [];
+    private _statsArr: Statistics[] = [];
 
     public addStatisticColumn(column: StatisticColumn): void {
         this._statisticColumns.push(column);
     }
 
-    public addStats(stats: Stats[]): void {
-        this._stats.push(...stats);
+    public addStats(statsArr: Statistics[]): void {
+        this._statsArr.push(...statsArr);
 
-        const maxLength = stats.reduce((prev, curr) => Math.max(prev, curr.args?.args.length ?? 0), 0);
+        const maxLength = statsArr.reduce((prev, curr) => Math.max(prev, curr.args?.args.length ?? 0), 0);
         for (let i = this._argColumns.length; i < maxLength; i++) {
             this._argColumns.push(new ArgumentColumn(i));
         }
     }
 
     public draw(): void {
-        const unit = this._statisticColumns.find((column) => column.type === Column.Mean)!.findMinTimeUnit(this._stats);
+        const unit = this._statisticColumns
+            .find((column) => column.type === Column.Mean)!
+            .findMinTimeUnit(this._statsArr);
         for (const column of this._statisticColumns) {
             column.setUnit(unit);
-            column.findFractionDigit(this._stats);
+            column.findFractionDigit(this._statsArr);
         }
 
         const columns = [this._fnNameColumn, ...this._argColumns, ...this._statisticColumns];
 
         for (const column of columns) {
-            column.calculateMaxLen(this._stats);
+            column.calculateMaxLen(this._statsArr);
         }
 
         const logger = ConsoleLogger.default;
         logger.writeLineStatistic(`| ${columns.map((column) => column.drawHeader()).join(' | ')} |`);
         logger.writeLineStatistic(`|-${columns.map((column) => column.drawSperator()).join('-|-')}-|`);
-        for (const stats of this._stats) {
+        for (const stats of this._statsArr) {
             logger.writeLineStatistic(`| ${columns.map((column) => column.draw(stats)).join(' | ')} |`);
         }
     }

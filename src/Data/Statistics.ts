@@ -6,7 +6,7 @@ import { Nanosecond } from '../types';
 /**
  * Class for stats including mean, margin or error, and standard deviation.
  */
-export class Stats {
+export class Statistics {
     private _name: string;
 
     private _args?: Arguments<ReadonlyArray<unknown>>;

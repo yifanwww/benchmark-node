@@ -1,3 +1,3 @@
 export * from './Settings';
-export * from './Stats';
+export * from './Statistics';
 export * from './TestFunction';

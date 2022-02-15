@@ -1,8 +1,8 @@
-import { Stats } from '../Stats';
+import { Statistics } from '../Statistics';
 
-describe(`Test class \`${Stats.name}\``, () => {
+describe(`Test class \`${Statistics.name}\``, () => {
     it('calculates', () => {
-        const stats = new Stats(
+        const stats = new Statistics(
             'name',
             [
                 37051080, 33390980, 33920080, 33423180, 33684980, 34514380, 33498580, 34333480, 33923280, 34479480,

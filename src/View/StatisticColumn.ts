@@ -1,5 +1,5 @@
 import { Column } from '../ConfigOptions';
-import { Stats } from '../Data';
+import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
 import { TimeTool, TimeUnit, TimeUnitStr } from '../Tools/TimeTool';
 
@@ -64,15 +64,15 @@ export class StatisticColumn extends TableColumn<number> {
         }
     }
 
-    protected override getDataWrapper(stats: Stats): string {
+    protected override getDataWrapper(stats: Statistics): string {
         const data = TimeTool.convert(this._getData!(stats), TimeUnit.NS, this._unit);
         return `${Formatter.beautifyNumber(data.toFixed(this._fractionDigit))} ${TimeUnitStr[this._unit]}`;
     }
 
-    public findMinTimeUnit(stats: Stats[]): TimeUnit {
+    public findMinTimeUnit(statsArr: Statistics[]): TimeUnit {
         let min = Number.MAX_SAFE_INTEGER;
 
-        for (const _stats of stats) {
+        for (const _stats of statsArr) {
             const data = this._getData!(_stats);
             min = Math.min(min, data);
         }
@@ -88,10 +88,10 @@ export class StatisticColumn extends TableColumn<number> {
         }
     }
 
-    public findFractionDigit(stats: Stats[]): void {
+    public findFractionDigit(statsArr: Statistics[]): void {
         let min = Number.MAX_SAFE_INTEGER;
 
-        for (const _stats of stats) {
+        for (const _stats of statsArr) {
             const data = TimeTool.convert(this._getData!(_stats), TimeUnit.NS, this._unit);
             min = Math.min(min, data);
         }

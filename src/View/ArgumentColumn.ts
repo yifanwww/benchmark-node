@@ -1,4 +1,4 @@
-import { Stats } from '../Data';
+import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
 
 import { TableColumn } from './TableColumn';
@@ -12,7 +12,7 @@ export class ArgumentColumn extends TableColumn<string> {
         this.index = index;
     }
 
-    protected override getDataWrapper(stats: Stats): string {
+    protected override getDataWrapper(stats: Statistics): string {
         const args = stats.args?.args;
 
         let arg;

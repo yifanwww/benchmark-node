@@ -1,7 +1,7 @@
-import { Stats } from '../Data';
+import { Statistics } from '../Data';
 import { Optional } from '../types.internal';
 
-export type GetData<Value> = (stats: Stats) => Value;
+export type GetData<Value> = (stats: Statistics) => Value;
 
 export class TableColumn<Value> {
     protected _header: string;
@@ -14,17 +14,17 @@ export class TableColumn<Value> {
         this._getData = getData ?? null;
     }
 
-    protected getDataWrapper(stats: Stats): string {
+    protected getDataWrapper(stats: Statistics): string {
         if (!this._getData) return '';
 
         const data = this._getData(stats);
         return typeof data === 'string' ? data : String(data);
     }
 
-    public calculateMaxLen(stats: Stats[]): void {
+    public calculateMaxLen(statsArr: Statistics[]): void {
         let maxLen = this._header.length;
 
-        for (const _stats of stats) {
+        for (const _stats of statsArr) {
             const data = this.getDataWrapper(_stats);
             maxLen = Math.max(maxLen, data.length);
         }
@@ -40,7 +40,7 @@ export class TableColumn<Value> {
         return ''.padEnd(this._maxLen, '-');
     }
 
-    public draw(stats: Stats): string {
+    public draw(stats: Statistics): string {
         const data = this.getDataWrapper(stats);
         return data.padStart(this._maxLen);
     }

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { Benchmark, Column } from '../../src';
-import { Stats } from '../../src/Data';
+import { Statistics } from '../../src/Data';
 import { TimeUnit } from '../../src/Tools/TimeTool';
 import { StatisticColumn } from '../../src/View';
 
 let columns: StatisticColumn[];
-let stats: Stats[];
+let stats: Statistics[];
 let unit: TimeUnit;
 
 function forofFind() {
@@ -32,7 +32,7 @@ benchmark.addSetup(() => {
     ];
 
     stats = [
-        new Stats(
+        new Statistics(
             'name',
             [
                 37051080, 33390980, 33920080, 33423180, 33684980, 34514380, 33498580, 34333480, 33923280, 34479480,

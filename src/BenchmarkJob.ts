@@ -1,12 +1,12 @@
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { Arguments } from './ConfigOptions';
-import { Stats } from './Data';
+import { Statistics } from './Data';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
 import { Nanosecond, TestFn } from './types';
 
 export class BenchmarkJob<T extends TestFn> extends BenchmarkRunner<T> {
-    private _stats: Stats[] = [];
+    private _stats: Statistics[] = [];
 
     public get stats() {
         return this._stats;
@@ -74,7 +74,7 @@ export class BenchmarkJob<T extends TestFn> extends BenchmarkRunner<T> {
         this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Stats(this._name, measurements, ops, args);
+        const stats = new Statistics(this._name, measurements, ops, args);
         this._stats.push(stats);
         stats.log();
     }
