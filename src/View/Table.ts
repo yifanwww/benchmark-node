@@ -1,14 +1,16 @@
 import { ArgumentColumn, StatisticColumn, StatisticColumnExt, TableColumn, TableColumnExt } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
 
 export class Table {
     private _fnNameColumn = new TableColumn('Function', (stats) => stats.name);
-
     private _argColumns: ArgumentColumn[] = [];
     private _statisticColumns: StatisticColumn[] = [];
 
     private _statsArr: Statistics[] = [];
+
+    private _timeUnit: TimeUnit = TimeUnit.NS;
 
     private _maxLengthMap: Record<string, number> = {};
 
@@ -31,10 +33,10 @@ export class Table {
         const minTime = Math.min(
             ...this._statisticColumns.map((column) => StatisticColumnExt.findMinNumber(column, this._statsArr)),
         );
-        const timeUnit = StatisticColumnExt.chooseTimeUnit(minTime);
+        this._timeUnit = StatisticColumnExt.chooseTimeUnit(minTime);
         for (const column of this._statisticColumns) {
-            column.timeUnit = timeUnit;
-            column.setFractionDigit(StatisticColumnExt.findFractionDigit(column, this._statsArr));
+            column.timeUnit = this._timeUnit;
+            column.setFractionDigit(StatisticColumnExt.findFractionDigit(column, this._statsArr, this._timeUnit));
         }
 
         const columns = [this._fnNameColumn, ...this._argColumns, ...this._statisticColumns];
@@ -61,5 +63,18 @@ export class Table {
                 .join(' | ');
             logger.writeLineStatistic(`| ${benchLine} |`);
         }
+
+        logger.writeLine();
+    }
+
+    public writeDescription(): void {
+        const logger = ConsoleLogger.default;
+
+        logger.writeLineStatistic('Description:');
+        const maxLen = this._statisticColumns.reduce((prev, curr) => Math.max(prev, curr.columnName.length), 0);
+        for (const column of this._statisticColumns) {
+            logger.writeLineStatistic(`- ${column.columnName.padEnd(maxLen)}: ${column.desc}`);
+        }
+        logger.writeLineStatistic(`- ${TimeUnitHelper.getFullDescription(this._timeUnit, maxLen)}`);
     }
 }

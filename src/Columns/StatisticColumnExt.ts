@@ -1,5 +1,7 @@
 import { Statistics } from '../Data';
-import { TimeTool, TimeUnit } from '../Tools/TimeTool';
+import { TimeTool } from '../Tools/TimeTool';
+import { TimeUnit } from '../Tools/TimeUnit';
+
 import { StatisticColumn } from './StatisticColumn';
 
 export class StatisticColumnExt {
@@ -26,11 +28,11 @@ export class StatisticColumnExt {
         }
     }
 
-    public static findFractionDigit(column: StatisticColumn, statsArr: Statistics[]): number {
+    public static findFractionDigit(column: StatisticColumn, statsArr: Statistics[], timeUnit: TimeUnit): number {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const _stats of statsArr) {
-            const data = TimeTool.convert(column.getData(_stats), TimeUnit.NS, column.timeUnit);
+            const data = TimeTool.convert(column.getData(_stats), TimeUnit.NS, timeUnit);
             min = Math.min(min, data);
         }
 

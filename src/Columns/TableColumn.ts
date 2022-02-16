@@ -6,8 +6,6 @@ export class TableColumn<Value> {
     protected _columnName: string;
     protected _getData: GetData<Value>;
 
-    protected _maxLen: number = 0;
-
     public get columnName() {
         return this._columnName;
     }
@@ -23,6 +21,6 @@ export class TableColumn<Value> {
 
     public format(stats: Statistics): string {
         const data = this._getData(stats);
-        return typeof data === 'string' ? data : String(data);
+        return String(data);
     }
 }

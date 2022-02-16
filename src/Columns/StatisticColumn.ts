@@ -1,6 +1,7 @@
 import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
-import { TimeTool, TimeUnit, TimeUnitStr } from '../Tools/TimeTool';
+import { TimeTool } from '../Tools/TimeTool';
+import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
 
 import { TableColumn } from './TableColumn';
 import { UnitType } from './UnitType';
@@ -43,6 +44,6 @@ export class StatisticColumn extends TableColumn<number> {
 
     public override format(stats: Statistics): string {
         const data = TimeTool.convert(this._getData!(stats), TimeUnit.NS, this._timeUnit);
-        return `${Formatter.beautifyNumber(data.toFixed(this._fractionDigit))} ${TimeUnitStr[this._timeUnit]}`;
+        return Formatter.beautifyNumber(data.toFixed(this._fractionDigit)) + TimeUnitHelper.getUnitStr(this._timeUnit);
     }
 }

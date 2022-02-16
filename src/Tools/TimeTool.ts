@@ -2,19 +2,7 @@ import { Mathematics } from '../Mathematics';
 import { Millisecond, Nanosecond } from '../types';
 import { Hrtime } from '../types.internal';
 
-export enum TimeUnit {
-    NS,
-    US,
-    MS,
-    S,
-}
-
-export const TimeUnitStr = {
-    [TimeUnit.NS]: 'ns',
-    [TimeUnit.US]: 'us',
-    [TimeUnit.MS]: 'ms',
-    [TimeUnit.S]: 's',
-};
+import { TimeUnit } from './TimeUnit';
 
 export class TimeTool {
     public static convert(time: number, from: TimeUnit, to: TimeUnit): number {

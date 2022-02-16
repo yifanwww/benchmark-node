@@ -1,4 +1,5 @@
-import { TimeTool, TimeUnit } from '../TimeTool';
+import { TimeTool } from '../TimeTool';
+import { TimeUnit } from '../TimeUnit';
 
 describe(`Test class \`${TimeTool.name}\``, () => {
     it(TimeTool.convert.name, () => {

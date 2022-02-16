@@ -100,5 +100,6 @@ export class Benchmark {
         table.addStatisticColumns(this._statisticColumnOrder.getOrder());
         for (const job of this.jobs) table.addStats(job.stats);
         table.draw();
+        table.writeDescription();
     }
 }
