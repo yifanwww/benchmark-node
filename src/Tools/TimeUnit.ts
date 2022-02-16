@@ -26,4 +26,16 @@ export class TimeUnitHelper {
 
     public static getFullDescription = (unit: TimeUnit, maxHeaderLen: number) =>
         `1 ${TimeUnitHelper.getUnitStr(unit).padEnd(maxHeaderLen - 2)}: ${TimeUnitHelper.getUnitDescription(unit)}`;
+
+    public static chooseUnit(time: number): TimeUnit {
+        if (time <= 1e3) {
+            return TimeUnit.NS;
+        } else if (time <= 1e6) {
+            return TimeUnit.US;
+        } else if (time <= 1e9) {
+            return TimeUnit.MS;
+        } else {
+            return TimeUnit.S;
+        }
+    }
 }

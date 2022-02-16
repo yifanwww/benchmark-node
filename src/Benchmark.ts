@@ -1,6 +1,6 @@
 import { BenchmarkJob } from './BenchmarkJob';
 import { StatisticColumn } from './Columns';
-import { ConsoleLogger, LogKind } from './Tools/ConsoleLogger';
+import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { BenchmarkJobOptions, TestFn } from './types';
 import { StatisticColumnOrder, Table } from './View';
 
@@ -86,19 +86,19 @@ export class Benchmark {
         const logger = ConsoleLogger.default;
         logger.writeLineInfo(`// Found ${this.jobs.length} ${this.jobs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const job of this.jobs) {
-            logger.writeLine(LogKind.Info, `//   ${job.name}`);
+            logger.writeLineInfo(`//   ${job.name}`);
         }
         logger.writeLine();
 
         for (const setup of this._setupArr) setup();
-
         for (const job of this.jobs) job.run();
-
         for (const cleanup of this._cleanupArr) cleanup();
 
         const table = new Table();
         table.addStatisticColumns(this._statisticColumnOrder.getOrder());
-        for (const job of this.jobs) table.addStats(job.stats);
+        for (const job of this.jobs) {
+            table.addStats(job.stats);
+        }
         table.draw();
         table.writeDescription();
     }

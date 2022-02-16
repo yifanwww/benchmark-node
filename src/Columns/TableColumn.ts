@@ -1,10 +1,10 @@
 import { Statistics } from '../Data';
 
-export type GetData<Value> = (stats: Statistics) => Value;
+export type GetData<T> = (stats: Statistics) => T;
 
-export class TableColumn<Value> {
+export class TableColumn<T> {
     protected _columnName: string;
-    protected _getData: GetData<Value>;
+    protected _getData: GetData<T>;
 
     public get columnName() {
         return this._columnName;
@@ -14,13 +14,8 @@ export class TableColumn<Value> {
         return this._getData;
     }
 
-    public constructor(columnName: string, getData: GetData<Value>) {
+    public constructor(columnName: string, getData: GetData<T>) {
         this._columnName = columnName;
         this._getData = getData;
-    }
-
-    public format(stats: Statistics): string {
-        const data = this._getData(stats);
-        return String(data);
     }
 }
