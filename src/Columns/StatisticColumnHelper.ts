@@ -5,6 +5,7 @@ import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
 
 import { StatisticColumn } from './StatisticColumn';
 import { TableColumnHelper } from './TableColumnHelper';
+import { UnitType } from './UnitType';
 
 export class StatisticColumnHelper extends TableColumnHelper<number> {
     protected declare _column: StatisticColumn;
@@ -32,7 +33,7 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
         super(column);
     }
 
-    public findMinNumber(statsArr: Statistics[]): TimeUnit {
+    public findMinNumber(statsArr: Statistics[]): number {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const stats of statsArr) {
@@ -65,7 +66,14 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
     }
 
     public override format(stats: Statistics): string {
-        const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
-        return Formatter.beautifyNumber(data.toFixed(this._fractionDigit)) + TimeUnitHelper.getUnitStr(this._timeUnit);
+        if (this._column.unit === UnitType.Dimensionless) {
+            const data = this._column.getData(stats);
+            return Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
+        } else {
+            const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
+            return (
+                Formatter.beautifyNumber(data.toFixed(this._fractionDigit)) + TimeUnitHelper.getUnitStr(this._timeUnit)
+            );
+        }
     }
 }

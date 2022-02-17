@@ -13,8 +13,8 @@ export class Column {
 
     public static readonly Error = new StatisticColumn(
         'Error',
-        'Half of 99.9% confidence interval',
-        (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, ConfidenceLevel.L999).margin,
+        'Half of 95% confidence interval',
+        (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, ConfidenceLevel.L95).margin,
         UnitType.Time,
     );
 
@@ -56,4 +56,20 @@ export class Column {
     );
 
     public static readonly Max = new StatisticColumn('Max', 'Maximum measurement', (stats) => stats.max, UnitType.Time);
+
+    public static readonly Ops = new StatisticColumn(
+        'Op/s',
+        'Operations per second',
+        (stats) => stats.ops,
+        UnitType.Dimensionless,
+    );
+
+    public static CIError(level: ConfidenceLevel = ConfidenceLevel.L95) {
+        return new StatisticColumn(
+            `CI ${level * 100}% Margin`,
+            `Half of ${level * 100} confidence interval`,
+            (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, level).margin,
+            UnitType.Time,
+        );
+    }
 }

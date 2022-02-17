@@ -19,7 +19,7 @@ export class Statistics {
     private _standardError: Nanosecond;
     private _standardErrorPercent: number;
 
-    private _confidenceInterval: ConfidenceInterval;
+    private _ci: ConfidenceInterval;
 
     private _q0: Nanosecond;
     private _q1: Nanosecond;
@@ -76,11 +76,11 @@ export class Statistics {
      * The margin of error in nanoseconds.
      */
     public get margin() {
-        return this._confidenceInterval.margin;
+        return this._ci.margin;
     }
 
     public get confidenceInterval() {
-        return this._confidenceInterval;
+        return this._ci;
     }
 
     public get min() {
@@ -130,12 +130,7 @@ export class Statistics {
         this._standardError = this._standardDeviation / Math.sqrt(this._n);
         this._standardErrorPercent = (this._standardError / this._mean) * 100;
 
-        this._confidenceInterval = new ConfidenceInterval(
-            this._n,
-            this._mean,
-            this._standardError,
-            ConfidenceLevel.L95,
-        );
+        this._ci = new ConfidenceInterval(this._n, this._mean, this._standardError, ConfidenceLevel.L95);
 
         this._q0 = measurements[0];
         this._q1 = measurements[Math.round(this._n * 0.25)];
@@ -168,12 +163,12 @@ export class Statistics {
             ].join(', '),
         );
 
-        const [lower, upper] = [this._confidenceInterval.lower, this._confidenceInterval.upper];
-        const margin = this._confidenceInterval.margin.toFixed(3);
-        const marginPercent = this._confidenceInterval.marginPercent.toFixed(2);
+        const [lower, upper] = [this._ci.lower, this._ci.upper];
+        const margin = this._ci.margin.toFixed(3);
+        const marginPercent = this._ci.marginPercent.toFixed(2);
         logger.writeLineStatistic(
             [
-                `ConfidenceInterval = [${lower.toFixed(3)} ns; ${upper.toFixed(3)} ns] (CI 95%)`,
+                `ConfidenceInterval = [${lower.toFixed(3)} ns; ${upper.toFixed(3)} ns] (CI ${this._ci.level * 100}%)`,
                 `Margin = ${margin} ns (${marginPercent}% of Mean)`,
             ].join(', '),
         );

@@ -11,7 +11,7 @@ export interface BenchmarkOptions {
      * By default Benchmark will display that statistic data Mean, Standard Error and Standard Deviation, and you cannot
      * disable them.
      */
-    order?: StatisticColumn[];
+    order?: (StatisticColumn | (() => StatisticColumn))[];
 }
 
 export class Benchmark {
@@ -26,7 +26,7 @@ export class Benchmark {
         const { order } = options ?? {};
 
         if (order) {
-            this.setColumnOrder(order);
+            this.setColumnOrder(order.map((column) => (typeof column === 'function' ? column() : column)));
         }
     }
 

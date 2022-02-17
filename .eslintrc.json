@@ -87,7 +87,7 @@
                 "leadingUnderscore": "allow"
             },
             { "selector": "interface", "format": ["PascalCase"], "leadingUnderscore": "allow" },
-            { "selector": "method", "format": ["camelCase"], "leadingUnderscore": "allow" },
+            { "selector": "method", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow" },
             { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
             { "selector": "property", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow" },
             { "selector": "typeAlias", "format": ["PascalCase"], "leadingUnderscore": "allow" },

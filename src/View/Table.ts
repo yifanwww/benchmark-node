@@ -5,6 +5,7 @@ import {
     StatisticColumnHelper,
     TableColumn,
     TableColumnHelper,
+    UnitType,
 } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -40,13 +41,24 @@ export class Table {
         }
     }
 
-    public draw(): void {
-        const minTime = Math.min(...this._statsColumnHelpers.map((helper) => helper.findMinNumber(this._statsArr)));
+    private setFractionDigit(): void {
+        let minTime = Number.MAX_SAFE_INTEGER;
+
+        for (const helper of this._statsColumnHelpers) {
+            if (helper.column.unit === UnitType.Time) {
+                minTime = Math.min(minTime, helper.findMinNumber(this._statsArr));
+            }
+        }
+
         this._timeUnit = TimeUnitHelper.chooseUnit(minTime);
         for (const helper of this._statsColumnHelpers) {
             helper.timeUnit = this._timeUnit;
             helper.findFractionDigit(this._statsArr);
         }
+    }
+
+    public draw(): void {
+        this.setFractionDigit();
 
         const helpers = [this._fnNameColumnHelper, ...this._argColumnHelpers, ...this._statsColumnHelpers];
 

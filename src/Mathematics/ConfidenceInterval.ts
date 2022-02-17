@@ -9,7 +9,7 @@ export class ConfidenceInterval {
     private _marginPercent: number;
 
     private _degreeOfFreedom: number;
-    private _confidenceLevel: ConfidenceLevel;
+    private _level: ConfidenceLevel;
 
     public get margin() {
         return this._margin;
@@ -27,13 +27,17 @@ export class ConfidenceInterval {
         return this._upper;
     }
 
+    public get level() {
+        return this._level;
+    }
+
     public constructor(
         sampleSize: number,
         estimation: number,
         standardError: number,
         confidenceLevel: ConfidenceLevel,
     ) {
-        this._confidenceLevel = confidenceLevel;
+        this._level = confidenceLevel;
 
         this._degreeOfFreedom = sampleSize - 1;
 
@@ -51,7 +55,7 @@ export class ConfidenceInterval {
     }
 
     private getZLevel() {
-        const x = 1 - (1 - this._confidenceLevel) / 2;
+        const x = 1 - (1 - this._level) / 2;
         return StudentT.invCDF(0, 1, this._degreeOfFreedom, x);
     }
 }
