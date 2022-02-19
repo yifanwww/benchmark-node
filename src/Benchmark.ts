@@ -94,7 +94,7 @@ export class Benchmark {
         for (const job of this.jobs) {
             table.addStats(job.stats);
         }
-        table.draw();
+        table.drawSummaryTable();
         table.writeDescription();
     }
 }

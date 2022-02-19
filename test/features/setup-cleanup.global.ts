@@ -6,11 +6,10 @@ function factorial(n: number) {
     return result;
 }
 
-const benchmark = new Benchmark();
-
-benchmark.add(
-    'factorial',
-    () => {
+new Benchmark()
+    .addSetup(() => console.log('Setup!\n'))
+    .addCleanup(() => console.log('Cleanup!\n'))
+    .add('factorial', () => {
         let res;
         for (let a = 1; a <= 20; a++) {
             for (let b = 1; b <= 20; b++) {
@@ -18,11 +17,5 @@ benchmark.add(
             }
         }
         return res;
-    },
-    {
-        setup: () => console.log('Setup!'),
-        cleanup: () => console.log('Cleanup!'),
-    },
-);
-
-benchmark.run();
+    })
+    .run();

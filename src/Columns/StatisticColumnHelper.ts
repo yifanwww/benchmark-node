@@ -66,14 +66,22 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
     }
 
     public override format(stats: Statistics): string {
-        if (this._column.unit === UnitType.Dimensionless) {
-            const data = this._column.getData(stats);
-            return Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
-        } else {
-            const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
-            return (
-                Formatter.beautifyNumber(data.toFixed(this._fractionDigit)) + TimeUnitHelper.getUnitStr(this._timeUnit)
-            );
+        let never: never;
+        switch (this._column.unit) {
+            case UnitType.Dimensionless: {
+                const data = this._column.getData(stats);
+                return Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
+            }
+
+            case UnitType.Time: {
+                const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
+                const num = Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
+                return `${num} ${TimeUnitHelper.getUnitStr(this._timeUnit)}`;
+            }
+
+            default:
+                never = this._column.unit;
+                return never;
         }
     }
 }

@@ -7,12 +7,12 @@ A Node.js benchmarking library for accurate performance test.
 It's easy to write benchmarks.
 
 ```ts
-import { Arguments, Benchmark } from 'benchmark-node';
+import { Benchmark, Column } from 'benchmark-node';
 import crypto from 'crypto';
 
 let testStr: Buffer;
 
-const benchmark = new Benchmark({ order: [Column.Median, Column.Min, Column.Max] });
+const benchmark = new Benchmark({ columns: [Column.Median, Column.Min, Column.Max, Column.Ops] });
 
 benchmark.addSetup(() => {
     testStr = crypto.randomBytes(10_000);
@@ -30,13 +30,13 @@ benchmark.run();
 `benchmark-node` will run the benchmarks, aggregates the measurements and print a summary table.
 
 ```md
-| Function |      Mean |    StdErr |    StdDev |    Median |       Min |       Max |
-|----------|-----------|-----------|-----------|-----------|-----------|-----------|
-|      md5 | 12.647 us | 0.0230 us | 0.0892 us | 12.663 us | 12.491 us | 12.792 us |
-|     sha1 |  5.763 us | 0.0113 us | 0.0440 us |  5.757 us |  5.691 us |  5.852 us |
-|   sha256 |  6.062 us | 0.0160 us | 0.0620 us |  6.069 us |  5.965 us |  6.193 us |
-|   sha384 | 11.698 us | 0.0248 us | 0.0959 us | 11.718 us | 11.522 us | 11.865 us |
-|   sha512 | 11.694 us | 0.0308 us | 0.1195 us | 11.694 us | 11.470 us | 11.928 us |
+| Function |      Mean |    Error |    StdDev |    Median |       Min |       Max |    Op/s |
+|----------|-----------|----------|-----------|-----------|-----------|-----------|---------|
+|      md5 | 12,401 ns | 58.84 ns | 106.25 ns | 12,405 ns | 12,182 ns | 12,632 ns |  80,641 |
+|     sha1 |  5,656 ns | 31.44 ns |  56.77 ns |  5,639 ns |  5,609 ns |  5,828 ns | 176,799 |
+|   sha256 |  5,916 ns | 25.85 ns |  46.68 ns |  5,922 ns |  5,845 ns |  5,997 ns | 169,028 |
+|   sha384 | 11,529 ns | 82.97 ns | 149.82 ns | 11,545 ns | 11,307 ns | 11,815 ns |  86,740 |
+|   sha512 | 11,475 ns | 72.68 ns | 131.25 ns | 11,472 ns | 11,296 ns | 11,841 ns |  87,146 |
 ```
 
 ## Develop this package

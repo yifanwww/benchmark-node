@@ -57,7 +57,7 @@ export class Table {
         }
     }
 
-    public draw(): void {
+    public drawSummaryTable(): void {
         this.setFractionDigit();
 
         const helpers = [this._fnNameColumnHelper, ...this._argColumnHelpers, ...this._statsColumnHelpers];

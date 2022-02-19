@@ -66,8 +66,8 @@ export class Column {
 
     public static CIError(level: ConfidenceLevel = ConfidenceLevel.L95) {
         return new StatisticColumn(
-            `CI ${level * 100}% Margin`,
-            `Half of ${level * 100} confidence interval`,
+            `CI${level * 100}% Margin`,
+            `Half of ${level * 100}% confidence interval`,
             (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, level).margin,
             UnitType.Time,
         );
