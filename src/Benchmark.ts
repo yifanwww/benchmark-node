@@ -6,12 +6,12 @@ import { StatisticColumnOrder, Table } from './View';
 
 export interface BenchmarkOptions {
     /**
-     * The order how Benchmark displays the statistic data.
+     * The columns that Benchmark displays the statistic data in summary table.
      *
-     * By default Benchmark will display that statistic data Mean, Standard Error and Standard Deviation, and you cannot
-     * disable them.
+     * By default Benchmark will display the Mean column, Standard Error column and Standard Deviation column,
+     * you cannot disable them.
      */
-    order?: (StatisticColumn | (() => StatisticColumn))[];
+    columns?: (StatisticColumn | (() => StatisticColumn))[];
 }
 
 export class Benchmark {
@@ -23,10 +23,10 @@ export class Benchmark {
     private _statisticColumnOrder: StatisticColumnOrder = new StatisticColumnOrder();
 
     public constructor(options?: BenchmarkOptions) {
-        const { order } = options ?? {};
+        const { columns } = options ?? {};
 
-        if (order) {
-            this.setColumnOrder(order.map((column) => (typeof column === 'function' ? column() : column)));
+        if (columns) {
+            this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
         }
     }
 

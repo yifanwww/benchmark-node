@@ -4,7 +4,7 @@ import { Benchmark, Column } from '../src';
 
 let testStr: Buffer;
 
-const benchmark = new Benchmark({ order: [Column.Median, Column.Min, Column.Max] });
+const benchmark = new Benchmark({ columns: [Column.Median, Column.Min, Column.Max] });
 
 benchmark.addSetup(() => {
     testStr = crypto.randomBytes(10_000);

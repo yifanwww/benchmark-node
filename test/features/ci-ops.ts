@@ -5,7 +5,7 @@ import { Benchmark, Column, ConfidenceLevel } from '../../src';
 let testStr: Buffer;
 
 const benchmark = new Benchmark({
-    order: [Column.Median, Column.Min, Column.Max, Column.CIError(ConfidenceLevel.L80), Column.Ops],
+    columns: [Column.Median, Column.Min, Column.Max, Column.CIError(ConfidenceLevel.L80), Column.Ops],
 });
 
 benchmark.addSetup(() => {
