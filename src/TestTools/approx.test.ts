@@ -3,9 +3,6 @@
  * - https://github.com/josdejong/mathjs/blob/v10.1.1/tools/approx.js
  */
 
-// Used to skip this file when unit testing.
-it.skip('skip', () => {});
-
 /**
  * Test whether two values are approximately equal. Tests whether the difference between the two numbers is smaller than
  * a fraction of their max value.

@@ -8,9 +8,6 @@ import assert from 'assert';
 
 import { Precision } from '../Mathematics/MathNet/Precision';
 
-// Used to skip this file when unit testing.
-it.skip('skip', () => {});
-
 export class AssertHelpers {
     /**
      * Compares two doubles and determines if they are equal to within the specified number of decimal places or not.

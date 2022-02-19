@@ -15,6 +15,7 @@ function getConfig() {
         setupFilesAfterEnv: hasTestSetup ? [paths.testSetup] : [],
 
         testMatch: ['<rootDir>/src/**/__tests__/**/*.ts', '<rootDir>/src/**/*.{spec,test}.ts'],
+        testPathIgnorePatterns: ['<rootDir>/src/TestTools'],
 
         transform: {
             '^.+\\.(js|mjs|cjs|ts)$': paths.transforms.babel,
