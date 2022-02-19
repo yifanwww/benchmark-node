@@ -1,0 +1,58 @@
+name: Test features
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!changelog'
+      - '!changelog/*'
+      - '!docs'
+      - '!docs/*'
+
+jobs:
+  features:
+    timeout-minutes: 10
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['9', '10', '12', '14', '16']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup node modules
+        run: npm ci
+
+      - name: Build test
+        run: npm run build-test
+
+      - name: Setup Node.js test environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Check node version
+        run: node --version
+
+      - name: Run test 'basic'
+        run: node dist/test/features/basic.js
+
+      - name: Run test 'benchmark-settings'
+        run: node dist/test/features/benchmark-settings.js
+
+      - name: Run test 'columns'
+        run: node dist/test/features/columns.js
+
+      - name: Run test 'setup-cleanup'
+        run: node dist/test/features/setup-cleanup.js

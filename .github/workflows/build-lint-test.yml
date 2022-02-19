@@ -11,8 +11,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -21,7 +26,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '16'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
@@ -35,8 +40,13 @@ jobs:
         run: npm run build-test
 
   lint:
-    runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -45,7 +55,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '16'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
@@ -56,8 +66,13 @@ jobs:
         run: npm run lint
 
   test:
-    runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -66,7 +81,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
+          node-version: '16'
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
 
