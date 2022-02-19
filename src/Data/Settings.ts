@@ -1,5 +1,5 @@
 import { Time } from '../Tools/TimeTool';
-import { BenchmarkJobSettings, Nanosecond } from '../types';
+import { BenchmarkSettings, Nanosecond } from '../types';
 
 export class Settings {
     private _delay: Nanosecond;
@@ -8,7 +8,7 @@ export class Settings {
     private _minMeasurementTime: Nanosecond;
     private _warmupCount: number;
 
-    public constructor(settings: BenchmarkJobSettings) {
+    public constructor(settings: BenchmarkSettings) {
         const { delay = 5, initOps = 16, measurementCount = 15, minMeasurementTime = 250, warmupCount = 7 } = settings;
 
         this._delay = Time.ms2ns(delay);

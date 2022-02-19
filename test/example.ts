@@ -1,19 +1,16 @@
 import crypto from 'crypto';
 
-import { Benchmark, Column } from '../src';
+import { BenchmarkJob, Column } from '../src';
 
-let testStr: Buffer;
+let buffer: Buffer;
 
-const benchmark = new Benchmark({ columns: [Column.Median, Column.Min, Column.Max, Column.Ops] });
-
-benchmark.addSetup(() => {
-    testStr = crypto.randomBytes(10_000);
-});
-
-benchmark.add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'));
-benchmark.add('sha1', () => crypto.createHash('sha1').update(testStr).digest('hex'));
-benchmark.add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'));
-benchmark.add('sha384', () => crypto.createHash('sha384').update(testStr).digest('hex'));
-benchmark.add('sha512', () => crypto.createHash('sha512').update(testStr).digest('hex'));
-
-benchmark.run();
+new BenchmarkJob({ columns: [Column.Median, Column.Min, Column.Max, Column.Ops] })
+    .addSetup(() => {
+        buffer = crypto.randomBytes(10_000);
+    })
+    .add('md5', () => crypto.createHash('md5').update(buffer).digest('hex'))
+    .add('sha1', () => crypto.createHash('sha1').update(buffer).digest('hex'))
+    .add('sha256', () => crypto.createHash('sha256').update(buffer).digest('hex'))
+    .add('sha384', () => crypto.createHash('sha384').update(buffer).digest('hex'))
+    .add('sha512', () => crypto.createHash('sha512').update(buffer).digest('hex'))
+    .run();

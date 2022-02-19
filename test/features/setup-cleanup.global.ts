@@ -1,4 +1,4 @@
-import { Benchmark } from '../../src';
+import { BenchmarkJob } from '../../src';
 
 function factorial(n: number) {
     let result = 1;
@@ -6,7 +6,7 @@ function factorial(n: number) {
     return result;
 }
 
-new Benchmark()
+new BenchmarkJob()
     .addSetup(() => console.log('Setup!\n'))
     .addCleanup(() => console.log('Cleanup!\n'))
     .add('factorial', () => {

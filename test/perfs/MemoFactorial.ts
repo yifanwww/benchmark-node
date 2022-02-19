@@ -1,4 +1,4 @@
-import { Benchmark } from '../../src';
+import { BenchmarkJob } from '../../src';
 
 function factorial(n: number) {
     let result = 1;
@@ -18,15 +18,15 @@ function memoFactorial(n: number) {
     return memoized[n];
 }
 
-const benchmark = new Benchmark();
+const job = new BenchmarkJob();
 
-benchmark.add('factorial', () => factorial(20));
-benchmark.add('memo-factorial', () => memoFactorial(20), {
+job.add('factorial', () => factorial(20));
+job.add('memo-factorial', () => memoFactorial(20), {
     setup: () => {
         memoized = [1, 1];
     },
 });
-benchmark.add('factorial-multi', () => {
+job.add('factorial-multi', () => {
     let res;
     for (let a = 1; a <= 20; a++) {
         for (let b = 1; b <= 20; b++) {
@@ -35,7 +35,7 @@ benchmark.add('factorial-multi', () => {
     }
     return res;
 });
-benchmark.add(
+job.add(
     'memo-factorial-multi',
     () => {
         let res;
@@ -53,4 +53,4 @@ benchmark.add(
     },
 );
 
-benchmark.run();
+job.run();

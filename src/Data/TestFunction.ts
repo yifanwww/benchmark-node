@@ -1,5 +1,5 @@
 import { Arguments } from '../Parameterization';
-import { BenchmarkJobTestFnOptions, TestFn } from '../types';
+import { BenchmarkTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';
 
 export class TestFunction<T extends TestFn> {
@@ -34,7 +34,7 @@ export class TestFunction<T extends TestFn> {
         return this._cleanup;
     }
 
-    public constructor(testFn: T, options: BenchmarkJobTestFnOptions<T>) {
+    public constructor(testFn: T, options: BenchmarkTestFnOptions<T>) {
         this._fn = testFn;
 
         const { args = [], cleanup, jitArgs: preArgs = [], setup } = options;

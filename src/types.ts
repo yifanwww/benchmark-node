@@ -14,7 +14,7 @@ export type Nanosecond = number & {};
 
 export type TestFn = (...args: never[]) => unknown;
 
-export interface BenchmarkJobSettings {
+export interface BenchmarkSettings {
     /**
      * The delay between test cycles (ms).
      *
@@ -47,7 +47,7 @@ export interface BenchmarkJobSettings {
     warmupCount?: number;
 }
 
-export interface BenchmarkJobTestFnOptions<T extends TestFn> {
+export interface BenchmarkTestFnOptions<T extends TestFn> {
     /**
      * Used for pilot benchmarking and formal benchmarking.
      */
@@ -68,4 +68,4 @@ export interface BenchmarkJobTestFnOptions<T extends TestFn> {
     cleanup?: () => void;
 }
 
-export interface BenchmarkJobOptions<T extends TestFn> extends BenchmarkJobSettings, BenchmarkJobTestFnOptions<T> {}
+export interface BenchmarkOptions<T extends TestFn> extends BenchmarkSettings, BenchmarkTestFnOptions<T> {}

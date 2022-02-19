@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 
-import { Benchmark } from '../../src';
+import { BenchmarkJob } from '../../src';
 
 function gammalnWithMalloc(n: number) {
     if (n < 0) return NaN;
@@ -47,9 +47,9 @@ function gammalnWithoutMalloc(n: number) {
     return lnSqrt2PI + (n + 0.5) * Math.log(n1) - n1 + Math.log(series / n);
 }
 
-const benchmark = new Benchmark();
+const job = new BenchmarkJob();
 
-benchmark.add('gammaln-with-malloc', () => {
+job.add('gammaln-with-malloc', () => {
     let res = gammalnWithMalloc(-1);
     res = gammalnWithMalloc(0);
     res = gammalnWithMalloc(0.001);
@@ -70,7 +70,7 @@ benchmark.add('gammaln-with-malloc', () => {
     res = gammalnWithMalloc(123456.789);
     return res;
 });
-benchmark.add('gammaln-without-malloc', () => {
+job.add('gammaln-without-malloc', () => {
     let res = gammalnWithoutMalloc(-1);
     res = gammalnWithoutMalloc(0);
     res = gammalnWithoutMalloc(0.001);
@@ -92,4 +92,4 @@ benchmark.add('gammaln-without-malloc', () => {
     return res;
 });
 
-benchmark.run();
+job.run();

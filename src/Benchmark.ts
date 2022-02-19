@@ -1,100 +1,107 @@
-import { BenchmarkJob } from './BenchmarkJob';
-import { StatisticColumn } from './Columns';
+import { Settings, Statistics, TestFunction } from './Data';
+import { CodeGen, Tester } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { BenchmarkJobOptions, TestFn } from './types';
-import { StatisticColumnOrder, Table } from './View';
+import { BenchmarkOptions, TestFn } from './types';
 
-export interface BenchmarkOptions {
-    /**
-     * The columns that Benchmark displays the statistic data in summary table.
-     *
-     * By default Benchmark will display the Mean column, Standard Error column and Standard Deviation column,
-     * you cannot disable them.
-     */
-    columns?: (StatisticColumn | (() => StatisticColumn))[];
+interface ConstructorArgs<T extends TestFn> {
+    name: string;
+    options: BenchmarkOptions<T>;
+    testFn: T;
 }
 
-export class Benchmark {
-    private jobs: BenchmarkJob<TestFn>[] = [];
+export class Benchmark<T extends TestFn> {
+    private _name: string;
+    private _testFunction: TestFunction<T>;
+    private _tester: Tester;
 
-    private _setupArr: Array<() => void> = [];
-    private _cleanupArr: Array<() => void> = [];
+    private _settings: Settings;
 
-    private _statisticColumnOrder: StatisticColumnOrder = new StatisticColumnOrder();
+    private _setup?: () => void;
+    private _cleanup?: () => void;
 
-    public constructor(options?: BenchmarkOptions) {
-        const { columns } = options ?? {};
+    private _stats: Statistics[] = [];
 
-        if (columns) {
-            this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
-        }
+    public get name() {
+        return this._name;
     }
 
-    public add<T extends TestFn>(job: BenchmarkJob<T>): this;
-    public add<T extends TestFn>(testFn: T, options?: BenchmarkJobOptions<T>): this;
-    public add<T extends TestFn>(name: string, testFn: T, options?: BenchmarkJobOptions<T>): this;
+    public get testFunction() {
+        return this._testFunction;
+    }
 
-    public add(
-        ...args:
-            | [BenchmarkJob<TestFn>]
-            | [TestFn, BenchmarkJobOptions<TestFn>?]
-            | [string, TestFn, BenchmarkJobOptions<TestFn>?]
-    ): this {
-        if (args[0] instanceof BenchmarkJob) {
-            this.jobs.push(args[0]);
+    public get tester() {
+        return this._tester;
+    }
+
+    public get settings() {
+        return this._settings;
+    }
+
+    public get setup() {
+        return this._setup;
+    }
+
+    public get cleanup() {
+        return this._cleanup;
+    }
+
+    public get stats() {
+        return this._stats;
+    }
+
+    /**
+     * @param testFn The function to benchmark.
+     * @param options The options of benchmark.
+     */
+    public constructor(testFn: T, options?: BenchmarkOptions<T>);
+    /**
+     * @param name The name used to identify this test.
+     * @param testFn The function to benchmark.
+     * @param options The options of benchmark.
+     */
+    public constructor(name: string, testFn: T, options?: BenchmarkOptions<T>);
+
+    public constructor(...args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]) {
+        const { name, options, testFn } = this.parseArgs(args);
+
+        this._name = name;
+        this._testFunction = new TestFunction(testFn, options);
+
+        this._settings = new Settings(options);
+
+        this._setup = options.setup;
+        this._cleanup = options.cleanup;
+
+        // Gets a totally new function to test the performance of `testFn`.
+        // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
+        // See "src/test/perf-DynamicFnCall.ts".
+        this._tester = CodeGen.createTester({
+            argument: { count: this._testFunction.maxArgsLength },
+        });
+    }
+
+    private parseArgs(args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]): ConstructorArgs<T> {
+        if (typeof args[0] === 'string') {
+            const _args = args as [string, T, BenchmarkOptions<T>?];
+            return {
+                name: _args[0],
+                options: _args[2] ?? {},
+                testFn: _args[1],
+            };
         } else {
-            this.jobs.push(new BenchmarkJob(...(args as [string, TestFn, BenchmarkJobOptions<TestFn>?])));
+            const _args = args as [T, BenchmarkOptions<T>?];
+            const constructorArgs: ConstructorArgs<T> = {
+                name: _args[0].name,
+                options: _args[1] ?? {},
+                testFn: _args[0],
+            };
+
+            if (constructorArgs.name === '') {
+                ConsoleLogger.default.writeLineError('Cannot get name from test fn, test fn is an anonymous function.');
+                throw new Error('Cannot get name from test fn, test fn is an anonymous function.');
+            }
+
+            return constructorArgs;
         }
-        return this;
-    }
-
-    /**
-     * Adds global setup.
-     * The global setup function will be executed only once before all the benchmark function invocations.
-     *
-     * @param setup A callback function that does some setup work.
-     * @returns The benchmark instance itself.
-     */
-    public addSetup(setup: () => void): this {
-        this._setupArr.push(setup);
-        return this;
-    }
-
-    /**
-     * Adds global cleanup.
-     * The global cleanup function will be executed only once after all the benchmark function invocations.
-     *
-     * @param cleanup A callback function that does some cleanup work.
-     * @returns The benchmark instance itself.
-     */
-    public addCleanup(cleanup: () => void): this {
-        this._cleanupArr.push(cleanup);
-        return this;
-    }
-
-    public setColumnOrder(order: StatisticColumn[]): this {
-        this._statisticColumnOrder.setOrder(order);
-        return this;
-    }
-
-    public run(): void {
-        const logger = ConsoleLogger.default;
-        logger.writeLineInfo(`// Found ${this.jobs.length} ${this.jobs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
-        for (const job of this.jobs) {
-            logger.writeLineInfo(`//   ${job.name}`);
-        }
-        logger.writeLine();
-
-        for (const setup of this._setupArr) setup();
-        for (const job of this.jobs) job.run();
-        for (const cleanup of this._cleanupArr) cleanup();
-
-        const table = new Table();
-        table.addStatisticColumns(this._statisticColumnOrder.getOrder());
-        for (const job of this.jobs) {
-            table.addStats(job.stats);
-        }
-        table.drawSummaryTable();
-        table.writeDescription();
     }
 }

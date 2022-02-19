@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 
-import { Benchmark, Column, ConfidenceLevel } from '../../src';
+import { BenchmarkJob, Column, ConfidenceLevel } from '../../src';
 
 let testStr: Buffer;
 
-new Benchmark({
+new BenchmarkJob({
     columns: [
         Column.CIError(ConfidenceLevel.L50),
         Column.CIError(ConfidenceLevel.L70),

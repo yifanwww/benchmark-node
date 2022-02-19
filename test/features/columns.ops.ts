@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 
-import { Benchmark, Column } from '../../src';
+import { BenchmarkJob, Column } from '../../src';
 
 let testStr: Buffer;
 
-new Benchmark({ columns: [Column.Ops] })
+new BenchmarkJob({ columns: [Column.Ops] })
     .addSetup(() => {
         testStr = crypto.randomBytes(10_000);
     })
