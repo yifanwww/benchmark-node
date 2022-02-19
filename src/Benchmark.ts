@@ -48,11 +48,6 @@ export class Benchmark {
         return this;
     }
 
-    public setNoopTest(name: string = 'noop'): this {
-        this.jobs.splice(0, 0, new BenchmarkJob(name, () => {}));
-        return this;
-    }
-
     /**
      * Adds global setup.
      * The global setup function will be executed only once before all the benchmark function invocations.
