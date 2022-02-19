@@ -36,7 +36,7 @@ export interface BenchmarkSettings {
     /**
      * The minimum time a benchmark uses.
      *
-     * Default is `100`.
+     * Default is `250`.
      */
     minMeasurementTime?: Millisecond;
     /**
