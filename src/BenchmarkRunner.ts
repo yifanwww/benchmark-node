@@ -190,12 +190,6 @@ export class BenchmarkRunner {
     protected _run(bench: Benchmark<TestFn>): void {
         this._current = bench;
 
-        const logger = ConsoleLogger.default;
-        logger.writeLineHeader('// *************************');
-        logger.writeLineHeader(`// Benchmark: ${bench.name}`);
-
-        bench.logConfigs();
-
         this._runJitting();
 
         if (bench.testFunction.argsCount === 0) {

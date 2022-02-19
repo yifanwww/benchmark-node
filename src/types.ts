@@ -59,11 +59,15 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
     /**
      * Set iteration setup.
      * A callback function to be executed exactly once before each benchmark function invocation.
+     *
+     * Warning: This may change in the future.
      */
     setup?: () => void;
     /**
      * Set iteration cleanup.
      * A callback function to be executed exactly once after each benchmark function invocation.
+     *
+     * Warning: This may change in the future.
      */
     cleanup?: () => void;
 }

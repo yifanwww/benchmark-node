@@ -1,6 +1,7 @@
 import { Benchmark } from './Benchmark';
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { StatisticColumn } from './Columns';
+import { RuntimeInfo } from './RuntimeInfo';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { BenchmarkOptions, TestFn } from './types';
 import { StatisticColumnOrder, Table } from './View';
@@ -86,8 +87,18 @@ export class BenchmarkJob extends BenchmarkRunner {
         logger.writeLine();
 
         for (const setup of this._setupArr) setup();
-        for (const bench of this.benchs) this._run(bench);
+        for (const bench of this.benchs) {
+            logger.writeLineHeader(`* Benchmark: ${bench.name} *`);
+            bench.logConfigs();
+            logger.writeLine();
+
+            this._run(bench);
+        }
         for (const cleanup of this._cleanupArr) cleanup();
+
+        logger.writeLineHeader('* Summary *\n');
+
+        RuntimeInfo.log();
 
         const table = new Table();
         table.addStatisticColumns(this._statsColumnOrder.getOrder());

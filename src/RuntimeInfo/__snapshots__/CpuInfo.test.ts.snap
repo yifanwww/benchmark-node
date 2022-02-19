@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test class CpuInfo to string 1`] = `"<cpu-name>"`;
+
+exports[`Test class CpuInfo to string 2`] = `"<cpu-name>, 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 3`] = `"<cpu-name>, 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 4`] = `"<cpu-name>, 1 logical core"`;
+
+exports[`Test class CpuInfo to string 5`] = `"<cpu-name>, 1 logical core and 1 physical core"`;
+
+exports[`Test class CpuInfo to string 6`] = `"<cpu-name>, 1 logical core and 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 7`] = `"<cpu-name>, 2 logical cores"`;
+
+exports[`Test class CpuInfo to string 8`] = `"<cpu-name>, 2 logical cores and 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 9`] = `"<cpu-name>, 2 logical and 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 10`] = `"<cpu-name>, 1 CPU"`;
+
+exports[`Test class CpuInfo to string 11`] = `"<cpu-name>, 1 CPU, 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 12`] = `"<cpu-name>, 1 CPU, 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 13`] = `"<cpu-name>, 1 CPU, 1 logical core"`;
+
+exports[`Test class CpuInfo to string 14`] = `"<cpu-name>, 1 CPU, 1 logical core and 1 physical core"`;
+
+exports[`Test class CpuInfo to string 15`] = `"<cpu-name>, 1 CPU, 1 logical core and 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 16`] = `"<cpu-name>, 1 CPU, 2 logical cores"`;
+
+exports[`Test class CpuInfo to string 17`] = `"<cpu-name>, 1 CPU, 2 logical cores and 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 18`] = `"<cpu-name>, 1 CPU, 2 logical and 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 19`] = `"<cpu-name>, 2 CPU"`;
+
+exports[`Test class CpuInfo to string 20`] = `"<cpu-name>, 2 CPU, 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 21`] = `"<cpu-name>, 2 CPU, 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 22`] = `"<cpu-name>, 2 CPU, 1 logical core"`;
+
+exports[`Test class CpuInfo to string 23`] = `"<cpu-name>, 2 CPU, 1 logical core and 1 physical core"`;
+
+exports[`Test class CpuInfo to string 24`] = `"<cpu-name>, 2 CPU, 1 logical core and 2 plysical cores"`;
+
+exports[`Test class CpuInfo to string 25`] = `"<cpu-name>, 2 CPU, 2 logical cores"`;
+
+exports[`Test class CpuInfo to string 26`] = `"<cpu-name>, 2 CPU, 2 logical cores and 1 plysical core"`;
+
+exports[`Test class CpuInfo to string 27`] = `"<cpu-name>, 2 CPU, 2 logical and 2 plysical cores"`;
