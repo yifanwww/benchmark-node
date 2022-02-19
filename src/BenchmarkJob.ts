@@ -15,7 +15,7 @@ export interface BenchmarkJobOptions {
     columns?: (StatisticColumn | (() => StatisticColumn))[];
 }
 
-export class BenchmarkJob {
+export class BenchmarkJob extends BenchmarkRunner {
     private benchs: Benchmark<TestFn>[] = [];
 
     private _setupArr: Array<() => void> = [];
@@ -24,6 +24,8 @@ export class BenchmarkJob {
     private _statsColumnOrder: StatisticColumnOrder = new StatisticColumnOrder();
 
     public constructor(options?: BenchmarkJobOptions) {
+        super();
+
         const { columns } = options ?? {};
 
         if (columns) {
@@ -84,7 +86,7 @@ export class BenchmarkJob {
         logger.writeLine();
 
         for (const setup of this._setupArr) setup();
-        for (const bench of this.benchs) BenchmarkRunner.run(bench);
+        for (const bench of this.benchs) this._run(bench);
         for (const cleanup of this._cleanupArr) cleanup();
 
         const table = new Table();

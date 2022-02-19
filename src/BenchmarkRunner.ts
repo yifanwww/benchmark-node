@@ -6,6 +6,7 @@ import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
 import { Time } from './Tools/TimeTool';
 import { Nanosecond, TestFn } from './types';
+import { Optional } from './types.internal';
 
 enum Stage {
     ActualOverhead /*  */ = 'OverheadActual  ',
@@ -19,27 +20,9 @@ enum Stage {
 }
 
 export class BenchmarkRunner {
-    public static logEnvironmentInfos() {
-        const logger = ConsoleLogger.default;
-        logger.writeLineInfo('// Benchmark Environment Information:');
-        logger.writeLineInfo(`//   Node.js ${process.version} (V8 ${process.versions.v8})`);
-    }
+    private _current: Optional<Benchmark<TestFn>> = null;
 
-    public static logConfigs(bench: Benchmark<TestFn>) {
-        const { delay, initOps, measurementCount, minMeasurementTime } = bench.settings;
-
-        const logger = ConsoleLogger.default;
-        logger.writeLineInfo('// Benchmark Configuration:');
-        logger.writeLineInfo(`//   delay               : ${Formatter.beautifyNumber(delay)} ns`);
-        logger.writeLineInfo(`//   initial ops         : ${Formatter.beautifyNumber(initOps)}`);
-        logger.writeLineInfo(`//   measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
-        logger.writeLineInfo(`//   min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
-        logger.writeLineInfo(`//   ${bench.testFunction.setup ? 'Has' : 'No'} callback \`setup\``);
-        logger.writeLineInfo(`//   ${bench.testFunction.cleanup ? 'Has' : 'No'} callback \`cleanup\``);
-    }
-
-    private static benchmarkJitting(
-        bench: Benchmark<TestFn>,
+    private benchmarkJitting(
         workload: boolean,
         order: number,
         ops: number,
@@ -47,194 +30,148 @@ export class BenchmarkRunner {
     ): void {
         const testerContext: TesterContext = {
             ops,
-            testFn: bench.testFunction.fn,
+            testFn: this._current!.testFunction.fn,
             workload,
 
-            setup: bench.setup,
-            cleanup: bench.cleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         let used: Nanosecond = 0;
         if (!argsGenerator) {
-            used = Time.hrtime2ns(bench.tester(testerContext).elapsed);
+            used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
         } else {
             for (const args of argsGenerator) {
                 testerContext.args = args.args;
-                used += Time.hrtime2ns(bench.tester(testerContext).elapsed);
+                used += Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
             }
         }
 
         const elapsed = used / ops;
 
-        BenchmarkRunner.logOpsData(
-            bench,
-            workload ? Stage.JittingWorkload : Stage.JittingOverhead,
-            order,
-            ops,
-            used,
-            elapsed,
-        );
+        this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    public static benchmarkJitting1(
-        bench: Benchmark<TestFn>,
-        getArgsGenerator?: () => Generator<Arguments<never[]>, void>,
-    ): void {
-        BenchmarkRunner.benchmarkJitting(bench, false, 1, 1, getArgsGenerator?.());
-        BenchmarkRunner.benchmarkJitting(bench, true, 1, 1, getArgsGenerator?.());
+    protected benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
+        this.benchmarkJitting(false, 1, 1, getArgsGenerator?.());
+        this.benchmarkJitting(true, 1, 1, getArgsGenerator?.());
     }
 
-    public static benchmarkJitting2(
-        bench: Benchmark<TestFn>,
-        getArgsGenerator?: () => Generator<Arguments<never[]>, void>,
-    ): void {
-        BenchmarkRunner.benchmarkJitting(bench, false, 2, bench.settings.initOps, getArgsGenerator?.());
-        BenchmarkRunner.benchmarkJitting(bench, true, 2, bench.settings.initOps, getArgsGenerator?.());
+    protected benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
+        this.benchmarkJitting(false, 2, this._current!.settings.initOps, getArgsGenerator?.());
+        this.benchmarkJitting(true, 2, this._current!.settings.initOps, getArgsGenerator?.());
     }
 
-    public static benchmarkPilot(bench: Benchmark<TestFn>, args?: Arguments<never[]>): number {
+    protected benchmarkPilot(args?: Arguments<never[]>): number {
         const testerContext: TesterContext = {
             args: args?.args,
-            ops: bench.settings.initOps,
-            testFn: bench.testFunction.fn,
+            ops: this._current!.settings.initOps,
+            testFn: this._current!.testFunction.fn,
             workload: true,
 
-            setup: bench.setup,
-            cleanup: bench.cleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         for (let index = 1; ; index++) {
-            const used = Time.hrtime2ns(bench.tester(testerContext).elapsed);
+            const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
             const elapsed = used / testerContext.ops;
 
-            BenchmarkRunner.logOpsData(bench, Stage.WorkloadPilot, index, testerContext.ops, used, elapsed);
+            this.logOpsData(Stage.WorkloadPilot, index, testerContext.ops, used, elapsed);
 
             // Calculate how many more iterations it will take to achieve the `minTime`.
             // After stage Pilot, we should get a good count number.
-            if (used <= bench.settings.minMeasurementTime) {
-                testerContext.ops += Math.ceil((bench.settings.minMeasurementTime - used) / elapsed);
+            if (used <= this._current!.settings.minMeasurementTime) {
+                testerContext.ops += Math.ceil((this._current!.settings.minMeasurementTime - used) / elapsed);
             } else {
                 break;
             }
 
-            Time.sleep(bench.settings.delay);
+            Time.sleep(this._current!.settings.delay);
         }
 
         return testerContext.ops;
     }
 
-    public static benchmarkWarmup(
-        bench: Benchmark<TestFn>,
-        workload: boolean,
-        ops: number,
-        args?: Arguments<never[]>,
-    ): void {
+    protected benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<never[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: bench.testFunction.fn,
+            testFn: this._current!.testFunction.fn,
             workload,
 
-            setup: bench.setup,
-            cleanup: bench.cleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
-        for (let index = 1; index <= bench.settings.warmupCount; index++) {
-            const used = Time.hrtime2ns(bench.tester(testerContext).elapsed);
+        for (let index = 1; index <= this._current!.settings.warmupCount; index++) {
+            const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
             const elapsed = used / ops;
 
-            BenchmarkRunner.logOpsData(
-                bench,
-                workload ? Stage.WarmupWorkload : Stage.WarmupOverhead,
-                index,
-                ops,
-                used,
-                elapsed,
-            );
+            this.logOpsData(workload ? Stage.WarmupWorkload : Stage.WarmupOverhead, index, ops, used, elapsed);
 
-            Time.sleep(bench.settings.delay);
+            Time.sleep(this._current!.settings.delay);
         }
     }
 
-    public static benchmarkOverheadActual(
-        bench: Benchmark<TestFn>,
-        ops: number,
-        args?: Arguments<never[]>,
-    ): Nanosecond {
+    protected benchmarkOverheadActual(ops: number, args?: Arguments<never[]>): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: bench.testFunction.fn,
+            testFn: this._current!.testFunction.fn,
             workload: false,
 
-            setup: bench.setup,
-            cleanup: bench.cleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         let total: Nanosecond = 0;
 
-        for (let index = 1; index <= bench.settings.measurementCount; index++) {
-            const used = Time.hrtime2ns(bench.tester(testerContext).elapsed);
+        for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
+            const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            BenchmarkRunner.logOpsData(bench, Stage.ActualOverhead, index, ops, used, used / ops);
+            this.logOpsData(Stage.ActualOverhead, index, ops, used, used / ops);
 
             total += used;
 
-            Time.sleep(bench.settings.delay);
+            Time.sleep(this._current!.settings.delay);
         }
 
-        return total / bench.settings.measurementCount;
+        return total / this._current!.settings.measurementCount;
     }
 
-    public static benchmarkWorkloadActual(
-        bench: Benchmark<TestFn>,
-        measurements: Nanosecond[],
-        ops: number,
-        args?: Arguments<never[]>,
-    ): void {
+    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<never[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: bench.testFunction.fn,
+            testFn: this._current!.testFunction.fn,
             workload: true,
 
-            setup: bench.setup,
-            cleanup: bench.cleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
-        for (let index = 1; index <= bench.settings.measurementCount; index++) {
-            const used = Time.hrtime2ns(bench.tester(testerContext).elapsed);
+        for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
+            const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            BenchmarkRunner.logOpsData(bench, Stage.ActualWorkload, index, ops, used, used / ops);
+            this.logOpsData(Stage.ActualWorkload, index, ops, used, used / ops);
 
             measurements.push(used);
 
-            Time.sleep(bench.settings.delay);
+            Time.sleep(this._current!.settings.delay);
         }
     }
 
-    public static benchmarkWorkloadResult(
-        bench: Benchmark<TestFn>,
-        measurements: Nanosecond[],
-        overhead: Nanosecond,
-        ops: number,
-    ): void {
+    protected benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
         for (let i = 0; i < measurements.length; i++) {
             measurements[i] = Math.max(measurements[i] - overhead, 0);
-            BenchmarkRunner.logOpsData(bench, Stage.WorkloadResult, i + 1, ops, measurements[i], measurements[i] / ops);
+            this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], measurements[i] / ops);
         }
     }
 
-    private static logOpsData(
-        bench: Benchmark<TestFn>,
-        prefix: Stage,
-        index: number,
-        ops: number,
-        used: Nanosecond,
-        elapsed: Nanosecond,
-    ) {
-        const len = bench.settings.measurementCount.toString().length;
+    private logOpsData(prefix: Stage, index: number, ops: number, used: Nanosecond, elapsed: Nanosecond) {
+        const len = this._current!.settings.measurementCount.toString().length;
 
         ConsoleLogger.default.writeLine(
             [
@@ -249,38 +186,43 @@ export class BenchmarkRunner {
 
     /**
      * Runs the benchmark.
-     * @returns The benchmark instance.
      */
-    public static run(bench: Benchmark<TestFn>): void {
+    protected _run(bench: Benchmark<TestFn>): void {
+        this._current = bench;
+
         const logger = ConsoleLogger.default;
         logger.writeLineHeader('// *************************');
         logger.writeLineHeader(`// Benchmark: ${bench.name}`);
 
-        BenchmarkRunner.logEnvironmentInfos();
-        BenchmarkRunner.logConfigs(bench);
-        logger.writeLine();
+        bench.logConfigs();
 
-        if (bench.testFunction.jitArgsCount === 0) {
-            BenchmarkRunner.benchmarkJitting1(bench);
-            logger.writeLine();
-            BenchmarkRunner.benchmarkJitting2(bench);
-        } else {
-            BenchmarkRunner.benchmarkJitting1(bench, bench.testFunction.getJitArgsGenerator);
-            logger.writeLine();
-            BenchmarkRunner.benchmarkJitting2(bench, bench.testFunction.getJitArgsGenerator);
-        }
-        logger.writeLine();
+        this._runJitting();
 
         if (bench.testFunction.argsCount === 0) {
-            BenchmarkRunner._run(bench);
+            this._runFormal();
         } else {
             for (const args of bench.testFunction.args) {
-                BenchmarkRunner._run(bench, args);
+                this._runFormal(args);
             }
         }
     }
 
-    private static _run(bench: Benchmark<TestFn>, args?: Arguments<never[]>): void {
+    private _runJitting(): void {
+        const logger = ConsoleLogger.default;
+
+        if (this._current!.testFunction.jitArgsCount === 0) {
+            this.benchmarkJitting1();
+            logger.writeLine();
+            this.benchmarkJitting2();
+        } else {
+            this.benchmarkJitting1(this._current!.testFunction.getJitArgsGenerator);
+            logger.writeLine();
+            this.benchmarkJitting2(this._current!.testFunction.getJitArgsGenerator);
+        }
+        logger.writeLine();
+    }
+
+    private _runFormal(args?: Arguments<never[]>): void {
         const logger = ConsoleLogger.default;
 
         if (args) {
@@ -288,27 +230,27 @@ export class BenchmarkRunner {
             logger.writeLine();
         }
 
-        const ops = BenchmarkRunner.benchmarkPilot(bench, args);
+        const ops = this.benchmarkPilot(args);
         logger.writeLine();
 
-        BenchmarkRunner.benchmarkWarmup(bench, false, ops, args);
+        this.benchmarkWarmup(false, ops, args);
         logger.writeLine();
 
-        const overhead = BenchmarkRunner.benchmarkOverheadActual(bench, ops, args);
+        const overhead = this.benchmarkOverheadActual(ops, args);
         logger.writeLine();
 
-        BenchmarkRunner.benchmarkWarmup(bench, true, ops, args);
+        this.benchmarkWarmup(true, ops, args);
         logger.writeLine();
 
         const measurements: Nanosecond[] = [];
-        BenchmarkRunner.benchmarkWorkloadActual(bench, measurements, ops, args);
+        this.benchmarkWorkloadActual(measurements, ops, args);
         logger.writeLine();
 
-        BenchmarkRunner.benchmarkWorkloadResult(bench, measurements, overhead, ops);
+        this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Statistics(bench.name, measurements, ops, args);
-        bench.stats.push(stats);
+        const stats = new Statistics(this._current!.name, measurements, ops, args);
+        this._current!.stats.push(stats);
         stats.log();
     }
 }

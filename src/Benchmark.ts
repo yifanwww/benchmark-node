@@ -1,6 +1,8 @@
 import { Settings, Statistics, TestFunction } from './Data';
 import { CodeGen, Tester } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
+import { Environment } from './Tools/Environment';
+import { Formatter } from './Tools/Formatter';
 import { BenchmarkOptions, TestFn } from './types';
 
 interface ConstructorArgs<T extends TestFn> {
@@ -103,5 +105,21 @@ export class Benchmark<T extends TestFn> {
 
             return constructorArgs;
         }
+    }
+
+    public logConfigs() {
+        const { delay, initOps, measurementCount, minMeasurementTime } = this._settings;
+
+        const logger = ConsoleLogger.default;
+        logger.writeLineInfo('// Benchmark Environment Information:');
+        logger.writeLineInfo(`//   Node.js ${Environment.nodeVersion} (V8 ${Environment.v8Version})`);
+        logger.writeLineInfo('// Benchmark Configuration:');
+        logger.writeLineInfo(`//   delay               : ${Formatter.beautifyNumber(delay)} ns`);
+        logger.writeLineInfo(`//   initial ops         : ${Formatter.beautifyNumber(initOps)}`);
+        logger.writeLineInfo(`//   measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
+        logger.writeLineInfo(`//   min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
+        logger.writeLineInfo(`//   ${this._testFunction.setup ? 'Has' : 'No'} callback \`setup\``);
+        logger.writeLineInfo(`//   ${this._testFunction.cleanup ? 'Has' : 'No'} callback \`cleanup\``);
+        logger.writeLine();
     }
 }
