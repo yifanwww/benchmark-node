@@ -10,7 +10,7 @@ function getConfig() {
         rootDir: paths.repository,
         roots: ['<rootDir>/src'],
 
-        collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/test.setup.ts'],
+        collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/test.setup.ts', '!src/TestTools/*.ts'],
 
         setupFilesAfterEnv: hasTestSetup ? [paths.testSetup] : [],
 

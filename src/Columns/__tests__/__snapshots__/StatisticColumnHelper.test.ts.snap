@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test class \`StatisticColumnHelper\` calls method format with dimensionless integer statistic column 1`] = `"15"`;
+
+exports[`Test class \`StatisticColumnHelper\` calls method format with dimensionless statistic column 1`] = `"0.2401"`;
+
+exports[`Test class \`StatisticColumnHelper\` calls method format with time statistic column 1`] = `"0.2401 ns"`;

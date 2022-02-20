@@ -2,7 +2,7 @@ import { TimeTool } from '../TimeTool';
 import { TimeUnit } from '../TimeUnit';
 
 describe(`Test class \`${TimeTool.name}\``, () => {
-    it(TimeTool.convert.name, () => {
+    it(`calls static method ${TimeTool.convert.name}`, () => {
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.NS)).toBe(1);
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.US)).toBe(0.001);
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.MS)).toBe(0.000_001);
@@ -24,7 +24,20 @@ describe(`Test class \`${TimeTool.name}\``, () => {
         expect(TimeTool.convert(1, TimeUnit.S, TimeUnit.S)).toBe(1);
     });
 
-    it(TimeTool.ms2ns.name, () => {
+    it(`calls static method ${TimeTool.ms2ns.name}`, () => {
         expect(TimeTool.ms2ns(1)).toBe(1_000_000);
+    });
+
+    it(`calls static method ${TimeTool.hrtime2ns.name}`, () => {
+        expect(TimeTool.hrtime2ns([0, 1000])).toBe(1_000);
+        expect(TimeTool.hrtime2ns([1, 1])).toBe(1_000_000_001);
+    });
+
+    it(`calls static method ${TimeTool.sleep.name}`, () => {
+        const begin = process.hrtime();
+
+        TimeTool.sleep(10_000);
+
+        expect(TimeTool.hrtime2ns(process.hrtime(begin))).toBeGreaterThan(10_000);
     });
 });

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test class \`ConsoleLogger\` calls method write 1`] = `"[37mHello world[39m"`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeError 1`] = `"[31mHello world[39m"`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeHeader 1`] = `"[95mHello world[39m"`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeInfo 1`] = `"[33mHello world[39m"`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLine 1`] = `
+"
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLine 2`] = `
+"[37mHello world[39m
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLineError 1`] = `
+"[31mHello world[39m
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLineHeader 1`] = `
+"[95mHello world[39m
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLineInfo 1`] = `
+"[33mHello world[39m
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeLineStatistic 1`] = `
+"[96mHello world[39m
+"
+`;
+
+exports[`Test class \`ConsoleLogger\` calls method writeStatistic 1`] = `"[96mHello world[39m"`;

@@ -1,16 +1,25 @@
+import { testConstants } from '../../TestTools/constants.test';
 import { Statistics } from '../Statistics';
 
 describe(`Test class \`${Statistics.name}\``, () => {
     it('calculates', () => {
-        const stats = new Statistics(
-            'name',
-            [
-                37051080, 33390980, 33920080, 33423180, 33684980, 34514380, 33498580, 34333480, 33923280, 34479480,
-                33398680, 33242780, 33088980, 33790080, 33530180,
-            ],
-            141386309,
-        );
+        const stats = new Statistics('name', testConstants.measurements.slice(), testConstants.ops);
 
-        expect(JSON.stringify(stats, undefined, 4)).toMatchSnapshot();
+        expect(stats).toMatchSnapshot();
+
+        expect(stats.name).toMatchSnapshot();
+        expect(stats.args).toMatchSnapshot();
+        expect(stats.n).toMatchSnapshot();
+        expect(stats.mean).toMatchSnapshot();
+        expect(stats.variance).toMatchSnapshot();
+        expect(stats.standardDeviation).toMatchSnapshot();
+        expect(stats.standardError).toMatchSnapshot();
+        expect(stats.confidenceInterval).toMatchSnapshot();
+        expect(stats.min).toMatchSnapshot();
+        expect(stats.q1).toMatchSnapshot();
+        expect(stats.median).toMatchSnapshot();
+        expect(stats.q3).toMatchSnapshot();
+        expect(stats.max).toMatchSnapshot();
+        expect(stats.ops).toMatchSnapshot();
     });
 });

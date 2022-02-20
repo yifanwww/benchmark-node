@@ -72,13 +72,6 @@ export class Statistics {
         return this._standardError;
     }
 
-    /**
-     * The margin of error in nanoseconds.
-     */
-    public get margin() {
-        return this._ci.margin;
-    }
-
     public get confidenceInterval() {
         return this._ci;
     }

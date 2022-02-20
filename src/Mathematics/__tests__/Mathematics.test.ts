@@ -1,6 +1,6 @@
 import { Mathematics } from '../Mathematics';
 
-describe(`Test class ${Mathematics}`, () => {
+describe(`Test class ${Mathematics.name}`, () => {
     it(`tests static method ${Mathematics.sum.name}`, () => {
         expect(Mathematics.sum([1, 2, 3, 4, 4])).toBe(14);
     });

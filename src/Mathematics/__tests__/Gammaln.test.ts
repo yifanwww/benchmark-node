@@ -3,7 +3,7 @@
 import { approx } from '../../TestTools/approx.test';
 import { gammaln } from '../Gammaln';
 
-describe('gammaln', () => {
+describe(`Test function ${gammaln.name}`, () => {
     it('should calculate the gammaln of 0', () => {
         expect(gammaln(0)).toStrictEqual(Infinity);
     });

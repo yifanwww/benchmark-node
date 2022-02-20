@@ -14,7 +14,7 @@ export class Column {
     public static readonly Error = new StatisticColumn(
         'Error',
         'Half of 95% confidence interval',
-        (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, ConfidenceLevel.L95).margin,
+        (stats) => stats.confidenceInterval.margin,
         UnitType.Time,
     );
 

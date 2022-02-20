@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test class \`TimeUnitHelper\` calls static method  1`] = `"ns"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  2`] = `"us"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  3`] = `"ms"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  4`] = `"s"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  5`] = `"1 Nanosecond (0.000000001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  6`] = `"1 Microsecond (0.000001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  7`] = `"1 Millisecond (0.001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  8`] = `"1 Second"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  9`] = `"1 ns  : 1 Nanosecond (0.000000001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  10`] = `"1 us  : 1 Microsecond (0.000001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  11`] = `"1 ms  : 1 Millisecond (0.001 sec)"`;
+
+exports[`Test class \`TimeUnitHelper\` calls static method  12`] = `"1 s   : 1 Second"`;

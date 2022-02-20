@@ -32,6 +32,10 @@ export class ConsoleLogger {
     private _writeImpl = (text: string) => process.stdout.write(text);
     private _writeLineImpl = (text?: string) => process.stdout.write(text ? `${text}\n` : '\n');
 
+    private _write(kind: LogKind, write: (text: string) => void, text: string) {
+        write(this.colorScheme[kind](text));
+    }
+
     public write(text: string): void;
     public write(kind: LogKind, text: string): void;
 
@@ -55,10 +59,6 @@ export class ConsoleLogger {
         } else {
             this._write(args[0], this._writeLineImpl, args[1]);
         }
-    }
-
-    private _write(kind: LogKind, write: (text: string) => void, text: string) {
-        write(this.colorScheme[kind](text));
     }
 
     public writeHeader = (text: string) => this.write(LogKind.Header, text);
