@@ -48,8 +48,8 @@ jobs:
       - name: Run test 'basic'
         run: node dist/test/features/basic.js
 
-      - name: Run test 'benchmark-settings'
-        run: node dist/test/features/benchmark-settings.js
+      - name: Run test 'benchmarking-settings'
+        run: node dist/test/features/benchmarking-settings.js
 
       - name: Run test 'columns'
         run: node dist/test/features/columns.js
