@@ -7,6 +7,7 @@ export class TestFunction<T extends TestFn> {
 
     private _argNames: Optional<string[]> = null;
 
+    /** The testFn. */
     public get fn() {
         return this._fn;
     }

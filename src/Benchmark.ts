@@ -6,13 +6,16 @@ import { Formatter } from './Tools/Formatter';
 import { BenchmarkOptions, TestFn } from './types';
 
 interface ConstructorArgs<T extends TestFn> {
-    name: string;
+    name?: string;
     options: BenchmarkOptions<T>;
     testFn: T;
 }
 
 export class Benchmark<T extends TestFn> {
-    private _name: string;
+    private static id = 0;
+    private readonly _id = ++Benchmark.id;
+
+    private _name?: string;
     private _testFunction: TestFunction<T>;
     private _tester: Tester;
 
@@ -23,8 +26,8 @@ export class Benchmark<T extends TestFn> {
 
     private _stats: Statistics[] = [];
 
-    public get name() {
-        return this._name;
+    public get name(): string {
+        return this._name ?? this._testFunction.fn.name;
     }
 
     public get testFunction() {
@@ -87,23 +90,15 @@ export class Benchmark<T extends TestFn> {
             const _args = args as [string, T, BenchmarkOptions<T>?];
             return {
                 name: _args[0],
-                options: _args[2] ?? {},
                 testFn: _args[1],
+                options: _args[2] ?? {},
             };
         } else {
             const _args = args as [T, BenchmarkOptions<T>?];
-            const constructorArgs: ConstructorArgs<T> = {
-                name: _args[0].name,
-                options: _args[1] ?? {},
+            return {
                 testFn: _args[0],
+                options: _args[1] ?? {},
             };
-
-            if (constructorArgs.name === '') {
-                ConsoleLogger.default.writeLineError('Cannot get name from test fn, test fn is an anonymous function.');
-                throw new Error('Cannot get name from test fn, test fn is an anonymous function.');
-            }
-
-            return constructorArgs;
         }
     }
 
@@ -120,5 +115,28 @@ export class Benchmark<T extends TestFn> {
         logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
         logger.writeLineInfo(`  ${this._testFunction.setup ? 'Has' : 'No'} iteration setup`);
         logger.writeLineInfo(`  ${this._testFunction.cleanup ? 'Has' : 'No'} iteration cleanup`);
+    }
+
+    /**
+     * Validates this benchmark.
+     * @returns Returns `false` if problems in this benchmark, otherwise `true`.
+     */
+    public validate(): boolean {
+        const logger = ConsoleLogger.default;
+
+        let pass = true;
+
+        if (this._name === '') {
+            logger.writeLineError(`[No.${this._id} Benchmark] The name of this benchmark cannot be an empty string`);
+            pass = false;
+        } else if (this._name === undefined && this._testFunction.fn.name === '') {
+            const prefix = `[No.${this._id} Benchmark]`;
+            logger.writeLineError(
+                `${prefix} No name provided, cannot get the name of \`testFn\`, it's an anonymous function`,
+            );
+            pass = false;
+        }
+
+        return pass;
     }
 }

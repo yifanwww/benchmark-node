@@ -56,3 +56,6 @@ jobs:
 
       - name: Run test 'setup-cleanup'
         run: node dist/test/features/setup-cleanup.js
+
+      - name: Run test 'validation'
+        run: node dist/test/features/validation.js
