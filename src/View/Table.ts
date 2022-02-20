@@ -1,11 +1,11 @@
 import {
     ArgumentColumn,
     ArgumentColumnHelper,
+    Column,
     StatisticColumn,
     StatisticColumnHelper,
     TableColumn,
     TableColumnHelper,
-    UnitType,
 } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -42,15 +42,16 @@ export class Table {
     }
 
     private setFractionDigit(): void {
-        let minTime = Number.MAX_SAFE_INTEGER;
+        let minTime: number;
 
         for (const helper of this._statsColumnHelpers) {
-            if (helper.column.unit === UnitType.Time) {
-                minTime = Math.min(minTime, helper.findMinNumber(this._statsArr));
+            if (helper.column.columnName === Column.Mean.columnName) {
+                minTime = helper.findMinNumber(this._statsArr);
+                break;
             }
         }
 
-        this._timeUnit = TimeUnitHelper.chooseUnit(minTime);
+        this._timeUnit = TimeUnitHelper.chooseUnit(minTime!);
         for (const helper of this._statsColumnHelpers) {
             helper.timeUnit = this._timeUnit;
             helper.findFractionDigit(this._statsArr);

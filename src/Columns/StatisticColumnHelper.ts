@@ -48,7 +48,10 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const _stats of statsArr) {
-            const data = TimeTool.convert(this._column.getData(_stats), TimeUnit.NS, this._timeUnit);
+            let data = this._column.getData(_stats);
+            if (this._column.unit === UnitType.Time) {
+                data = TimeTool.convert(data, TimeUnit.NS, this._timeUnit);
+            }
             min = Math.min(min, data);
         }
 
