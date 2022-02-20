@@ -14,35 +14,35 @@ export type Nanosecond = number & {};
 
 export type TestFn = (...args: never[]) => unknown;
 
-export interface BenchmarkSettings {
+export interface BenchmarkingSettings {
     /**
      * The delay between test cycles (ms).
      *
-     * Default is `5`.
+     * Default is `5`, minimum is `1`.
      */
     delay?: Millisecond;
     /**
      * The initial number of ops to run in a benchmark.
      *
-     * Default is `16`.
+     * Default is `16`, minimum is `1`.
      */
     initOps?: number;
     /**
      * The count of measurements required to perform statistical analysis.
      *
-     * Default is `15`.
+     * Default is `15`, minimum is `3`.
      */
     measurementCount?: number;
     /**
      * The minimum time a benchmark uses.
      *
-     * Default is `250`.
+     * Default is `250`, minimum is `1`.
      */
     minMeasurementTime?: Millisecond;
     /**
      * Warm up before formal benchmarking.
      *
-     * Default is `7`
+     * Default is `7`, minimum is `1`.
      */
     warmupCount?: number;
 }
@@ -71,5 +71,3 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
      */
     cleanup?: () => void;
 }
-
-export interface BenchmarkOptions<T extends TestFn> extends BenchmarkSettings, BenchmarkTestFnOptions<T> {}

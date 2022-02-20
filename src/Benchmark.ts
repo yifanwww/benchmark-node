@@ -3,13 +3,15 @@ import { RuntimeInfo } from './RuntimeInfo';
 import { CodeGen, Tester } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
-import { BenchmarkOptions, TestFn } from './types';
+import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from './types';
 
 interface ConstructorArgs<T extends TestFn> {
     name?: string;
     options: BenchmarkOptions<T>;
     testFn: T;
 }
+
+export interface BenchmarkOptions<T extends TestFn> extends BenchmarkingSettings, BenchmarkTestFnOptions<T> {}
 
 export class Benchmark<T extends TestFn> {
     private static id = 0;
@@ -102,7 +104,11 @@ export class Benchmark<T extends TestFn> {
         }
     }
 
-    public logConfigs() {
+    public setBenchmarkingSettings(settings: BenchmarkingSettings): void {
+        this._settings.setButNoOverwriting(settings);
+    }
+
+    public logConfigs(): void {
         const { delay, initOps, measurementCount, minMeasurementTime } = this._settings;
 
         const logger = ConsoleLogger.default;
