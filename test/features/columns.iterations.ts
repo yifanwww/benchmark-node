@@ -17,12 +17,12 @@ new BenchmarkJob({ columns: [Column.Iterations] })
     .run();
 
 /*
-BenchmarkNode v0.5.2, Windows 10.0.22000
+BenchmarkNode v0.6.0, Windows 10.0.22000
 AMD Ryzen 7 5800H with Radeon Graphics, 1 CPU, 16 logical and 8 plysical cores
 Node.JS 16.13.0 (V8 9.4.146.19-node.13)
 
-| Function |      Mean |     Error |   StdDev | Iterations |
-|----------|-----------|-----------|----------|------------|
-|      md5 | 12,531 ns |  50.07 ns | 90.41 ns |         15 |
-|   sha256 |  6,049 ns | 104.87 ns | 84.46 ns |          5 |
+| Function |      Mean |     Error |    StdDev | Iterations |
+|----------|-----------|-----------|-----------|------------|
+|      md5 | 12.612 us | 0.0524 us | 0.0946 us |         15 |
+|   sha256 |  6.082 us | 0.1995 us | 0.1607 us |          5 |
  */

@@ -31,17 +31,17 @@ new BenchmarkJob({ columns: [Column.Median, Column.Min, Column.Max, Column.Ops] 
 `benchmark-node` will run the benchmarks, aggregates the measurements and print a summary table.
 
 ```md
-BenchmarkNode v0.5.2, Windows 10.0.22000
+BenchmarkNode v0.6.0, Windows 10.0.22000
 AMD Ryzen 7 5800H with Radeon Graphics, 1 CPU, 16 logical and 8 plysical cores
 Node.JS 16.13.0 (V8 9.4.146.19-node.13)
 
-| Function |      Mean |    Error |    StdDev |    Median |       Min |       Max |    Op/s |
-|----------|-----------|----------|-----------|-----------|-----------|-----------|---------|
-|      md5 | 12,401 ns | 58.84 ns | 106.25 ns | 12,405 ns | 12,182 ns | 12,632 ns |  80,641 |
-|     sha1 |  5,656 ns | 31.44 ns |  56.77 ns |  5,639 ns |  5,609 ns |  5,828 ns | 176,799 |
-|   sha256 |  5,916 ns | 25.85 ns |  46.68 ns |  5,922 ns |  5,845 ns |  5,997 ns | 169,028 |
-|   sha384 | 11,529 ns | 82.97 ns | 149.82 ns | 11,545 ns | 11,307 ns | 11,815 ns |  86,740 |
-|   sha512 | 11,475 ns | 72.68 ns | 131.25 ns | 11,472 ns | 11,296 ns | 11,841 ns |  87,146 |
+| Function |      Mean |     Error |    StdDev |    Median |       Min |       Max |    Op/s |
+|----------|-----------|-----------|-----------|-----------|-----------|-----------|---------|
+|      md5 | 12.624 us | 0.0537 us | 0.0970 us | 12.624 us | 12.433 us | 12.766 us |  79,216 |
+|     sha1 |  5.727 us | 0.0183 us | 0.0330 us |  5.719 us |  5.695 us |  5.815 us | 174,610 |
+|   sha256 |  5.998 us | 0.0273 us | 0.0493 us |  5.990 us |  5.922 us |  6.065 us | 166,729 |
+|   sha384 | 11.586 us | 0.0671 us | 0.1211 us | 11.579 us | 11.391 us | 11.809 us |  86,310 |
+|   sha512 | 11.639 us | 0.0538 us | 0.0971 us | 11.652 us | 11.488 us | 11.826 us |  85,919 |
 ```
 
 For more usages, check:

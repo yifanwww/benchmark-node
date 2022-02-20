@@ -1,4 +1,42 @@
 # CHANGELOG
+## benchmark-node v0.6.0 (2022-02-20)
+### Features
+
+- Support setting the columns order of the summary table
+- Support automatically setting fraction digit for each column in the summary table
+- Support high-precision Student-T Distribution to calculate confidence intervals
+- Support writing statistic column descriptions
+- Support draw `Ops` column and `CIError` column in the summary table
+- Support writing runtime information before the summary table
+- Support draw `Iterations` column in the summary table
+- Support validation before benchmarking
+  - Checking benchmark name
+  - Checking the numbers of global setup functions and global cleanup functions in benchmark job
+- Support specifying benchmarking settings in `BenchmarkJob`
+
+### Breaking Changes
+
+- Change Enum `Column` to be a class, now it has the following columns:
+  - `Mean`
+  - `Error`
+  - `StdDev`
+  - `StdErr`
+  - `Min`
+  - `Q1`
+  - `Median`
+  - `Q3`
+  - `Max`
+  - `Ops` (new)
+  - `CIError` (new)
+  - `Iterations` (new)
+- Delete method `setNoopTest`
+- Swap `Benchmark` and `BenchmarkJob`, see [README](https://github.com/yifanwww/benchmark-node) for usage
+- A benchmark job can only have one global setup function and one global cleanup function
+
+### Bug Fixes
+
+- Fix the default value of `minMeasurementTime` in comments
+
 ## benchmark-node v0.5.2 (2022-02-11)
 ### Bug Fixes
 
