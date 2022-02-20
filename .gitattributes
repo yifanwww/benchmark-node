@@ -108,6 +108,8 @@ makefile                    text eol=lf
 *.ts                        text eol=lf
 *.tsx                       text eol=lf
 
+*.snap                      text eol=lf
+
 ## kotlin
 
 *.kt                        text eol=lf

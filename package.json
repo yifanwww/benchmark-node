@@ -28,8 +28,8 @@
         "lint": "eslint .",
         "pre-commit": "lint-staged",
         "prepare": "husky install",
-        "test": "node scripts/unit-test.js",
-        "test-full": "node scripts/unit-test.js"
+        "test": "node scripts/unit-test.js --color",
+        "test-full": "node scripts/unit-test.js --color"
     },
     "engines": {
         "node": ">=9"
