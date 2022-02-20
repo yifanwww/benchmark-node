@@ -12,6 +12,7 @@ new BenchmarkJob({
         Column.Q3,
         Column.Max,
         Column.Ops,
+        Column.Iterations,
         Column.CIError(ConfidenceLevel.L50),
         Column.CIError(ConfidenceLevel.L70),
         Column.CIError(ConfidenceLevel.L75),
@@ -32,5 +33,5 @@ new BenchmarkJob({
         testStr = crypto.randomBytes(10_000);
     })
     .add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'))
-    .add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'))
+    .add('sha256', () => crypto.createHash('sha256').update(testStr).digest('hex'), { measurementCount: 5 })
     .run();

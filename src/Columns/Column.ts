@@ -72,4 +72,11 @@ export class Column {
             UnitType.Time,
         );
     }
+
+    public static readonly Iterations = new StatisticColumn(
+        'Iterations',
+        'Number of target benchmark iterations',
+        (stats) => stats.n,
+        UnitType.DimensionlessInteger,
+    );
 }

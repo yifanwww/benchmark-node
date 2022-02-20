@@ -73,6 +73,11 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
                 return Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
             }
 
+            case UnitType.DimensionlessInteger: {
+                const data = this._column.getData(stats);
+                return Formatter.beautifyNumber(Math.round(data));
+            }
+
             case UnitType.Time: {
                 const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
                 const num = Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
