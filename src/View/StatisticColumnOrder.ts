@@ -1,10 +1,13 @@
 import { Column, StatisticColumn } from '../Columns';
 
 export class StatisticColumnOrder {
-    private _id: number = 0;
-    private _order: Record<string, { instance: StatisticColumn; order: number }> = {};
+    private declare _id: number;
+    private declare readonly _order: Record<string, { instance: StatisticColumn; order: number }>;
 
     public constructor() {
+        this._id = 0;
+        this._order = {};
+
         this.addOrder(Column.Mean);
         this.addOrder(Column.Error);
         this.addOrder(Column.StdDev);

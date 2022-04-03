@@ -3,8 +3,8 @@ import { Statistics } from '../Data';
 export type GetData<T> = (stats: Statistics) => T;
 
 export class TableColumn<T> {
-    protected _columnName: string;
-    protected _getData: GetData<T>;
+    protected declare _columnName: string;
+    protected declare _getData: GetData<T>;
 
     public get columnName() {
         return this._columnName;

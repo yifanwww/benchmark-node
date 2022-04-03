@@ -18,23 +18,29 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
 
 export class BenchmarkJob extends BenchmarkRunner {
     private static id = 0;
-    private readonly _id = ++BenchmarkJob.id;
+    private declare readonly _id: number;
 
-    private _benchs: Benchmark<TestFn>[] = [];
+    private declare readonly _benchs: Benchmark<TestFn>[];
 
-    private _setup: Array<() => void | undefined> = [];
-    private _cleanup: Array<() => void | undefined> = [];
+    private declare readonly _setup: Array<() => void | undefined>;
+    private declare readonly _cleanup: Array<() => void | undefined>;
 
-    private _settings: BenchmarkingSettings;
+    private declare readonly _settings: BenchmarkingSettings;
 
-    private _statsColumnOrder: StatisticColumnOrder = new StatisticColumnOrder();
+    private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
     public constructor(options?: BenchmarkJobOptions) {
         super();
 
-        const _options = options ?? {};
+        this._id = ++BenchmarkJob.id;
 
-        const { columns, ...settings } = _options;
+        this._benchs = [];
+        this._setup = [];
+        this._cleanup = [];
+
+        this._statsColumnOrder = new StatisticColumnOrder();
+
+        const { columns, ...settings } = options ?? {};
 
         this._settings = settings;
 

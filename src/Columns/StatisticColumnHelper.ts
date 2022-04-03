@@ -10,8 +10,8 @@ import { UnitType } from './UnitType';
 export class StatisticColumnHelper extends TableColumnHelper<number> {
     protected declare _column: StatisticColumn;
 
-    private _timeUnit: TimeUnit = TimeUnit.NS;
-    private _fractionDigit: number = 4;
+    private declare _timeUnit: TimeUnit;
+    private declare _fractionDigit: number;
 
     public override get column() {
         return this._column;
@@ -25,12 +25,15 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
         this._timeUnit = value;
     }
 
-    public setFractionDigit(fractionDigit: number): void {
-        this._fractionDigit = fractionDigit;
-    }
-
     public constructor(column: StatisticColumn) {
         super(column);
+
+        this._timeUnit = TimeUnit.NS;
+        this._fractionDigit = 4;
+    }
+
+    public setFractionDigit(fractionDigit: number): void {
+        this._fractionDigit = fractionDigit;
     }
 
     public findMinNumber(statsArr: Statistics[]): number {

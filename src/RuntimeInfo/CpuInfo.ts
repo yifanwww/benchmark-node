@@ -3,10 +3,10 @@ import os from 'os';
 import { exec } from '../Tools/exec';
 
 export class CpuInfo {
-    public name: string;
-    public processors: number;
-    public logicalCores: number;
-    public plysicalCores: number;
+    public declare readonly name: string;
+    public declare readonly processors: number;
+    public declare readonly logicalCores: number;
+    public declare readonly plysicalCores: number;
 
     public constructor() {
         this.name = os.cpus()[0].model.trim();

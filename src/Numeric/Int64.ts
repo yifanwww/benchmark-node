@@ -4,7 +4,7 @@ export type Uint8InInt64 = [number, number, number, number, number, number, numb
 
 export class Int64 {
     // Little endian.
-    private _uint8s: Uint8Array = new Uint8Array(8);
+    private declare readonly _uint8s: Uint8Array;
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static readonly MIN_VALUE: Int64 = new Int64(0, (128 << 23) * 2);
@@ -59,6 +59,8 @@ export class Int64 {
     );
 
     public constructor(...nums: [number] | [number, number] | Uint8InInt64) {
+        this._uint8s = new Uint8Array(8);
+
         if (nums.length === 1 || nums.length === 2) {
             let high: number;
             let low: number;

@@ -7,27 +7,27 @@ import { Nanosecond } from '../types';
  * Class for stats including mean, margin or error, and standard deviation.
  */
 export class Statistics {
-    private _name: string;
+    private declare _name: string;
 
-    private _args?: Arguments<ReadonlyArray<unknown>>;
+    private declare _args?: Arguments<ReadonlyArray<unknown>>;
 
-    private _n: number;
+    private declare _n: number;
 
-    private _mean: Nanosecond;
-    private _variance: number;
-    private _standardDeviation: Nanosecond;
-    private _standardError: Nanosecond;
-    private _standardErrorPercent: number;
+    private declare _mean: Nanosecond;
+    private declare _variance: number;
+    private declare _standardDeviation: Nanosecond;
+    private declare _standardError: Nanosecond;
+    private declare _standardErrorPercent: number;
 
-    private _ci: ConfidenceInterval;
+    private declare _ci: ConfidenceInterval;
 
-    private _q0: Nanosecond;
-    private _q1: Nanosecond;
-    private _q2: Nanosecond;
-    private _q3: Nanosecond;
-    private _q4: Nanosecond;
+    private declare _q0: Nanosecond;
+    private declare _q1: Nanosecond;
+    private declare _q2: Nanosecond;
+    private declare _q3: Nanosecond;
+    private declare _q4: Nanosecond;
 
-    private _ops: number;
+    private declare _ops: number;
 
     public get name() {
         return this._name;

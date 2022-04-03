@@ -3,9 +3,9 @@ import { Statistics } from '../Data';
 import { TableColumn } from './TableColumn';
 
 export class TableColumnHelper<T> {
-    protected _column: TableColumn<T>;
+    protected declare _column: TableColumn<T>;
 
-    protected _maxLength: number = 0;
+    protected declare _maxLength: number;
 
     public get column() {
         return this._column;
@@ -17,6 +17,8 @@ export class TableColumnHelper<T> {
 
     public constructor(column: TableColumn<T>) {
         this._column = column;
+
+        this._maxLength = 0;
     }
 
     public calculateMaxLen(statsArr: Statistics[]): void {

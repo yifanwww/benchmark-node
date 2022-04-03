@@ -15,7 +15,7 @@ type ColorScheme = {
 export class ConsoleLogger {
     public static readonly default: ConsoleLogger = new ConsoleLogger();
 
-    private colorScheme: ColorScheme;
+    private declare readonly colorScheme: ColorScheme;
 
     public constructor(colorScheme?: ColorScheme) {
         this.colorScheme = colorScheme ?? this.createColorfulScheme();

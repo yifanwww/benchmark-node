@@ -3,9 +3,9 @@ import { BenchmarkTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';
 
 export class TestFunction<T extends TestFn> {
-    private _fn: T;
+    private declare readonly _fn: T;
 
-    private _argNames: Optional<string[]> = null;
+    private declare readonly _argNames: Optional<string[]>;
 
     /** The testFn. */
     public get fn() {
@@ -16,16 +16,16 @@ export class TestFunction<T extends TestFn> {
         return this._argNames;
     }
 
-    private _argsArr: ReadonlyArray<Arguments<Parameters<T>>>;
-    private _argsLength: number;
+    private declare readonly _argsArr: ReadonlyArray<Arguments<Parameters<T>>>;
+    private declare readonly _argsLength: number;
 
-    private _jitArgsArr: ReadonlyArray<Arguments<Parameters<T>>>;
-    private _jitArgsLength: number;
+    private declare readonly _jitArgsArr: ReadonlyArray<Arguments<Parameters<T>>>;
+    private declare readonly _jitArgsLength: number;
 
-    private _maxArgsLength: number;
+    private declare readonly _maxArgsLength: number;
 
-    private _setup?: () => void;
-    private _cleanup?: () => void;
+    private declare readonly _setup?: () => void;
+    private declare readonly _cleanup?: () => void;
 
     public get setup() {
         return this._setup;
@@ -37,6 +37,8 @@ export class TestFunction<T extends TestFn> {
 
     public constructor(testFn: T, options: BenchmarkTestFnOptions<T>) {
         this._fn = testFn;
+
+        this._argNames = null;
 
         const { args = [], cleanup, jitArgs: preArgs = [], setup } = options;
 

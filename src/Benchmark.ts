@@ -15,18 +15,18 @@ export interface BenchmarkOptions<T extends TestFn> extends BenchmarkingSettings
 
 export class Benchmark<T extends TestFn> {
     private static id = 0;
-    private readonly _id = ++Benchmark.id;
+    private declare readonly _id: number;
 
-    private _name?: string;
-    private _testFunction: TestFunction<T>;
-    private _tester: Tester;
+    private declare readonly _name?: string;
+    private declare readonly _testFunction: TestFunction<T>;
+    private declare readonly _tester: Tester;
 
-    private _settings: Settings;
+    private declare readonly _settings: Settings;
 
-    private _setup?: () => void;
-    private _cleanup?: () => void;
+    private declare readonly _setup?: () => void;
+    private declare readonly _cleanup?: () => void;
 
-    private _stats: Statistics[] = [];
+    private declare readonly _stats: Statistics[];
 
     public get name(): string {
         return this._name ?? this._testFunction.fn.name;
@@ -71,6 +71,8 @@ export class Benchmark<T extends TestFn> {
     public constructor(...args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]) {
         const { name, options, testFn } = this.parseArgs(args);
 
+        this._id = ++Benchmark.id;
+
         this._name = name;
         this._testFunction = new TestFunction(testFn, options);
 
@@ -85,6 +87,8 @@ export class Benchmark<T extends TestFn> {
         this._tester = CodeGen.createTester({
             argument: { count: this._testFunction.maxArgsLength },
         });
+
+        this._stats = [];
     }
 
     private parseArgs(args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]): ConstructorArgs<T> {

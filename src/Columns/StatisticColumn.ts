@@ -6,8 +6,8 @@ import { UnitType } from './UnitType';
 export type Calc = (stats: Statistics) => number;
 
 export class StatisticColumn extends TableColumn<number> {
-    private _desc: string;
-    private _unit: UnitType;
+    private declare readonly _desc: string;
+    private declare readonly _unit: UnitType;
 
     public get desc() {
         return this._desc;

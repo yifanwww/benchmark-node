@@ -15,13 +15,23 @@ export class Table {
     private static readonly fnNameColumn = new TableColumn('Function', (stats) => stats.name);
     private static readonly argColumn: ArgumentColumn[] = [];
 
-    private _fnNameColumnHelper = new TableColumnHelper(Table.fnNameColumn);
-    private _argColumnHelpers: ArgumentColumnHelper[] = [];
-    private _statsColumnHelpers: StatisticColumnHelper[] = [];
+    private declare readonly _fnNameColumnHelper;
+    private declare readonly _argColumnHelpers: ArgumentColumnHelper[];
+    private declare readonly _statsColumnHelpers: StatisticColumnHelper[];
 
-    private _statsArr: Statistics[] = [];
+    private declare readonly _statsArr: Statistics[];
 
-    private _timeUnit: TimeUnit = TimeUnit.NS;
+    private declare _timeUnit: TimeUnit;
+
+    public constructor() {
+        this._fnNameColumnHelper = new TableColumnHelper(Table.fnNameColumn);
+        this._argColumnHelpers = [];
+        this._statsColumnHelpers = [];
+
+        this._statsArr = [];
+
+        this._timeUnit = TimeUnit.NS;
+    }
 
     public addStatisticColumns(columns: StatisticColumn[]): void {
         for (const column of columns) {

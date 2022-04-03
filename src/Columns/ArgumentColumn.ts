@@ -1,7 +1,7 @@
 import { TableColumn } from './TableColumn';
 
 export class ArgumentColumn extends TableColumn<ReadonlyArray<unknown> | undefined> {
-    private _index: number;
+    private declare readonly _index: number;
 
     public get index() {
         return this._index;

@@ -5,14 +5,16 @@ import { ArgumentColumn } from '../ArgumentColumn';
 import { ArgumentColumnHelper } from '../ArgumentColumnHelper';
 
 describe(`Test class \`${ArgumentColumnHelper.name}\``, () => {
-    it(`calls method ${ArgumentColumnHelper.prototype.format.name} with no args`, () => {
+    const formatFnName = ArgumentColumnHelper.prototype.format.name;
+
+    it(`calls method ${formatFnName} with no args`, () => {
         const stats = new Statistics('name', testConstants.measurements.slice(), testConstants.ops);
 
         const helper = new ArgumentColumnHelper(new ArgumentColumn(0));
         expect(helper.format(stats)).toBe('?');
     });
 
-    it(`calls method ${ArgumentColumnHelper.prototype.format.name} with short args`, () => {
+    it(`calls method ${formatFnName} with short args`, () => {
         const stats = new Statistics(
             'name',
             testConstants.measurements.slice(),
@@ -30,7 +32,7 @@ describe(`Test class \`${ArgumentColumnHelper.name}\``, () => {
         expect(helper3.format(stats)).toBe('?');
     });
 
-    it(`calls method ${ArgumentColumnHelper.prototype.format.name} with long args`, () => {
+    it(`calls method ${formatFnName} with long args`, () => {
         const stats = new Statistics(
             'name',
             testConstants.measurements.slice(),

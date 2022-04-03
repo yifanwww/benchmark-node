@@ -2,14 +2,14 @@ import { ConfidenceLevel } from './ConfidenceLevel';
 import { StudentT } from './MathNet/StudentT';
 
 export class ConfidenceInterval {
-    private _margin: number;
-    private _lower: number;
-    private _upper: number;
+    private declare readonly _margin: number;
+    private declare readonly _lower: number;
+    private declare readonly _upper: number;
 
-    private _marginPercent: number;
+    private declare readonly _marginPercent: number;
 
-    private _degreeOfFreedom: number;
-    private _level: ConfidenceLevel;
+    private declare readonly _degreeOfFreedom: number;
+    private declare readonly _level: ConfidenceLevel;
 
     public get margin() {
         return this._margin;

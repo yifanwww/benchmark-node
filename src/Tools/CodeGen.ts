@@ -41,9 +41,9 @@ export class CodeGen {
 
     public static createTester = (options: CodeGenOptions) => new CodeGen(options).createTester();
 
-    private id: string;
+    private declare readonly id: string;
 
-    private argument: CodeGenArgumentOptions;
+    private declare readonly argument: CodeGenArgumentOptions;
 
     public constructor(options: CodeGenOptions) {
         CodeGen.cgid++;

@@ -1,5 +1,5 @@
 export class Params {
-    private _values: unknown[];
+    private declare readonly _values: unknown[];
 
     public constructor(...values: unknown[]) {
         this._values = values;

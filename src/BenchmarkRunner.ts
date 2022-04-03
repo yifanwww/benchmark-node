@@ -20,7 +20,11 @@ enum Stage {
 }
 
 export class BenchmarkRunner {
-    private _current: Optional<Benchmark<TestFn>> = null;
+    private declare _current: Optional<Benchmark<TestFn>>;
+
+    protected constructor() {
+        this._current = null;
+    }
 
     private benchmarkJitting(
         workload: boolean,

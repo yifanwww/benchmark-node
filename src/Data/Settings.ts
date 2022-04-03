@@ -17,13 +17,13 @@ export class Settings {
         warmupCount: 1,
     };
 
-    private _origin: BenchmarkingSettings;
+    private declare _origin: BenchmarkingSettings;
 
-    private _delay: Nanosecond;
-    private _initOps: number;
-    private _measurementCount: number;
-    private _minMeasurementTime: Nanosecond;
-    private _warmupCount: number;
+    private declare _delay: Nanosecond;
+    private declare _initOps: number;
+    private declare _measurementCount: number;
+    private declare _minMeasurementTime: Nanosecond;
+    private declare _warmupCount: number;
 
     public get delay(): Nanosecond {
         return this._delay;
