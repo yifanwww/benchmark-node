@@ -9,11 +9,11 @@ function getConfig() {
     return {
         rootDir: paths.repository,
         roots: ['<rootDir>/src'],
-
-        collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/test.setup.ts', '!src/TestTools/*.ts'],
+        cacheDirectory: paths.jestCache,
 
         setupFilesAfterEnv: hasTestSetup ? [paths.testSetup] : [],
 
+        collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/test.setup.ts', '!src/TestTools/*.ts'],
         testMatch: ['<rootDir>/src/**/__tests__/**/*.ts', '<rootDir>/src/**/*.{spec,test}.ts'],
         testPathIgnorePatterns: ['<rootDir>/src/TestTools'],
 
