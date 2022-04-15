@@ -13,8 +13,14 @@ function getConfig() {
 
         setupFilesAfterEnv: hasTestSetup ? [paths.testSetup] : [],
 
-        collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/test.setup.ts', '!src/TestTools/*.ts'],
-        testMatch: ['<rootDir>/src/**/__tests__/**/*.ts', '<rootDir>/src/**/*.{spec,test}.ts'],
+        collectCoverageFrom: [
+            'src/**/*.ts',
+            '!src/**/__tests__/**/*.ts',
+            '!src/**/*.d.ts',
+            '!src/test.setup.ts',
+            '!src/TestTools/*.ts',
+        ],
+        testMatch: ['<rootDir>/src/**/*.{spec,test}.ts'],
         testPathIgnorePatterns: ['<rootDir>/src/TestTools'],
 
         transform: {

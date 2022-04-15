@@ -9,6 +9,6 @@
         "rootDir": "..",
         "sourceMap": false
     },
-    "include": ["../src/**/*", "../test/**/*"],
+    "include": ["../perf/**/*", "../src/**/*", "../test/**/*"],
     "exclude": ["../src/test.setup.ts"]
 }
