@@ -6,10 +6,10 @@ Statistics {
   "_ci": ConfidenceInterval {
     "_degreeOfFreedom": 14,
     "_level": 0.95,
-    "_lower": 0.2363610132898473,
-    "_margin": 0.0037707710872855148,
-    "_marginPercent": 1.5702923696945619,
-    "_upper": 0.24390255546441833,
+    "_lower": 0.23636101328984727,
+    "_margin": 0.003770771087285532,
+    "_marginPercent": 1.5702923696945692,
+    "_upper": 0.24390255546441836,
   },
   "_mean": 0.2401317843771328,
   "_n": 15,
@@ -45,10 +45,10 @@ exports[`Test class \`Statistics\` calculates 9`] = `
 ConfidenceInterval {
   "_degreeOfFreedom": 14,
   "_level": 0.95,
-  "_lower": 0.2363610132898473,
-  "_margin": 0.0037707710872855148,
-  "_marginPercent": 1.5702923696945619,
-  "_upper": 0.24390255546441833,
+  "_lower": 0.23636101328984727,
+  "_margin": 0.003770771087285532,
+  "_marginPercent": 1.5702923696945692,
+  "_upper": 0.24390255546441836,
 }
 `;
 

@@ -1,5 +1,6 @@
+import quantile from '@stdlib/stats-base-dists-t-quantile';
+
 import { ConfidenceLevel } from './ConfidenceLevel';
-import { StudentT } from './MathNet/StudentT';
 
 export class ConfidenceInterval {
     private declare readonly _margin: number;
@@ -55,7 +56,7 @@ export class ConfidenceInterval {
     }
 
     private getZLevel() {
-        const x = 1 - (1 - this._level) / 2;
-        return StudentT.invCDF(0, 1, this._degreeOfFreedom, x);
+        const p = 1 - (1 - this._level) / 2;
+        return quantile(p, this._degreeOfFreedom);
     }
 }
