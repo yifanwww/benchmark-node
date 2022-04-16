@@ -1,5 +1,7 @@
 import { Arguments } from './Parameterization';
 
+/* ----- Types ----- */
+
 /**
  * The type representing millisecond.
  */
@@ -51,11 +53,11 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
     /**
      * Used for pilot benchmarking and formal benchmarking.
      */
-    args?: Arguments<Parameters<T>> | ReadonlyArray<Arguments<Parameters<T>>>;
+    args?: LooseReadonlyArray<Arguments<Parameters<T>>>;
     /**
      * Used for jitting benchmarking. The arguments provided in `args` will be also added into `preArgs`.
      */
-    jitArgs?: Arguments<Parameters<T>> | ReadonlyArray<Arguments<Parameters<T>>>;
+    jitArgs?: LooseReadonlyArray<Arguments<Parameters<T>>>;
     /**
      * Set iteration setup.
      * A callback function to be executed exactly once before each benchmark function invocation.
@@ -71,3 +73,9 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
      */
     cleanup?: () => void;
 }
+
+/* ----- Type Utils ----- */
+
+export type LooseArray<T> = T | T[];
+
+export type LooseReadonlyArray<T> = T | readonly T[];

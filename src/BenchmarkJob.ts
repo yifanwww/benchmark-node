@@ -22,8 +22,8 @@ export class BenchmarkJob extends BenchmarkRunner {
 
     private declare readonly _benchs: Benchmark<TestFn>[];
 
-    private declare readonly _setup: Array<() => void | undefined>;
-    private declare readonly _cleanup: Array<() => void | undefined>;
+    private declare readonly _setup: Array<(() => void) | undefined>;
+    private declare readonly _cleanup: Array<(() => void) | undefined>;
 
     private declare readonly _settings: BenchmarkingSettings;
 
