@@ -34,7 +34,7 @@ export class BenchmarkRunner {
     ): void {
         const testerContext: TesterContext = {
             ops,
-            testFn: this._current!.testFunction.fn,
+            testFn: this._current!.testFn,
             workload,
 
             setup: this._current!.setup,
@@ -70,7 +70,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
-            testFn: this._current!.testFunction.fn,
+            testFn: this._current!.testFn,
             workload: true,
 
             setup: this._current!.setup,
@@ -102,7 +102,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFunction.fn,
+            testFn: this._current!.testFn,
             workload,
 
             setup: this._current!.setup,
@@ -123,7 +123,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFunction.fn,
+            testFn: this._current!.testFn,
             workload: false,
 
             setup: this._current!.setup,
@@ -149,7 +149,7 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFunction.fn,
+            testFn: this._current!.testFn,
             workload: true,
 
             setup: this._current!.setup,
@@ -213,9 +213,9 @@ export class BenchmarkRunner {
             logger.writeLine();
             this.benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(this._current!.testFunction.getJitArgsGenerator);
+            this.benchmarkJitting1(() => this._current!.testFunction.jitArgs);
             logger.writeLine();
-            this.benchmarkJitting2(this._current!.testFunction.getJitArgsGenerator);
+            this.benchmarkJitting2(() => this._current!.testFunction.jitArgs);
         }
         logger.writeLine();
     }

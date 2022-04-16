@@ -3,11 +3,8 @@ import { TestFunction } from '../TestFunction';
 
 describe(`Test class \`${TestFunction.name}\``, () => {
     it('news an instance with an empty option', () => {
-        const fn = () => {};
+        const options = new TestFunction(() => {}, {});
 
-        const options = new TestFunction(fn, {});
-
-        expect(options.fn).toBe(fn);
         expect(options.setup).toBeUndefined();
         expect(options.cleanup).toBeUndefined();
 

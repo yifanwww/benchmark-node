@@ -1,39 +1,35 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { ANONYMOUS_FN_NAME } from '../../constants';
 import { UnknownFn } from '../../types.internal';
 import { FunctionInfo } from '../FunctionInfo';
 
 describe(`Test class \`${FunctionInfo.name}\``, () => {
     it('gets the function name', () => {
         expect(new FunctionInfo(function fn() {}).name).toBe('fn');
-        expect(new FunctionInfo(function fn() {}, 'asdf').name).toBe('asdf');
-
-        expect(new FunctionInfo(function () {}, 'asdf').name).toBe('asdf');
-        expect(new FunctionInfo(() => {}, 'asdf').name).toBe('asdf');
+        expect(new FunctionInfo(function () {}).name).toBe(ANONYMOUS_FN_NAME);
+        expect(new FunctionInfo(() => {}).name).toBe(ANONYMOUS_FN_NAME);
 
         {
-            const fn = function fn() {};
-            expect(new FunctionInfo(fn).name).toBe('fn');
-            expect(new FunctionInfo(fn, 'asdf').name).toBe('asdf');
+            const func = function fn() {};
+            expect(new FunctionInfo(func).name).toBe('fn');
         }
 
         {
             const fn = function () {};
             expect(new FunctionInfo(fn).name).toBe('fn');
-            expect(new FunctionInfo(fn, 'asdf').name).toBe('asdf');
         }
 
         {
             const fn = () => {};
             expect(new FunctionInfo(fn).name).toBe('fn');
-            expect(new FunctionInfo(fn, 'asdf').name).toBe('asdf');
         }
     });
 
     it('gets the function parameter names', () => {
         function _test<T extends UnknownFn>(fn: T, expected: string[]) {
-            expect(new FunctionInfo(fn, 'fn').paramNames).toStrictEqual(expected);
+            expect(new FunctionInfo(fn).paramNames).toStrictEqual(expected);
         }
 
         _test(function fn() {}, []);
@@ -89,14 +85,7 @@ describe(`Test class \`${FunctionInfo.name}\``, () => {
         );
     });
 
-    it('throws an error if no specific function name', () => {
-        expect(() => new FunctionInfo(function () {})).toThrowError();
-        expect(() => new FunctionInfo(() => {})).toThrowError();
-        // eslint-disable-next-line @typescript-eslint/no-implied-eval
-        expect(() => new FunctionInfo(Function('arg', '{ return arg }'))).toThrowError();
-    });
-
     it('throws an error if cannot parse the parameter names', () => {
-        expect(() => new FunctionInfo('' as never, 'fn')).toThrowError();
+        expect(() => new FunctionInfo('' as never)).toThrowError();
     });
 });

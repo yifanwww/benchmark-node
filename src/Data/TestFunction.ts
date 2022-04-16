@@ -1,21 +1,8 @@
 import { Arguments } from '../Parameterization';
+import { FunctionInfo } from '../Tools/FunctionInfo';
 import { BenchmarkTestFnOptions, TestFn } from '../types';
-import { Optional } from '../types.internal';
 
-export class TestFunction<T extends TestFn> {
-    private declare readonly _fn: T;
-
-    private declare readonly _argNames: Optional<string[]>;
-
-    /** The testFn. */
-    public get fn() {
-        return this._fn;
-    }
-
-    public get argNames() {
-        return this._argNames;
-    }
-
+export class TestFunction<T extends TestFn> extends FunctionInfo {
     private declare readonly _argsArr: ReadonlyArray<Arguments<Parameters<T>>>;
     private declare readonly _argsLength: number;
 
@@ -35,10 +22,8 @@ export class TestFunction<T extends TestFn> {
         return this._cleanup;
     }
 
-    public constructor(testFn: T, options: BenchmarkTestFnOptions<T>) {
-        this._fn = testFn;
-
-        this._argNames = null;
+    public constructor(fn: T, options: BenchmarkTestFnOptions<T>) {
+        super(fn);
 
         const { args = [], cleanup, jitArgs: preArgs = [], setup } = options;
 
@@ -69,8 +54,6 @@ export class TestFunction<T extends TestFn> {
         }
     }
 
-    public getJitArgsGenerator = () => this.getEnumerator(this._jitArgsArr);
-
     public get args(): Generator<Arguments<Parameters<T>>, void> {
         return this.getEnumerator(this._argsArr);
     }
@@ -84,7 +67,7 @@ export class TestFunction<T extends TestFn> {
     }
 
     public get jitArgs(): Generator<Arguments<Parameters<T>>, void> {
-        return this.getJitArgsGenerator();
+        return this.getEnumerator(this._jitArgsArr);
     }
 
     public get jitArgsCount(): number {

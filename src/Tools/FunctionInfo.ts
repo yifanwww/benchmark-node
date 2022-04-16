@@ -1,3 +1,5 @@
+import { ANONYMOUS_FN_NAME } from '../constants';
+
 export class FunctionInfo {
     private declare _name: string;
     private declare _paramNames: string[];
@@ -10,14 +12,8 @@ export class FunctionInfo {
         return this._paramNames;
     }
 
-    public constructor(fn: Function, name?: string) {
-        this._name = name ?? fn.name;
-        if (this._name === '') {
-            throw new Error("Cannot get the name of this function, it's an anonymous function with no function name");
-        } else if (this._name === 'anonymous') {
-            throw new Error('The function name is "anonymous", please give a specific name');
-        }
-
+    public constructor(fn: Function) {
+        this._name = fn.name || ANONYMOUS_FN_NAME;
         this._paramNames = FunctionInfo.getParameterNames(fn);
     }
 

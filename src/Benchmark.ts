@@ -1,3 +1,4 @@
+import { ANONYMOUS_FN_NAME } from './constants';
 import { Settings, Statistics, TestFunction } from './Data';
 import { RuntimeInfo } from './RuntimeInfo';
 import { CodeGen, Tester } from './Tools/CodeGen';
@@ -17,7 +18,9 @@ export class Benchmark<T extends TestFn> {
     private static id = 0;
     private declare readonly _id: number;
 
-    private declare readonly _name?: string;
+    private declare readonly _name: string;
+
+    private declare readonly _testFn: T;
     private declare readonly _testFunction: TestFunction<T>;
     private declare readonly _tester: Tester;
 
@@ -29,7 +32,11 @@ export class Benchmark<T extends TestFn> {
     private declare readonly _stats: Statistics[];
 
     public get name(): string {
-        return this._name ?? this._testFunction.fn.name;
+        return this._name;
+    }
+
+    public get testFn() {
+        return this._testFn;
     }
 
     public get testFunction() {
@@ -73,8 +80,10 @@ export class Benchmark<T extends TestFn> {
 
         this._id = ++Benchmark.id;
 
-        this._name = name;
+        this._testFn = testFn;
         this._testFunction = new TestFunction(testFn, options);
+
+        this._name = name ?? this._testFunction.name;
 
         this._settings = new Settings(options);
 
@@ -93,18 +102,11 @@ export class Benchmark<T extends TestFn> {
 
     private parseArgs(args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]): ConstructorArgs<T> {
         if (typeof args[0] === 'string') {
-            const _args = args as [string, T, BenchmarkOptions<T>?];
-            return {
-                name: _args[0],
-                testFn: _args[1],
-                options: _args[2] ?? {},
-            };
+            const [name, testFn, options = {}] = args as [string, T, BenchmarkOptions<T>?];
+            return { name, testFn, options };
         } else {
-            const _args = args as [T, BenchmarkOptions<T>?];
-            return {
-                testFn: _args[0],
-                options: _args[1] ?? {},
-            };
+            const [testFn, options = {}] = args as [T, BenchmarkOptions<T>?];
+            return { testFn, options };
         }
     }
 
@@ -136,13 +138,11 @@ export class Benchmark<T extends TestFn> {
 
         let pass = true;
 
-        if (this._name === '') {
-            logger.writeLineError(`[No.${this._id} Benchmark] The name of this benchmark cannot be an empty string`);
-            pass = false;
-        } else if (this._name === undefined && this._testFunction.fn.name === '') {
-            const prefix = `[No.${this._id} Benchmark]`;
+        const prefix = `[No.${this._id} Benchmark]`;
+
+        if (this._name === ANONYMOUS_FN_NAME && this._testFunction.name === ANONYMOUS_FN_NAME) {
             logger.writeLineError(
-                `${prefix} No name provided, cannot get the name of \`testFn\`, it's an anonymous function`,
+                `${prefix} The name of benchmark cannot be the anonymous function name, please give a specific name`,
             );
             pass = false;
         }
