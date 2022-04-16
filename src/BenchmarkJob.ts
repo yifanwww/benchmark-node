@@ -138,13 +138,14 @@ export class BenchmarkJob extends BenchmarkRunner {
             bench.setBenchmarkingSettings(this._settings);
         }
 
-        if (!this._setup[0] || !this._setup[0].hasParams()) {
-            this.runBenchmark();
-            this._cleanup[0]?.fn();
-        } else {
-            const setup = this._setup[0];
-            const cleanup = this._cleanup[0];
+        const setup = this._setup[0];
+        const cleanup = this._cleanup[0];
 
+        if (!setup || !setup.hasParams()) {
+            setup?.fn();
+            this.runBenchmark();
+            cleanup?.fn();
+        } else {
             for (const args of setup.params) {
                 setup.fn(...args);
                 this.runBenchmark();
