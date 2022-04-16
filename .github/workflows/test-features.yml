@@ -54,6 +54,9 @@ jobs:
       - name: Run test 'columns'
         run: node dist/test/features/columns.js
 
+      - name: Run test 'parameter'
+        run: node dist/test/features/parameter.js
+
       - name: Run test 'setup-cleanup'
         run: node dist/test/features/setup-cleanup.js
 

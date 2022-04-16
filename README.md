@@ -2,7 +2,7 @@
 
 Node.js benchmarking library for accurate performance testing.
 
-Up to now, this project mainly refers to [BenchmarkDotNet] for development.
+Part of the design reference [BenchmarkDotNet].
 
 [benchmarkdotnet]: https://github.com/dotnet/BenchmarkDotNet
 
@@ -51,6 +51,7 @@ For more usages, check:
 - [columns.ci]
 - [columns.iterations]
 - [columns.ops]
+- [parameter]
 - [setup-cleanup.global]
 - [validation]
 
@@ -60,6 +61,7 @@ For more usages, check:
 [columns.ci]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/columns.ci.ts
 [columns.iterations]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/columns.iterations.ts
 [columns.ops]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/columns.ops.ts
+[parameter]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/parameter.ts
 [setup-cleanup.global]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/setup-cleanup.global.ts
 [validation]: https://github.com/yifanwww/benchmark-node/blob/main/test/features/validation.ts
 
