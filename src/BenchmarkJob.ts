@@ -1,6 +1,8 @@
 import { Benchmark, BenchmarkOptions } from './Benchmark';
 import { BenchmarkRunner } from './BenchmarkRunner';
 import { StatisticColumn } from './Columns';
+import { Cleanup, Setup } from './Function';
+import { MapToParams } from './Parameterization';
 import { RuntimeInfo } from './RuntimeInfo';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from './types';
@@ -22,8 +24,8 @@ export class BenchmarkJob extends BenchmarkRunner {
 
     private declare readonly _benchs: Benchmark<TestFn>[];
 
-    private declare readonly _setup: Array<(() => void) | undefined>;
-    private declare readonly _cleanup: Array<(() => void) | undefined>;
+    private declare readonly _setup: Array<Setup | undefined>;
+    private declare readonly _cleanup: Array<Cleanup | undefined>;
 
     private declare readonly _settings: BenchmarkingSettings;
 
@@ -78,8 +80,21 @@ export class BenchmarkJob extends BenchmarkRunner {
      * @param setup A callback function that does some setup work.
      * @returns The benchmark instance itself.
      */
-    public addSetup(setup: () => void): this {
-        this._setup.push(setup);
+    public addSetup(setup: () => void): this;
+    /**
+     * Adds global setup.
+     * The global setup function will be executed only once before all the benchmark function invocations.
+     *
+     * NOTE: An benchmark job can only have one global setup function.
+     *
+     * @param setup A callback function that does some setup work.
+     * @param params The parameters passed to the setup function.
+     * @returns The benchmark instance itself.
+     */
+    public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
+
+    public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
+        this._setup.push(new Setup(setup as (...args: readonly unknown[]) => void, params ?? []));
         return this;
     }
 
@@ -93,8 +108,20 @@ export class BenchmarkJob extends BenchmarkRunner {
      * @returns The benchmark instance itself.
      */
     public addCleanup(cleanup: () => void): this {
-        this._cleanup.push(cleanup);
+        this._cleanup.push(new Cleanup(cleanup));
         return this;
+    }
+
+    private runBenchmark() {
+        const logger = ConsoleLogger.default;
+
+        for (const bench of this._benchs) {
+            logger.writeLineHeader(`* Benchmark: ${bench.name} *`);
+            bench.logConfigs();
+            logger.writeLine();
+
+            this._run(bench);
+        }
     }
 
     public run(): void {
@@ -111,17 +138,19 @@ export class BenchmarkJob extends BenchmarkRunner {
             bench.setBenchmarkingSettings(this._settings);
         }
 
-        this._setup[0]?.();
+        if (!this._setup[0] || !this._setup[0].hasParams()) {
+            this.runBenchmark();
+            this._cleanup[0]?.fn();
+        } else {
+            const setup = this._setup[0];
+            const cleanup = this._cleanup[0];
 
-        for (const bench of this._benchs) {
-            logger.writeLineHeader(`* Benchmark: ${bench.name} *`);
-            bench.logConfigs();
-            logger.writeLine();
-
-            this._run(bench);
+            for (const args of setup.params) {
+                setup.fn(...args);
+                this.runBenchmark();
+                cleanup?.fn();
+            }
         }
-
-        this._cleanup[0]?.();
 
         logger.writeLineHeader('* Summary *\n');
 
