@@ -22,7 +22,7 @@ enum Stage {
 export class BenchmarkRunner {
     private declare _current: Optional<Benchmark<TestFn>>;
 
-    protected constructor() {
+    public constructor() {
         this._current = null;
     }
 
@@ -56,17 +56,17 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    protected benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
+    private benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
         this.benchmarkJitting(false, 1, 1, getArgsGenerator?.());
         this.benchmarkJitting(true, 1, 1, getArgsGenerator?.());
     }
 
-    protected benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
+    private benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
         this.benchmarkJitting(false, 2, this._current!.settings.initOps, getArgsGenerator?.());
         this.benchmarkJitting(true, 2, this._current!.settings.initOps, getArgsGenerator?.());
     }
 
-    protected benchmarkPilot(args?: Arguments<never[]>): number {
+    private benchmarkPilot(args?: Arguments<never[]>): number {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
@@ -98,7 +98,7 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    protected benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<never[]>): void {
+    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<never[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -119,7 +119,7 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkOverheadActual(ops: number, args?: Arguments<never[]>): Nanosecond {
+    private benchmarkOverheadActual(ops: number, args?: Arguments<never[]>): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -145,7 +145,7 @@ export class BenchmarkRunner {
         return total / this._current!.settings.measurementCount;
     }
 
-    protected benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<never[]>): void {
+    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<never[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -167,7 +167,7 @@ export class BenchmarkRunner {
         }
     }
 
-    protected benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
+    private benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
         for (let i = 0; i < measurements.length; i++) {
             measurements[i] = Math.max(measurements[i] - overhead, 0);
             this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], measurements[i] / ops);
@@ -191,7 +191,7 @@ export class BenchmarkRunner {
     /**
      * Runs the benchmark.
      */
-    protected _run(bench: Benchmark<TestFn>): void {
+    public run(bench: Benchmark<TestFn>): void {
         this._current = bench;
 
         this._runJitting();

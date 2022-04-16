@@ -1,12 +1,12 @@
-import { Benchmark, BenchmarkOptions } from './Benchmark';
-import { BenchmarkRunner } from './BenchmarkRunner';
-import { StatisticColumn } from './Columns';
-import { Cleanup, Setup } from './Function';
-import { MapToParams } from './Parameterization';
-import { RuntimeInfo } from './RuntimeInfo';
-import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { BenchmarkingSettings, TestFn } from './types';
-import { StatisticColumnOrder, Table } from './View';
+import { Benchmark, BenchmarkOptions } from '../Benchmark';
+import { StatisticColumn } from '../Columns';
+import { Cleanup, Setup } from '../Function';
+import { JobConfigBase } from './JobConfigBase';
+import { MapToParams } from '../Parameterization';
+import { RuntimeInfo } from '../RuntimeInfo';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { BenchmarkingSettings, TestFn } from '../types';
+import { StatisticColumnOrder, Table } from '../View';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
     /**
@@ -18,7 +18,7 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
     columns?: (StatisticColumn | (() => StatisticColumn))[];
 }
 
-export class BenchmarkJob extends BenchmarkRunner {
+export class BenchmarkJob extends JobConfigBase {
     private static id = 0;
     private declare readonly _id: number;
 
@@ -120,7 +120,7 @@ export class BenchmarkJob extends BenchmarkRunner {
             bench.logConfigs();
             logger.writeLine();
 
-            this._run(bench);
+            this._runner.run(bench);
         }
     }
 
