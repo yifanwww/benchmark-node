@@ -1,1 +1,1 @@
-export * from './SummaryTable';
+export * from './SummaryTable.old';
