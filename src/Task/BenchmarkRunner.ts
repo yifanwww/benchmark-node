@@ -37,8 +37,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.iterationSetup,
+            cleanup: this._current!.iterationCleanup,
         };
 
         let used: Nanosecond = 0;
@@ -73,8 +73,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: true,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.iterationSetup,
+            cleanup: this._current!.iterationCleanup,
         };
 
         for (let index = 1; ; index++) {
@@ -105,8 +105,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.iterationSetup,
+            cleanup: this._current!.iterationCleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.warmupCount; index++) {
@@ -126,8 +126,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: false,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.iterationSetup,
+            cleanup: this._current!.iterationCleanup,
         };
 
         let total: Nanosecond = 0;
@@ -152,8 +152,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: true,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.iterationSetup,
+            cleanup: this._current!.iterationCleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {

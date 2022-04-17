@@ -1,5 +1,5 @@
 import type { TestFn } from '../types';
-import { Hrtime } from '../types.internal';
+import { Hrtime, Optional } from '../types.internal';
 
 enum TesterContextEnum {
     TestFn = 'testFn',
@@ -21,8 +21,8 @@ export interface TesterContext {
     [TesterContextEnum.Ops]: number;
     [TesterContextEnum.Workload]: boolean;
 
-    [TesterContextEnum.Setup]?: () => void;
-    [TesterContextEnum.Cleanup]?: () => void;
+    [TesterContextEnum.Setup]: Optional<() => void>;
+    [TesterContextEnum.Cleanup]: Optional<() => void>;
 }
 
 export type Tester = (context: TesterContext) => { elapsed: Hrtime };

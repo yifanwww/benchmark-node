@@ -1,11 +1,12 @@
 import { StatisticColumn } from '../Columns';
 import { Settings } from '../Data';
-import { GlobalCleanup, GlobalSetup } from '../Function';
+import { GlobalSetup } from '../Function';
 import { MapToParams } from '../Parameterization';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
+import { Optional } from '../types.internal';
 import { StatisticColumnOrder, Table } from '../View';
 import { JobConfigBase } from './JobConfigBase';
 
@@ -20,13 +21,12 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
 }
 
 export class BenchmarkJob extends JobConfigBase {
-    private static id = 0;
-    private declare readonly _id: number;
+    private declare readonly _benchs: Benchmark[];
 
-    private declare readonly _benchs: Benchmark<TestFn>[];
-
-    private declare readonly _setup: Array<GlobalSetup | undefined>;
-    private declare readonly _cleanup: Array<GlobalCleanup | undefined>;
+    private declare _setup: Optional<GlobalSetup>;
+    private declare _cleanup: Optional<() => void>;
+    private declare readonly _setups: Array<GlobalSetup | undefined>;
+    private declare readonly _cleanups: Array<(() => void) | undefined>;
 
     private declare readonly _settings: Settings;
 
@@ -35,11 +35,9 @@ export class BenchmarkJob extends JobConfigBase {
     public constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
 
-        this._id = ++BenchmarkJob.id;
-
         this._benchs = [];
-        this._setup = [];
-        this._cleanup = [];
+        this._setups = [];
+        this._cleanups = [];
 
         this._statsColumnOrder = new StatisticColumnOrder();
 
@@ -62,7 +60,7 @@ export class BenchmarkJob extends JobConfigBase {
     public add<T extends TestFn>(name: string, testFn: T, options?: BenchmarkOptions<T>): this;
 
     public add(
-        ...args: [Benchmark<TestFn>] | [TestFn, BenchmarkOptions<TestFn>?] | [string, TestFn, BenchmarkOptions<TestFn>?]
+        ...args: [Benchmark] | [TestFn, BenchmarkOptions<TestFn>?] | [string, TestFn, BenchmarkOptions<TestFn>?]
     ): this {
         if (args[0] instanceof Benchmark) {
             this._benchs.push(args[0]);
@@ -74,8 +72,7 @@ export class BenchmarkJob extends JobConfigBase {
 
     /** @deprecated Please use `setSetup` instead. */
     public addSetup(setup: () => void): this {
-        this._setup.push(new GlobalSetup(setup as (...args: readonly unknown[]) => void, []));
-        return this;
+        return this.setSetup(setup);
     }
 
     /**
@@ -101,14 +98,15 @@ export class BenchmarkJob extends JobConfigBase {
     public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
 
     public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
-        this._setup.push(new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []));
+        const globalSetup = new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []);
+        this._setup = globalSetup;
+        this._setups.push(globalSetup);
         return this;
     }
 
     /** @deprecated Please use `setCleanup` instead. */
     public addCleanup(cleanup: () => void): this {
-        this._cleanup.push(new GlobalCleanup(cleanup));
-        return this;
+        return this.setCleanup(cleanup);
     }
 
     /**
@@ -121,7 +119,8 @@ export class BenchmarkJob extends JobConfigBase {
      * @returns The benchmark instance itself.
      */
     public setCleanup(cleanup: () => void): this {
-        this._cleanup.push(new GlobalCleanup(cleanup));
+        this._cleanup = cleanup;
+        this._cleanups.push(cleanup);
         return this;
     }
 
@@ -150,18 +149,15 @@ export class BenchmarkJob extends JobConfigBase {
         }
         logger.writeLine();
 
-        const setup = this._setup[0];
-        const cleanup = this._cleanup[0];
-
-        if (!setup || !setup.hasParams()) {
-            setup?.fn();
+        if (!this._setup || !this._setup.hasParams()) {
+            this._setup?.fn();
             this.runBenchmark(tasks);
-            cleanup?.fn();
+            this._cleanup?.();
         } else {
-            for (const args of setup.params) {
-                setup.fn(...args);
+            for (const args of this._setup.params) {
+                this._setup.fn(...args);
                 this.runBenchmark(tasks);
-                cleanup?.fn();
+                this._cleanup?.();
             }
         }
 
@@ -193,14 +189,14 @@ export class BenchmarkJob extends JobConfigBase {
             if (!bench.validate()) pass = false;
         }
 
-        if (this._setup.length > 1) {
+        if (this._setups.length > 1) {
             logger.writeLineError(
                 `[No.${this._id} BenchmarkJob] An benchmark job can only have one global setup function`,
             );
             pass = false;
         }
 
-        if (this._cleanup.length > 1) {
+        if (this._cleanups.length > 1) {
             logger.writeLineError(
                 `[No.${this._id} BenchmarkJob] An benchmark job can only have one global cleanup function`,
             );

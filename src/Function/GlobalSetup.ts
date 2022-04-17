@@ -1,5 +1,5 @@
 import { ParamIterator, Params } from '../Parameterization';
-import { FunctionInfo } from '../Tools/FunctionInfo';
+import { FunctionInfo } from './FunctionInfo';
 
 export class GlobalSetup extends FunctionInfo {
     private declare _fn: (...args: readonly unknown[]) => void;

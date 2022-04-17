@@ -1,2 +1,2 @@
-export * from './GlobalCleanup';
+export * from './FunctionInfo';
 export * from './GlobalSetup';

@@ -1,10 +1,11 @@
 import { Settings, Statistics, TestFunction } from '../Data';
-import { GlobalCleanup, GlobalSetup } from '../Function';
+import { GlobalSetup } from '../Function';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Formatter } from '../Tools/Formatter';
 import { TestFn } from '../types';
+import { Optional } from '../types.internal';
 
 export class BenchmarkTask {
     private static id = 0;
@@ -14,16 +15,16 @@ export class BenchmarkTask {
     private declare readonly _fullName: string;
 
     private declare readonly _testFn: TestFn;
-    private declare readonly _testFunction: TestFunction<TestFn>;
+    private declare readonly _testFunction: TestFunction;
     private declare readonly _tester: Tester;
 
     private declare readonly _settings: Settings;
 
-    private declare readonly _globalSetup?: GlobalSetup;
-    private declare readonly _globalCleanup?: GlobalCleanup;
+    private declare readonly _globalSetup: Optional<GlobalSetup>;
+    private declare readonly _globalCleanup: Optional<() => void>;
 
-    private declare readonly _setup?: () => void;
-    private declare readonly _cleanup?: () => void;
+    private declare readonly _iterationSetup: Optional<() => void>;
+    private declare readonly _iterationCleanup: Optional<() => void>;
 
     private declare readonly _stats: Statistics[];
 
@@ -47,30 +48,25 @@ export class BenchmarkTask {
         return this._settings;
     }
 
-    public get setup() {
-        return this._setup;
+    public get iterationSetup() {
+        return this._iterationSetup;
     }
 
-    public get cleanup() {
-        return this._cleanup;
+    public get iterationCleanup() {
+        return this._iterationCleanup;
     }
 
     public get stats() {
         return this._stats;
     }
 
-    /**
-     * @param name The name used to identify this test.
-     * @param testFn The function to benchmark.
-     * @param options The options of benchmark.
-     */
     public constructor(
         name: string,
         testFn: TestFn,
-        testFunction: TestFunction<TestFn>,
+        testFunction: TestFunction,
         settings: Settings,
-        setup?: () => void,
-        cleanup?: () => void,
+        setup: Optional<() => void>,
+        cleanup: Optional<() => void>,
     ) {
         this._id = ++BenchmarkTask.id;
 
@@ -88,8 +84,8 @@ export class BenchmarkTask {
 
         this._settings = settings;
 
-        this._setup = setup;
-        this._cleanup = cleanup;
+        this._iterationSetup = setup;
+        this._iterationCleanup = cleanup;
 
         this._stats = [];
     }
@@ -106,7 +102,7 @@ export class BenchmarkTask {
         logger.writeLineInfo(`  measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
         logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
         logger.writeLineInfo(`  warmup count        : ${Formatter.beautifyNumber(warmupCount)}`);
-        logger.writeLineInfo(`  ${this._testFunction.setup ? 'Has' : 'No'} iteration setup`);
-        logger.writeLineInfo(`  ${this._testFunction.cleanup ? 'Has' : 'No'} iteration cleanup`);
+        logger.writeLineInfo(`  ${this._iterationSetup ? 'Has' : 'No'} iteration setup`);
+        logger.writeLineInfo(`  ${this._iterationCleanup ? 'Has' : 'No'} iteration cleanup`);
     }
 }

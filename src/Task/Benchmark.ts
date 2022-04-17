@@ -1,7 +1,9 @@
 import { ANONYMOUS_FN_NAME } from '../constants';
 import { Settings, TestFunction } from '../Data';
+import { FunctionInfo } from '../Function';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
+import { Optional } from '../types.internal';
 import { BenchmarkTask } from './BenchmarkTask';
 
 interface ConstructorArgs<T extends TestFn> {
@@ -12,19 +14,20 @@ interface ConstructorArgs<T extends TestFn> {
 
 export interface BenchmarkOptions<T extends TestFn> extends BenchmarkingSettings, BenchmarkTestFnOptions<T> {}
 
-export class Benchmark<T extends TestFn> {
+export class Benchmark<T extends TestFn = TestFn> {
     private static id = 0;
     private declare readonly _id: number;
 
     private declare readonly _name: string;
 
     private declare readonly _testFn: T;
-    private declare readonly _testFunction: TestFunction<T>;
+    private declare readonly _testFnInfo: FunctionInfo;
+    private declare readonly _testFunction: TestFunction;
 
     private declare readonly _settings: Readonly<BenchmarkingSettings>;
 
-    private declare readonly _setup?: () => void;
-    private declare readonly _cleanup?: () => void;
+    private declare readonly _setup: Optional<() => void>;
+    private declare readonly _cleanup: Optional<() => void>;
 
     /**
      * @param testFn The function to benchmark.
@@ -32,7 +35,7 @@ export class Benchmark<T extends TestFn> {
      */
     public constructor(testFn: T, options?: Readonly<BenchmarkOptions<T>>);
     /**
-     * @param name The name used to identify this test.
+     * @param name The name used to identify this benchmark.
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
@@ -44,14 +47,15 @@ export class Benchmark<T extends TestFn> {
         this._id = ++Benchmark.id;
 
         this._testFn = testFn;
-        this._testFunction = new TestFunction(testFn, options);
+        this._testFnInfo = new FunctionInfo(testFn);
+        this._testFunction = new TestFunction(options);
 
-        this._name = name ?? this._testFunction.name;
+        this._name = name ?? this._testFnInfo.name;
 
         this._settings = options;
 
-        this._setup = options.setup;
-        this._cleanup = options.cleanup;
+        this._setup = options.setup ?? null;
+        this._cleanup = options.cleanup ?? null;
     }
 
     private parseArgs(
@@ -77,7 +81,7 @@ export class Benchmark<T extends TestFn> {
 
         const prefix = `[No.${this._id} Benchmark]`;
 
-        if (this._name === ANONYMOUS_FN_NAME && this._testFunction.name === ANONYMOUS_FN_NAME) {
+        if (this._name === ANONYMOUS_FN_NAME && this._testFnInfo.name === ANONYMOUS_FN_NAME) {
             logger.writeLineError(
                 `${prefix} The name of benchmark cannot be the anonymous function name, please give a specific name`,
             );

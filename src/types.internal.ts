@@ -2,6 +2,8 @@ export type Optional<T> = T | null;
 
 export type Hrtime = [number, number];
 
+export type AnyFn = (...args: unknown[]) => unknown;
+
 /**
  * Used for generic function to infer function parameters.
  *
