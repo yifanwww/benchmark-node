@@ -26,14 +26,14 @@ export class GlobalSetup {
         return this._params;
     }
 
-    public hasParams(): boolean {
-        return this._params.length > 0;
-    }
-
     public *getViewEnumerator(): Generator<GlobalSetupView, void> {
-        const iter = new MultiIndexIterator(this._params.map((param) => param.values.length));
-        for (const indexes of iter) {
-            yield new GlobalSetupView(this, indexes);
+        if (this._params.length === 0) {
+            yield new GlobalSetupView(this, []);
+        } else {
+            const iter = new MultiIndexIterator(this._params.map((param) => param.values.length));
+            for (const indexes of iter) {
+                yield new GlobalSetupView(this, indexes);
+            }
         }
     }
 }

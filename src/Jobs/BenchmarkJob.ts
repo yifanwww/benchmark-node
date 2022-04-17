@@ -127,7 +127,7 @@ export class BenchmarkJob extends JobConfigBase {
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
-        if (!this._setup || !this._setup.hasParams()) {
+        if (!this._setup) {
             for (const bench of this._benchs) {
                 tasks.push(
                     new BenchmarkTask(
