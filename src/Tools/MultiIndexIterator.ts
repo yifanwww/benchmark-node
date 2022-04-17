@@ -1,4 +1,4 @@
-export class ArrayIndexIterator {
+export class MultiIndexIterator {
     private _capacities: readonly number[];
 
     public constructor(capacities: readonly number[]) {

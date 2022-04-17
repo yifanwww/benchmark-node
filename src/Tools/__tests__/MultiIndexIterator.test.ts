@@ -1,13 +1,13 @@
-import { ArrayIndexIterator } from '../ArrayIndexIterator';
+import { MultiIndexIterator } from '../MultiIndexIterator';
 
-describe(`Test class \`${ArrayIndexIterator.name}\``, () => {
+describe(`Test class \`${MultiIndexIterator.name}\``, () => {
     it('iterates-1', () => {
         function _test(capacity: number) {
-            const iterator = new ArrayIndexIterator([capacity]);
+            const iterator = new MultiIndexIterator([capacity]);
 
             let count = 0;
-            for (const arrayIndex of iterator.iter) {
-                expect(arrayIndex).toStrictEqual([count]);
+            for (const indexes of iterator.iter) {
+                expect(indexes).toStrictEqual([count]);
                 count++;
             }
 
@@ -24,7 +24,7 @@ describe(`Test class \`${ArrayIndexIterator.name}\``, () => {
     });
 
     it('iterates-2', () => {
-        const iterator = new ArrayIndexIterator([2, 1, 3, 4]);
+        const iterator = new MultiIndexIterator([2, 1, 3, 4]);
 
         const generator = iterator.iter;
 
@@ -57,7 +57,7 @@ describe(`Test class \`${ArrayIndexIterator.name}\``, () => {
 
     it('iterates-3', () => {
         function _test(capacities: number[]) {
-            const iterator = new ArrayIndexIterator(capacities);
+            const iterator = new MultiIndexIterator(capacities);
 
             let count = 0;
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -75,11 +75,11 @@ describe(`Test class \`${ArrayIndexIterator.name}\``, () => {
     });
 
     it('throws error if to iterate an empty capacities', () => {
-        expect(() => new ArrayIndexIterator([])).toThrowError();
+        expect(() => new MultiIndexIterator([])).toThrowError();
     });
 
     it('throws error if to iterate an capacities which contains numbers less than or equal to 0', () => {
-        expect(() => new ArrayIndexIterator([1, 1, 1, 1, 0, 1, 1, 1])).toThrowError();
-        expect(() => new ArrayIndexIterator([1, 1, -1, 1, 1, 1, 1, 1])).toThrowError();
+        expect(() => new MultiIndexIterator([1, 1, 1, 1, 0, 1, 1, 1])).toThrowError();
+        expect(() => new MultiIndexIterator([1, 1, -1, 1, 1, 1, 1, 1])).toThrowError();
     });
 });

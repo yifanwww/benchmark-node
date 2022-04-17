@@ -1,4 +1,4 @@
-import { ArrayIndexIterator } from '../Tools/ArrayIndexIterator';
+import { MultiIndexIterator } from '../Tools/MultiIndexIterator';
 import { Params } from './Params';
 
 export class ParamIterator {
@@ -9,10 +9,10 @@ export class ParamIterator {
     }
 
     private *getIter() {
-        const interator = new ArrayIndexIterator(this._params.map((param) => param.values.length));
+        const interator = new MultiIndexIterator(this._params.map((param) => param.values.length));
 
-        for (const arrayIndex of interator.iter) {
-            yield arrayIndex.map((index, i) => this._params[i].values[index]);
+        for (const indexes of interator.iter) {
+            yield indexes.map((index, i) => this._params[i].values[index]);
         }
     }
 
