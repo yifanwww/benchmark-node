@@ -1,13 +1,14 @@
 import { Benchmark, BenchmarkOptions } from '../Benchmark';
+import { BenchmarkTask } from '../BenchmarkTask';
 import { StatisticColumn } from '../Columns';
+import { Settings } from '../Data';
 import { GlobalCleanup, GlobalSetup } from '../Function';
-import { JobConfigBase } from './JobConfigBase';
 import { MapToParams } from '../Parameterization';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
 import { StatisticColumnOrder, Table } from '../View';
-import { BenchmarkTask } from '../BenchmarkTask';
+import { JobConfigBase } from './JobConfigBase';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
     /**
@@ -28,11 +29,11 @@ export class BenchmarkJob extends JobConfigBase {
     private declare readonly _setup: Array<GlobalSetup | undefined>;
     private declare readonly _cleanup: Array<GlobalCleanup | undefined>;
 
-    private declare readonly _settings: BenchmarkingSettings;
+    private declare readonly _settings: Settings;
 
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
-    public constructor(options?: BenchmarkJobOptions) {
+    public constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
 
         this._id = ++BenchmarkJob.id;
@@ -45,7 +46,7 @@ export class BenchmarkJob extends JobConfigBase {
 
         const { columns, ...settings } = options ?? {};
 
-        this._settings = settings;
+        this._settings = Settings.from(settings);
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
@@ -142,17 +143,13 @@ export class BenchmarkJob extends JobConfigBase {
 
         const logger = ConsoleLogger.default;
 
-        const benchs = this._benchs.map((bench) => bench.toBenchmarkTask());
+        const benchs = this._benchs.map((bench) => bench.toBenchmarkTask(this._settings));
 
         logger.writeLineInfo(`Found ${benchs.length} ${benchs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const bench of benchs) {
             logger.writeLineInfo(`- ${bench.name}`);
         }
         logger.writeLine();
-
-        for (const bench of benchs) {
-            bench.setBenchmarkingSettings(this._settings);
-        }
 
         const setup = this._setup[0];
         const cleanup = this._cleanup[0];

@@ -4,7 +4,7 @@ import { RuntimeInfo } from './RuntimeInfo';
 import { CodeGen, Tester } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
-import { BenchmarkingSettings, TestFn } from './types';
+import { TestFn } from './types';
 
 export class BenchmarkTask {
     private static id = 0;
@@ -94,12 +94,8 @@ export class BenchmarkTask {
         this._stats = [];
     }
 
-    public setBenchmarkingSettings(settings: BenchmarkingSettings): void {
-        this._settings.setButNoOverwriting(settings);
-    }
-
     public logConfigs(): void {
-        const { delay, initOps, measurementCount, minMeasurementTime } = this._settings;
+        const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = this._settings;
 
         const logger = ConsoleLogger.default;
         logger.writeLineInfo('Benchmark Environment Information:');
@@ -109,6 +105,7 @@ export class BenchmarkTask {
         logger.writeLineInfo(`  initial ops         : ${Formatter.beautifyNumber(initOps)}`);
         logger.writeLineInfo(`  measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
         logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
+        logger.writeLineInfo(`  warmup count        : ${Formatter.beautifyNumber(warmupCount)}`);
         logger.writeLineInfo(`  ${this._testFunction.setup ? 'Has' : 'No'} iteration setup`);
         logger.writeLineInfo(`  ${this._testFunction.cleanup ? 'Has' : 'No'} iteration cleanup`);
     }

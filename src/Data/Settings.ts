@@ -1,23 +1,30 @@
 import { Time } from '../Tools/TimeTool';
-import { BenchmarkingSettings, Nanosecond } from '../types';
+import { BenchmarkingSettings, Millisecond, Nanosecond } from '../types';
+
+interface ISettings {
+    delay: Nanosecond;
+    initOps: number;
+    measurementCount: number;
+    minMeasurementTime: Nanosecond;
+    warmupCount: number;
+}
 
 export class Settings {
-    private static readonly defaultValue: Required<BenchmarkingSettings> = {
-        delay: 5,
+    public static readonly DefaultValue: Settings = new Settings({
+        delay: Time.ms2ns(5),
         initOps: 16,
         measurementCount: 15,
-        minMeasurementTime: 250,
+        minMeasurementTime: Time.ms2ns(250),
         warmupCount: 7,
-    };
-    private static readonly mimimumValue: Required<BenchmarkingSettings> = {
-        delay: 1,
+    });
+
+    public static readonly MimimumValue: Settings = new Settings({
+        delay: Time.ms2ns(1),
         initOps: 1,
         measurementCount: 3,
-        minMeasurementTime: 1,
+        minMeasurementTime: Time.ms2ns(1),
         warmupCount: 1,
-    };
-
-    private declare _origin: BenchmarkingSettings;
+    });
 
     private declare _delay: Nanosecond;
     private declare _initOps: number;
@@ -45,58 +52,59 @@ export class Settings {
         return this._warmupCount;
     }
 
-    public constructor(settings: BenchmarkingSettings) {
+    private constructor(settings: ISettings) {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
-        this._origin = {
-            delay,
-            initOps,
-            measurementCount,
-            minMeasurementTime,
-            warmupCount,
-        };
-
-        this._delay = Time.ms2ns(Math.max(Settings.mimimumValue.delay, delay ?? Settings.defaultValue.delay));
-        this._initOps = Math.max(Settings.mimimumValue.initOps, initOps ?? Settings.defaultValue.initOps);
-        this._measurementCount = Math.max(
-            Settings.mimimumValue.measurementCount,
-            measurementCount ?? Settings.defaultValue.measurementCount,
-        );
-        this._minMeasurementTime = Time.ms2ns(
-            Math.max(
-                Settings.mimimumValue.minMeasurementTime,
-                minMeasurementTime ?? Settings.defaultValue.minMeasurementTime,
-            ),
-        );
-        this._warmupCount = Math.max(
-            Settings.mimimumValue.warmupCount,
-            warmupCount ?? Settings.defaultValue.warmupCount,
-        );
+        this._delay = delay;
+        this._initOps = initOps;
+        this._measurementCount = measurementCount;
+        this._minMeasurementTime = minMeasurementTime;
+        this._warmupCount = warmupCount;
     }
 
-    public setButNoOverwriting(settings: BenchmarkingSettings): void {
+    private static normalizeDelay(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
+        return num ? Math.max(Settings.MimimumValue.delay, Time.ms2ns(Math.floor(num))) : d;
+    }
+
+    private static normalizeInitOps(num: number | undefined, d: number): number {
+        return num ? Math.max(Settings.MimimumValue.initOps, Math.floor(num)) : d;
+    }
+
+    private static normalizeMeasurementCount(num: number | undefined, d: number): number {
+        return num ? Math.max(Settings.MimimumValue.measurementCount, Math.floor(num)) : d;
+    }
+
+    private static normalizeMinMeasurementTime(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
+        return num ? Math.max(Settings.MimimumValue.minMeasurementTime, Time.ms2ns(Math.floor(num))) : d;
+    }
+
+    private static normalizeWarmupCount(num: number | undefined, d: number): number {
+        return num ? Math.max(Settings.MimimumValue.warmupCount, Math.floor(num)) : d;
+    }
+
+    public static from(settings: Readonly<BenchmarkingSettings>): Settings {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
-        if (this._origin.delay === undefined && delay !== undefined) {
-            this._delay = Time.ms2ns(Math.max(Settings.mimimumValue.delay, delay));
-        }
+        const _default = Settings.DefaultValue;
 
-        if (this._origin.initOps === undefined && initOps !== undefined) {
-            this._initOps = Math.max(Settings.mimimumValue.initOps, initOps);
-        }
+        return new Settings({
+            delay: Settings.normalizeDelay(delay, _default.delay),
+            initOps: Settings.normalizeInitOps(initOps, _default.initOps),
+            measurementCount: Settings.normalizeMeasurementCount(measurementCount, _default.measurementCount),
+            minMeasurementTime: Settings.normalizeMinMeasurementTime(minMeasurementTime, _default.minMeasurementTime),
+            warmupCount: Settings.normalizeWarmupCount(warmupCount, _default.warmupCount),
+        });
+    }
 
-        if (this._origin.measurementCount === undefined && measurementCount !== undefined) {
-            this._measurementCount = Math.max(Settings.mimimumValue.measurementCount, measurementCount);
-        }
+    public merge(settings: Readonly<BenchmarkingSettings>): Settings {
+        const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
-        if (this._origin.minMeasurementTime === undefined && minMeasurementTime !== undefined) {
-            this._minMeasurementTime = Time.ms2ns(
-                Math.max(Settings.mimimumValue.minMeasurementTime, minMeasurementTime),
-            );
-        }
-
-        if (this._origin.warmupCount === undefined && warmupCount !== undefined) {
-            this._warmupCount = Math.max(Settings.mimimumValue.warmupCount, warmupCount);
-        }
+        return new Settings({
+            delay: Settings.normalizeDelay(delay, this._delay),
+            initOps: Settings.normalizeInitOps(initOps, this._initOps),
+            measurementCount: Settings.normalizeMeasurementCount(measurementCount, this._measurementCount),
+            minMeasurementTime: Settings.normalizeMinMeasurementTime(minMeasurementTime, this._minMeasurementTime),
+            warmupCount: Settings.normalizeWarmupCount(warmupCount, this._warmupCount),
+        });
     }
 }

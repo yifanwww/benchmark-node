@@ -23,7 +23,7 @@ export class Benchmark<T extends TestFn> {
     private declare readonly _testFunction: TestFunction<T>;
     private declare readonly _tester: Tester;
 
-    private declare readonly _settings: Settings;
+    private declare readonly _settings: Readonly<BenchmarkingSettings>;
 
     private declare readonly _setup?: () => void;
     private declare readonly _cleanup?: () => void;
@@ -32,15 +32,15 @@ export class Benchmark<T extends TestFn> {
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    public constructor(testFn: T, options?: BenchmarkOptions<T>);
+    public constructor(testFn: T, options?: Readonly<BenchmarkOptions<T>>);
     /**
      * @param name The name used to identify this test.
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    public constructor(name: string, testFn: T, options?: BenchmarkOptions<T>);
+    public constructor(name: string, testFn: T, options?: Readonly<BenchmarkOptions<T>>);
 
-    public constructor(...args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]) {
+    public constructor(...args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?]) {
         const { name, options, testFn } = this.parseArgs(args);
 
         this._id = ++Benchmark.id;
@@ -50,7 +50,7 @@ export class Benchmark<T extends TestFn> {
 
         this._name = name ?? this._testFunction.name;
 
-        this._settings = new Settings(options);
+        this._settings = options;
 
         this._setup = options.setup;
         this._cleanup = options.cleanup;
@@ -63,12 +63,14 @@ export class Benchmark<T extends TestFn> {
         });
     }
 
-    private parseArgs(args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]): ConstructorArgs<T> {
+    private parseArgs(
+        args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?],
+    ): ConstructorArgs<T> {
         if (typeof args[0] === 'string') {
-            const [name, testFn, options = {}] = args as [string, T, BenchmarkOptions<T>?];
+            const [name, testFn, options = {}] = args as [string, T, Readonly<BenchmarkOptions<T>>?];
             return { name, testFn, options };
         } else {
-            const [testFn, options = {}] = args as [T, BenchmarkOptions<T>?];
+            const [testFn, options = {}] = args as [T, Readonly<BenchmarkOptions<T>>?];
             return { testFn, options };
         }
     }
@@ -94,12 +96,12 @@ export class Benchmark<T extends TestFn> {
         return pass;
     }
 
-    public toBenchmarkTask(): BenchmarkTask {
+    public toBenchmarkTask(settings: Settings): BenchmarkTask {
         return new BenchmarkTask(
             this._name,
             this._testFn,
             this._testFunction,
-            this._settings,
+            settings.merge(this._settings),
             this._setup,
             this._cleanup,
         );

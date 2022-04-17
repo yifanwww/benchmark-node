@@ -2,18 +2,18 @@ import { BenchmarkingSettings } from '../../types';
 import { Settings } from '../Settings';
 
 describe(`Test class \`${Settings.name}\``, () => {
-    it('news an instance with default settings', () => {
-        const settings = new Settings({});
+    it('creates an instance with default settings', () => {
+        const settings = Settings.from({});
 
-        expect(settings.delay).toBe(5_000_000);
-        expect(settings.initOps).toBe(16);
-        expect(settings.measurementCount).toBe(15);
-        expect(settings.minMeasurementTime).toBe(250_000_000);
-        expect(settings.warmupCount).toBe(7);
+        expect(settings.delay).toBe(Settings.DefaultValue.delay);
+        expect(settings.initOps).toBe(Settings.DefaultValue.initOps);
+        expect(settings.measurementCount).toBe(Settings.DefaultValue.measurementCount);
+        expect(settings.minMeasurementTime).toBe(Settings.DefaultValue.minMeasurementTime);
+        expect(settings.warmupCount).toBe(Settings.DefaultValue.warmupCount);
     });
 
-    it('news an instance with custom settings', () => {
-        const settings = new Settings({
+    it('creates an instance with custom settings', () => {
+        const settings = Settings.from({
             delay: 2,
             initOps: 100,
             measurementCount: 10,
@@ -28,8 +28,8 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.warmupCount).toBe(8);
     });
 
-    it('news an instance invalid custom settings', () => {
-        const settings = new Settings({
+    it('creates an instance invalid custom settings', () => {
+        const settings = Settings.from({
             delay: -1,
             initOps: -1,
             measurementCount: -1,
@@ -44,7 +44,7 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.warmupCount).toBe(1);
     });
 
-    it(`calls method ${Settings.prototype.setButNoOverwriting.name}`, () => {
+    it(`calls method ${Settings.prototype.merge.name}`, () => {
         const isettings1: BenchmarkingSettings = {
             delay: 2,
             initOps: 100,
@@ -60,13 +60,9 @@ describe(`Test class \`${Settings.name}\``, () => {
             warmupCount: 15,
         };
 
-        const settings1 = new Settings({});
-        const settings2 = new Settings(isettings1);
-        const settings3 = new Settings(isettings1);
-
-        settings1.setButNoOverwriting(isettings2);
-        settings2.setButNoOverwriting({});
-        settings3.setButNoOverwriting(isettings2);
+        const settings1 = Settings.from({}).merge(isettings2);
+        const settings2 = Settings.from(isettings1).merge({});
+        const settings3 = Settings.from(isettings2).merge(isettings1);
 
         expect(settings1.delay).toBe(20_000_000);
         expect(settings1.initOps).toBe(200);
