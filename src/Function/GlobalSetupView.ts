@@ -11,6 +11,6 @@ export class GlobalSetupView {
     }
 
     public execute(): void {
-        this._setup.fn(...this._params);
+        this._setup.fn?.(...this._params);
     }
 }

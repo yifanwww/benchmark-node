@@ -23,7 +23,7 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
 export class BenchmarkJob extends JobConfigBase {
     private declare readonly _benchs: Benchmark[];
 
-    private declare _setup: Optional<GlobalSetup>;
+    private declare _setup: GlobalSetup;
     private declare _cleanup: Optional<() => void>;
     private declare readonly _setups: Array<GlobalSetup | undefined>;
     private declare readonly _cleanups: Array<(() => void) | undefined>;
@@ -36,6 +36,8 @@ export class BenchmarkJob extends JobConfigBase {
         super();
 
         this._benchs = [];
+
+        this._setup = GlobalSetup.EMPTY;
         this._setups = [];
         this._cleanups = [];
 
@@ -127,7 +129,7 @@ export class BenchmarkJob extends JobConfigBase {
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
-        if (!this._setup) {
+        for (const view of this._setup.getViewEnumerator()) {
             for (const bench of this._benchs) {
                 tasks.push(
                     new BenchmarkTask(
@@ -136,30 +138,12 @@ export class BenchmarkJob extends JobConfigBase {
                         bench.testFnParamNames,
                         bench.testFunction,
                         this._settings.merge(bench.settings),
-                        null,
+                        view,
                         this._cleanup,
                         bench.setup,
                         bench.cleanup,
                     ),
                 );
-            }
-        } else {
-            for (const view of this._setup.getViewEnumerator()) {
-                for (const bench of this._benchs) {
-                    tasks.push(
-                        new BenchmarkTask(
-                            bench.name,
-                            bench.testFn,
-                            bench.testFnParamNames,
-                            bench.testFunction,
-                            this._settings.merge(bench.settings),
-                            view,
-                            this._cleanup,
-                            bench.setup,
-                            bench.cleanup,
-                        ),
-                    );
-                }
             }
         }
 
