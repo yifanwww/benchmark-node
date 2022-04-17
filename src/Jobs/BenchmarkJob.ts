@@ -2,12 +2,12 @@ import { StatisticColumn } from '../Columns';
 import { Settings } from '../Data';
 import { GlobalSetup } from '../Function';
 import { MapToParams } from '../Parameterization';
+import { StatisticColumnOrder, SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
 import { Optional } from '../types.internal';
-import { StatisticColumnOrder, Table } from '../View';
 import { JobConfigBase } from './JobConfigBase';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
@@ -177,7 +177,7 @@ export class BenchmarkJob extends JobConfigBase {
 
         RuntimeInfo.log();
 
-        const table = new Table();
+        const table = new SummaryTable();
         table.addStatisticColumns(this._statsColumnOrder.getOrder());
         for (const task of tasks) {
             table.addStats(task.stats);

@@ -11,7 +11,7 @@ import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
 
-export class Table {
+export class SummaryTable {
     private static readonly fnNameColumn = new TableColumn('Function', (stats) => stats.name);
     private static readonly argColumn: ArgumentColumn[] = [];
 
@@ -24,7 +24,7 @@ export class Table {
     private declare _timeUnit: TimeUnit;
 
     public constructor() {
-        this._fnNameColumnHelper = new TableColumnHelper(Table.fnNameColumn);
+        this._fnNameColumnHelper = new TableColumnHelper(SummaryTable.fnNameColumn);
         this._argColumnHelpers = [];
         this._statsColumnHelpers = [];
 
@@ -44,10 +44,10 @@ export class Table {
 
         const maxLength = statsArr.reduce((prev, curr) => Math.max(prev, curr.args?.args.length ?? 0), 0);
         for (let i = this._argColumnHelpers.length; i < maxLength; i++) {
-            if (i >= Table.argColumn.length) {
-                Table.argColumn.push(new ArgumentColumn(i));
+            if (i >= SummaryTable.argColumn.length) {
+                SummaryTable.argColumn.push(new ArgumentColumn(i));
             }
-            this._argColumnHelpers.push(new ArgumentColumnHelper(Table.argColumn[i]));
+            this._argColumnHelpers.push(new ArgumentColumnHelper(SummaryTable.argColumn[i]));
         }
     }
 

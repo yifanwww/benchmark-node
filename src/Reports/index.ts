@@ -1,2 +1,2 @@
 export * from './StatisticColumnOrder';
-export * from './Table';
+export * from './SummaryTable';
