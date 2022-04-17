@@ -9,9 +9,9 @@ export class GlobalSetup {
 
     private declare _fn: Optional<(...args: readonly unknown[]) => void>;
     private declare _paramNames: readonly string[];
-    private declare _params: readonly Params<unknown>[];
+    private declare _params: readonly Params[];
 
-    public constructor(fn: Optional<(...args: unknown[]) => void>, params: readonly Params<unknown>[]) {
+    public constructor(fn: Optional<(...args: unknown[]) => void>, params: readonly Params[]) {
         this._fn = fn;
         this._paramNames = fn ? FunctionInfo.getParameterNames(fn) : [];
         this._params = params;

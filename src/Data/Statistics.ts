@@ -9,7 +9,7 @@ import { Nanosecond } from '../types';
 export class Statistics {
     private declare _name: string;
 
-    private declare _args?: Arguments<ReadonlyArray<unknown>>;
+    private declare _args?: Arguments;
 
     private declare _n: number;
 
@@ -103,12 +103,7 @@ export class Statistics {
         return this._ops;
     }
 
-    public constructor(
-        name: string,
-        measurements: Nanosecond[],
-        ops: number,
-        args?: Arguments<ReadonlyArray<unknown>>,
-    ) {
+    public constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
         this._name = name;
         this._args = args;
 

@@ -29,7 +29,7 @@ export class BenchmarkRunner {
         workload: boolean,
         order: number,
         ops: number,
-        jitArgsIter?: Generator<Arguments<unknown[]>, void>,
+        jitArgsIter?: Generator<Arguments, void>,
     ): void {
         const testerContext: TesterContext = {
             ops,
@@ -55,17 +55,17 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    private benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments<unknown[]>, void>): void {
+    private benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments, void>): void {
         this.benchmarkJitting(false, 1, 1, getJitArgsIter?.());
         this.benchmarkJitting(true, 1, 1, getJitArgsIter?.());
     }
 
-    private benchmarkJitting2(getJitArgsIter?: () => Generator<Arguments<unknown[]>, void>): void {
+    private benchmarkJitting2(getJitArgsIter?: () => Generator<Arguments, void>): void {
         this.benchmarkJitting(false, 2, this._current!.settings.initOps, getJitArgsIter?.());
         this.benchmarkJitting(true, 2, this._current!.settings.initOps, getJitArgsIter?.());
     }
 
-    private benchmarkPilot(args?: Arguments<unknown[]>): number {
+    private benchmarkPilot(args?: Arguments): number {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
@@ -97,7 +97,7 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<unknown[]>): void {
+    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -118,7 +118,7 @@ export class BenchmarkRunner {
         }
     }
 
-    private benchmarkOverheadActual(ops: number, args?: Arguments<unknown[]>): Nanosecond {
+    private benchmarkOverheadActual(ops: number, args?: Arguments): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -144,7 +144,7 @@ export class BenchmarkRunner {
         return total / this._current!.settings.measurementCount;
     }
 
-    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<unknown[]>): void {
+    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -223,7 +223,7 @@ export class BenchmarkRunner {
         logger.writeLine();
     }
 
-    private _runFormal(args?: Arguments<unknown[]>): void {
+    private _runFormal(args?: Arguments): void {
         const logger = ConsoleLogger.default;
 
         const ops = this.benchmarkPilot(args);

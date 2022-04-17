@@ -1,4 +1,4 @@
-export class Params<T> {
+export class Params<T = unknown> {
     private declare readonly _values: readonly T[];
 
     public constructor(...values: readonly T[]) {

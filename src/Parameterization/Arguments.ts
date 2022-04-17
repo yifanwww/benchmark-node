@@ -1,4 +1,4 @@
-export class Arguments<Args extends readonly unknown[]> {
+export class Arguments<Args extends readonly unknown[] = readonly unknown[]> {
     private declare readonly _args: Args;
 
     public constructor(...args: Args) {

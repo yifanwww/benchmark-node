@@ -35,7 +35,7 @@ export class ArgumentStoreView {
         return this._store.jitArgsList.length > 0;
     }
 
-    public get jitArgsList(): Generator<Arguments<unknown[]>, void> {
+    public get jitArgsList(): Generator<Arguments, void> {
         return this.getJitArgsEnumerator();
     }
 }
