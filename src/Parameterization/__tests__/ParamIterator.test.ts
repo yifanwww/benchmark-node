@@ -4,10 +4,10 @@ import { Params } from '../Params';
 describe(`Test class \`${ParamIterator.name}\``, () => {
     it('iterates-1', () => {
         function _test(...values: unknown[]) {
-            const iterator = new ParamIterator([new Params(...values)]);
+            const iter = new ParamIterator([new Params(...values)]);
 
             let count = 0;
-            for (const args of iterator.iter) {
+            for (const args of iter) {
                 expect(args).toStrictEqual([values[count]]);
                 count++;
             }
@@ -21,9 +21,9 @@ describe(`Test class \`${ParamIterator.name}\``, () => {
     });
 
     it('iterates-2', () => {
-        const iterator = new ParamIterator([new Params(0, 1, 2, 3), new Params(4, 5, 6), new Params(7, 8, 9)]);
+        const iter = new ParamIterator([new Params(0, 1, 2, 3), new Params(4, 5, 6), new Params(7, 8, 9)]);
 
-        const generator = iterator.iter;
+        const generator = iter[Symbol.iterator]();
 
         expect(generator.next().value).toStrictEqual([0, 4, 7]);
         expect(generator.next().value).toStrictEqual([0, 4, 8]);

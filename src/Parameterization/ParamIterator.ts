@@ -8,15 +8,11 @@ export class ParamIterator {
         this._params = params;
     }
 
-    private *getIter() {
-        const interator = new MultiIndexIterator(this._params.map((param) => param.values.length));
+    public *[Symbol.iterator]() {
+        const iter = new MultiIndexIterator(this._params.map((param) => param.values.length));
 
-        for (const indexes of interator.iter) {
+        for (const indexes of iter) {
             yield indexes.map((index, i) => this._params[i].values[index]);
         }
-    }
-
-    public get iter(): Generator<unknown[], void> {
-        return this.getIter();
     }
 }

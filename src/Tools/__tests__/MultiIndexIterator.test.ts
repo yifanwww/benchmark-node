@@ -3,10 +3,10 @@ import { MultiIndexIterator } from '../MultiIndexIterator';
 describe(`Test class \`${MultiIndexIterator.name}\``, () => {
     it('iterates-1', () => {
         function _test(capacity: number) {
-            const iterator = new MultiIndexIterator([capacity]);
+            const iter = new MultiIndexIterator([capacity]);
 
             let count = 0;
-            for (const indexes of iterator.iter) {
+            for (const indexes of iter) {
                 expect(indexes).toStrictEqual([count]);
                 count++;
             }
@@ -24,9 +24,9 @@ describe(`Test class \`${MultiIndexIterator.name}\``, () => {
     });
 
     it('iterates-2', () => {
-        const iterator = new MultiIndexIterator([2, 1, 3, 4]);
+        const iter = new MultiIndexIterator([2, 1, 3, 4]);
 
-        const generator = iterator.iter;
+        const generator = iter[Symbol.iterator]();
 
         expect(generator.next().value).toStrictEqual([0, 0, 0, 0]);
         expect(generator.next().value).toStrictEqual([0, 0, 0, 1]);
@@ -57,15 +57,9 @@ describe(`Test class \`${MultiIndexIterator.name}\``, () => {
 
     it('iterates-3', () => {
         function _test(capacities: number[]) {
-            const iterator = new MultiIndexIterator(capacities);
+            const iter = new MultiIndexIterator(capacities);
 
-            let count = 0;
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            for (const _ of iterator.iter) {
-                count++;
-            }
-
-            expect(count).toBe(capacities.reduce((sum, curr) => sum * curr, 1));
+            expect([...iter].length).toBe(capacities.reduce((sum, curr) => sum * curr, 1));
         }
 
         _test([1, 1, 1]);

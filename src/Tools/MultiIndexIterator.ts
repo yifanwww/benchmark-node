@@ -15,7 +15,7 @@ export class MultiIndexIterator {
         this._capacities = capacities;
     }
 
-    private *getIter() {
+    public *[Symbol.iterator]() {
         const indexes = this._capacities.map(() => 0);
 
         yield indexes;
@@ -34,9 +34,5 @@ export class MultiIndexIterator {
 
             yield indexes;
         }
-    }
-
-    public get iter(): Generator<readonly number[], void, unknown> {
-        return this.getIter();
     }
 }
