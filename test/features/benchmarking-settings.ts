@@ -11,7 +11,7 @@ new BenchmarkJob({
     minMeasurementTime: 50,
     warmupCount: 2,
 })
-    .addSetup(() => {
+    .setSetup(() => {
         testStr = crypto.randomBytes(10_000);
     })
     .add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'), {

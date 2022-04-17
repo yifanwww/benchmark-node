@@ -7,8 +7,8 @@ function factorial(n: number) {
 }
 
 new BenchmarkJob()
-    .addSetup(() => console.log('Setup!\n'))
-    .addCleanup(() => console.log('Cleanup!\n'))
+    .setSetup(() => console.log('Setup!\n'))
+    .setCleanup(() => console.log('Cleanup!\n'))
     .add('factorial', () => {
         let res;
         for (let a = 1; a <= 20; a++) {

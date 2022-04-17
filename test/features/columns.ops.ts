@@ -5,7 +5,7 @@ import { BenchmarkJob, Column } from '../../src';
 let testStr: Buffer;
 
 new BenchmarkJob({ columns: [Column.Ops] })
-    .addSetup(() => {
+    .setSetup(() => {
         testStr = crypto.randomBytes(10_000);
     })
     .add('md5', () => crypto.createHash('md5').update(testStr).digest('hex'))

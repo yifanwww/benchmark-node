@@ -5,7 +5,7 @@ import { BenchmarkJob, Params } from '../../src';
 let testStr: Buffer;
 
 new BenchmarkJob()
-    .addSetup(
+    .setSetup(
         (size: number) => {
             testStr = crypto.randomBytes(size);
         },

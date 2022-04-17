@@ -3,10 +3,10 @@
 import { BenchmarkJob } from '../../src';
 
 new BenchmarkJob()
-    .addSetup(() => {})
-    .addSetup(() => {})
-    .addCleanup(() => {})
-    .addCleanup(() => {})
+    .setSetup(() => {})
+    .setSetup(() => {})
+    .setCleanup(() => {})
+    .setCleanup(() => {})
     .add('', () => {})
     .add(function () {})
     .add(() => {})

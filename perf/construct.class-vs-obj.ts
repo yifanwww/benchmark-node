@@ -110,7 +110,7 @@ let g: number;
 
 const job = new BenchmarkJob();
 
-job.addSetup(() => {
+job.setSetup(() => {
     a = 1;
     b = 2;
     c = 3;

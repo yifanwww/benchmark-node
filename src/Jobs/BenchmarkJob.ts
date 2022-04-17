@@ -72,6 +72,12 @@ export class BenchmarkJob extends JobConfigBase {
         return this;
     }
 
+    /** @deprecated Please use `setSetup` instead. */
+    public addSetup(setup: () => void): this {
+        this._setup.push(new GlobalSetup(setup as (...args: readonly unknown[]) => void, []));
+        return this;
+    }
+
     /**
      * Adds global setup.
      * The global setup function will be executed only once before all the benchmark function invocations.
@@ -81,7 +87,7 @@ export class BenchmarkJob extends JobConfigBase {
      * @param setup A callback function that does some setup work.
      * @returns The benchmark instance itself.
      */
-    public addSetup(setup: () => void): this;
+    public setSetup(setup: () => void): this;
     /**
      * Adds global setup.
      * The global setup function will be executed only once before all the benchmark function invocations.
@@ -92,10 +98,16 @@ export class BenchmarkJob extends JobConfigBase {
      * @param params The parameters passed to the setup function.
      * @returns The benchmark instance itself.
      */
-    public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
+    public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
 
-    public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
+    public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
         this._setup.push(new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []));
+        return this;
+    }
+
+    /** @deprecated Please use `setCleanup` instead. */
+    public addCleanup(cleanup: () => void): this {
+        this._cleanup.push(new GlobalCleanup(cleanup));
         return this;
     }
 
@@ -108,7 +120,7 @@ export class BenchmarkJob extends JobConfigBase {
      * @param cleanup A callback function that does some cleanup work.
      * @returns The benchmark instance itself.
      */
-    public addCleanup(cleanup: () => void): this {
+    public setCleanup(cleanup: () => void): this {
         this._cleanup.push(new GlobalCleanup(cleanup));
         return this;
     }
