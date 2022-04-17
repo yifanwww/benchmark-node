@@ -23,7 +23,7 @@
         "build-test": "tsc --project tsconfigs/tsconfig.test.json",
         "clean": "rimraf dist lib lib-commonjs tsconfigs/*.tsbuildinfo",
         "clean-test": "rimraf dist",
-        "dev": "npm run build:cjs -- --watch",
+        "dev": "npm run build-test -- --watch",
         "format": "prettier --write \"**/*.{cjs,js,mjs,json,ts,yaml,yml}\"",
         "lint": "eslint .",
         "pre-commit": "lint-staged",
