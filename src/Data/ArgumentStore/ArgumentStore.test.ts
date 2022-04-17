@@ -1,5 +1,5 @@
 import { Arguments } from '../../Parameterization';
-import { ArgumentStore } from '../ArgumentStore';
+import { ArgumentStore } from './ArgumentStore';
 
 describe(`Test class \`${ArgumentStore.name}\``, () => {
     it('creates an instance without args and jit args', () => {

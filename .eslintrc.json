@@ -115,7 +115,7 @@
         "@typescript-eslint/return-await": ["error", "in-try-catch"],
 
         "import/extensions": "off",
-        "import/no-cycle": "off",
+        "import/no-cycle": "error",
         "import/no-default-export": "error",
         // Disabled for import-statement of dev dependencies.
         "import/no-extraneous-dependencies": "off",

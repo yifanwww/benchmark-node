@@ -1,7 +1,7 @@
-import { Params } from '../Parameterization';
-import { MultiIndexIterator } from '../Tools/MultiIndexIterator';
-import { Optional } from '../types.internal';
-import { FunctionInfo } from './FunctionInfo';
+import { Params } from '../../Parameterization';
+import { MultiIndexIterator } from '../../Tools/MultiIndexIterator';
+import { Optional } from '../../types.internal';
+import { FunctionInfo } from '../FunctionInfo';
 import { GlobalSetupView } from './GlobalSetupView';
 
 export class GlobalSetup {

@@ -1,6 +1,6 @@
-import { range } from '../Tools/range';
-import { LooseReadonlyArray } from '../types';
-import { Arguments } from '../Parameterization/Arguments';
+import { Arguments } from '../../Parameterization/Arguments';
+import { range } from '../../Tools/range';
+import { LooseReadonlyArray } from '../../types';
 import { ArgumentStoreView } from './ArgumentStoreView';
 
 export class ArgumentStore {
