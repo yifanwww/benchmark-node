@@ -1,7 +1,7 @@
 import { ParamIterator, Params } from '../Parameterization';
 import { FunctionInfo } from '../Tools/FunctionInfo';
 
-export class Setup extends FunctionInfo {
+export class GlobalSetup extends FunctionInfo {
     private declare _fn: (...args: readonly unknown[]) => void;
 
     private declare _iterator: ParamIterator;

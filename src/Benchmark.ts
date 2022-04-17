@@ -1,9 +1,8 @@
+import { BenchmarkTask } from './BenchmarkTask';
 import { ANONYMOUS_FN_NAME } from './constants';
-import { Settings, Statistics, TestFunction } from './Data';
-import { RuntimeInfo } from './RuntimeInfo';
+import { Settings, TestFunction } from './Data';
 import { CodeGen, Tester } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { Formatter } from './Tools/Formatter';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from './types';
 
 interface ConstructorArgs<T extends TestFn> {
@@ -28,40 +27,6 @@ export class Benchmark<T extends TestFn> {
 
     private declare readonly _setup?: () => void;
     private declare readonly _cleanup?: () => void;
-
-    private declare readonly _stats: Statistics[];
-
-    public get name(): string {
-        return this._name;
-    }
-
-    public get testFn() {
-        return this._testFn;
-    }
-
-    public get testFunction() {
-        return this._testFunction;
-    }
-
-    public get tester() {
-        return this._tester;
-    }
-
-    public get settings() {
-        return this._settings;
-    }
-
-    public get setup() {
-        return this._setup;
-    }
-
-    public get cleanup() {
-        return this._cleanup;
-    }
-
-    public get stats() {
-        return this._stats;
-    }
 
     /**
      * @param testFn The function to benchmark.
@@ -96,8 +61,6 @@ export class Benchmark<T extends TestFn> {
         this._tester = CodeGen.createTester({
             argument: { count: this._testFunction.maxArgsLength },
         });
-
-        this._stats = [];
     }
 
     private parseArgs(args: [T, BenchmarkOptions<T>?] | [string, T, BenchmarkOptions<T>?]): ConstructorArgs<T> {
@@ -108,25 +71,6 @@ export class Benchmark<T extends TestFn> {
             const [testFn, options = {}] = args as [T, BenchmarkOptions<T>?];
             return { testFn, options };
         }
-    }
-
-    public setBenchmarkingSettings(settings: BenchmarkingSettings): void {
-        this._settings.setButNoOverwriting(settings);
-    }
-
-    public logConfigs(): void {
-        const { delay, initOps, measurementCount, minMeasurementTime } = this._settings;
-
-        const logger = ConsoleLogger.default;
-        logger.writeLineInfo('Benchmark Environment Information:');
-        logger.writeLineInfo(`  Node.js ${RuntimeInfo.node} (V8 ${RuntimeInfo.v8})`);
-        logger.writeLineInfo('Benchmark Configuration:');
-        logger.writeLineInfo(`  delay               : ${Formatter.beautifyNumber(delay)} ns`);
-        logger.writeLineInfo(`  initial ops         : ${Formatter.beautifyNumber(initOps)}`);
-        logger.writeLineInfo(`  measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
-        logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
-        logger.writeLineInfo(`  ${this._testFunction.setup ? 'Has' : 'No'} iteration setup`);
-        logger.writeLineInfo(`  ${this._testFunction.cleanup ? 'Has' : 'No'} iteration cleanup`);
     }
 
     /**
@@ -148,5 +92,16 @@ export class Benchmark<T extends TestFn> {
         }
 
         return pass;
+    }
+
+    public toBenchmarkTask(): BenchmarkTask {
+        return new BenchmarkTask(
+            this._name,
+            this._testFn,
+            this._testFunction,
+            this._settings,
+            this._setup,
+            this._cleanup,
+        );
     }
 }

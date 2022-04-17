@@ -1,2 +1,2 @@
-export * from './Cleanup';
-export * from './Setup';
+export * from './GlobalCleanup';
+export * from './GlobalSetup';

@@ -1,12 +1,13 @@
 import { Benchmark, BenchmarkOptions } from '../Benchmark';
 import { StatisticColumn } from '../Columns';
-import { Cleanup, Setup } from '../Function';
+import { GlobalCleanup, GlobalSetup } from '../Function';
 import { JobConfigBase } from './JobConfigBase';
 import { MapToParams } from '../Parameterization';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
 import { StatisticColumnOrder, Table } from '../View';
+import { BenchmarkTask } from '../BenchmarkTask';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
     /**
@@ -24,8 +25,8 @@ export class BenchmarkJob extends JobConfigBase {
 
     private declare readonly _benchs: Benchmark<TestFn>[];
 
-    private declare readonly _setup: Array<Setup | undefined>;
-    private declare readonly _cleanup: Array<Cleanup | undefined>;
+    private declare readonly _setup: Array<GlobalSetup | undefined>;
+    private declare readonly _cleanup: Array<GlobalCleanup | undefined>;
 
     private declare readonly _settings: BenchmarkingSettings;
 
@@ -94,7 +95,7 @@ export class BenchmarkJob extends JobConfigBase {
     public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
 
     public addSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
-        this._setup.push(new Setup(setup as (...args: readonly unknown[]) => void, params ?? []));
+        this._setup.push(new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []));
         return this;
     }
 
@@ -108,14 +109,14 @@ export class BenchmarkJob extends JobConfigBase {
      * @returns The benchmark instance itself.
      */
     public addCleanup(cleanup: () => void): this {
-        this._cleanup.push(new Cleanup(cleanup));
+        this._cleanup.push(new GlobalCleanup(cleanup));
         return this;
     }
 
-    private runBenchmark() {
+    private runBenchmark(benchs: BenchmarkTask[]) {
         const logger = ConsoleLogger.default;
 
-        for (const bench of this._benchs) {
+        for (const bench of benchs) {
             logger.writeLineHeader(`* Benchmark: ${bench.name} *`);
             bench.logConfigs();
             logger.writeLine();
@@ -128,13 +129,16 @@ export class BenchmarkJob extends JobConfigBase {
         if (!this.validate()) return;
 
         const logger = ConsoleLogger.default;
-        logger.writeLineInfo(`Found ${this._benchs.length} ${this._benchs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
-        for (const bench of this._benchs) {
+
+        const benchs = this._benchs.map((bench) => bench.toBenchmarkTask());
+
+        logger.writeLineInfo(`Found ${benchs.length} ${benchs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
+        for (const bench of benchs) {
             logger.writeLineInfo(`- ${bench.name}`);
         }
         logger.writeLine();
 
-        for (const bench of this._benchs) {
+        for (const bench of benchs) {
             bench.setBenchmarkingSettings(this._settings);
         }
 
@@ -143,12 +147,12 @@ export class BenchmarkJob extends JobConfigBase {
 
         if (!setup || !setup.hasParams()) {
             setup?.fn();
-            this.runBenchmark();
+            this.runBenchmark(benchs);
             cleanup?.fn();
         } else {
             for (const args of setup.params) {
                 setup.fn(...args);
-                this.runBenchmark();
+                this.runBenchmark(benchs);
                 cleanup?.fn();
             }
         }
@@ -159,7 +163,7 @@ export class BenchmarkJob extends JobConfigBase {
 
         const table = new Table();
         table.addStatisticColumns(this._statsColumnOrder.getOrder());
-        for (const bench of this._benchs) {
+        for (const bench of benchs) {
             table.addStats(bench.stats);
         }
         table.drawSummaryTable();

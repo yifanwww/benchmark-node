@@ -1,11 +1,11 @@
-import { Benchmark } from './Benchmark';
+import { BenchmarkTask } from './BenchmarkTask';
 import { Statistics } from './Data';
 import { Arguments } from './Parameterization';
 import { TesterContext } from './Tools/CodeGen';
 import { ConsoleLogger } from './Tools/ConsoleLogger';
 import { Formatter } from './Tools/Formatter';
 import { Time } from './Tools/TimeTool';
-import { Nanosecond, TestFn } from './types';
+import { Nanosecond } from './types';
 import { Optional } from './types.internal';
 
 enum Stage {
@@ -20,7 +20,7 @@ enum Stage {
 }
 
 export class BenchmarkRunner {
-    private declare _current: Optional<Benchmark<TestFn>>;
+    private declare _current: Optional<BenchmarkTask>;
 
     public constructor() {
         this._current = null;
@@ -191,7 +191,7 @@ export class BenchmarkRunner {
     /**
      * Runs the benchmark.
      */
-    public run(bench: Benchmark<TestFn>): void {
+    public run(bench: BenchmarkTask): void {
         this._current = bench;
 
         this._runJitting();
@@ -203,6 +203,8 @@ export class BenchmarkRunner {
                 this._runFormal(args);
             }
         }
+
+        this._current = null;
     }
 
     private _runJitting(): void {

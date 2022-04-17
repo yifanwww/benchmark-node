@@ -1,4 +1,4 @@
-export class Cleanup {
+export class GlobalCleanup {
     private declare _fn: () => void;
 
     public constructor(fn: () => void) {
