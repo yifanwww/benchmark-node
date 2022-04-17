@@ -1,5 +1,5 @@
 import { Settings, Statistics, TestFunction } from '../Data';
-import { GlobalSetup } from '../Function';
+import { GlobalSetupView } from '../Function';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -15,12 +15,13 @@ export class BenchmarkTask {
     private declare readonly _fullName: string;
 
     private declare readonly _testFn: TestFn;
+    private declare readonly _testFnParamNames: readonly string[];
     private declare readonly _testFunction: TestFunction;
     private declare readonly _tester: Tester;
 
     private declare readonly _settings: Settings;
 
-    private declare readonly _globalSetup: Optional<GlobalSetup>;
+    private declare readonly _globalSetup: Optional<GlobalSetupView>;
     private declare readonly _globalCleanup: Optional<() => void>;
 
     private declare readonly _iterationSetup: Optional<() => void>;
@@ -48,6 +49,14 @@ export class BenchmarkTask {
         return this._settings;
     }
 
+    public get globalSetup() {
+        return this._globalSetup;
+    }
+
+    public get globalCleanup() {
+        return this._globalCleanup;
+    }
+
     public get iterationSetup() {
         return this._iterationSetup;
     }
@@ -63,16 +72,21 @@ export class BenchmarkTask {
     public constructor(
         name: string,
         testFn: TestFn,
+        testFnInfo: readonly string[],
         testFunction: TestFunction,
         settings: Settings,
-        setup: Optional<() => void>,
-        cleanup: Optional<() => void>,
+        globalSetup: Optional<GlobalSetupView>,
+        // globalSetupParams: ParamValuePairs,
+        globalCleanup: Optional<() => void>,
+        iterationSetup: Optional<() => void>,
+        iterationCleanup: Optional<() => void>,
     ) {
         this._id = ++BenchmarkTask.id;
 
         this._name = name;
 
         this._testFn = testFn;
+        this._testFnParamNames = testFnInfo;
         this._testFunction = testFunction;
 
         // Gets a totally new function to test the performance of `testFn`.
@@ -84,8 +98,11 @@ export class BenchmarkTask {
 
         this._settings = settings;
 
-        this._iterationSetup = setup;
-        this._iterationCleanup = cleanup;
+        this._globalSetup = globalSetup;
+        this._globalCleanup = globalCleanup;
+
+        this._iterationSetup = iterationSetup;
+        this._iterationCleanup = iterationCleanup;
 
         this._stats = [];
     }

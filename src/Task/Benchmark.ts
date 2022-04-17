@@ -1,9 +1,8 @@
-import { Settings, TestFunction } from '../Data';
+import { TestFunction } from '../Data';
 import { FunctionInfo } from '../Function';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';
-import { BenchmarkTask } from './BenchmarkTask';
 
 interface ConstructorArgs<T extends TestFn> {
     name?: string;
@@ -28,6 +27,34 @@ export class Benchmark<T extends TestFn = TestFn> {
 
     private declare readonly _setup: Optional<() => void>;
     private declare readonly _cleanup: Optional<() => void>;
+
+    public get name(): string {
+        return this._name;
+    }
+
+    public get testFn() {
+        return this._testFn;
+    }
+
+    public get testFnParamNames() {
+        return this._testFnParamNames;
+    }
+
+    public get testFunction() {
+        return this._testFunction;
+    }
+
+    public get settings() {
+        return this._settings;
+    }
+
+    public get setup() {
+        return this._setup;
+    }
+
+    public get cleanup() {
+        return this._cleanup;
+    }
 
     /**
      * @param testFn The function to benchmark.
@@ -90,16 +117,5 @@ export class Benchmark<T extends TestFn = TestFn> {
         }
 
         return pass;
-    }
-
-    public toBenchmarkTask(jobSettings: Settings): BenchmarkTask {
-        return new BenchmarkTask(
-            this._name,
-            this._testFn,
-            this._testFunction,
-            jobSettings.merge(this._settings),
-            this._setup,
-            this._cleanup,
-        );
     }
 }

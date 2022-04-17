@@ -124,16 +124,46 @@ export class BenchmarkJob extends JobConfigBase {
         return this;
     }
 
-    private runBenchmark(tasks: BenchmarkTask[]) {
-        const logger = ConsoleLogger.default;
+    private benchmarkToTask(): BenchmarkTask[] {
+        const tasks: BenchmarkTask[] = [];
 
-        for (const task of tasks) {
-            logger.writeLineHeader(`* Benchmark: ${task.name} *`);
-            task.logConfigs();
-            logger.writeLine();
-
-            this._runner.run(task);
+        if (!this._setup || !this._setup.hasParams()) {
+            for (const bench of this._benchs) {
+                tasks.push(
+                    new BenchmarkTask(
+                        bench.name,
+                        bench.testFn,
+                        bench.testFnParamNames,
+                        bench.testFunction,
+                        this._settings.merge(bench.settings),
+                        null,
+                        this._cleanup,
+                        bench.setup,
+                        bench.cleanup,
+                    ),
+                );
+            }
+        } else {
+            for (const view of this._setup.getViewEnumerator()) {
+                for (const bench of this._benchs) {
+                    tasks.push(
+                        new BenchmarkTask(
+                            bench.name,
+                            bench.testFn,
+                            bench.testFnParamNames,
+                            bench.testFunction,
+                            this._settings.merge(bench.settings),
+                            view,
+                            this._cleanup,
+                            bench.setup,
+                            bench.cleanup,
+                        ),
+                    );
+                }
+            }
         }
+
+        return tasks;
     }
 
     public run(): void {
@@ -141,7 +171,7 @@ export class BenchmarkJob extends JobConfigBase {
 
         const logger = ConsoleLogger.default;
 
-        const tasks = this._benchs.map((bench) => bench.toBenchmarkTask(this._settings));
+        const tasks = this.benchmarkToTask();
 
         logger.writeLineInfo(`Found ${tasks.length} ${tasks.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const task of tasks) {
@@ -149,16 +179,12 @@ export class BenchmarkJob extends JobConfigBase {
         }
         logger.writeLine();
 
-        if (!this._setup || !this._setup.hasParams()) {
-            this._setup?.fn();
-            this.runBenchmark(tasks);
-            this._cleanup?.();
-        } else {
-            for (const args of this._setup.params) {
-                this._setup.fn(...args);
-                this.runBenchmark(tasks);
-                this._cleanup?.();
-            }
+        for (const task of tasks) {
+            logger.writeLineHeader(`* Benchmark: ${task.name} *`);
+            task.logConfigs();
+            logger.writeLine();
+
+            this._runner.run(task);
         }
 
         logger.writeLineHeader('* Summary *\n');

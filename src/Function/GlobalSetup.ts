@@ -1,30 +1,39 @@
-import { ParamIterator, Params } from '../Parameterization';
+import { Params } from '../Parameterization';
+import { MultiIndexIterator } from '../Tools/MultiIndexIterator';
 import { FunctionInfo } from './FunctionInfo';
+import { GlobalSetupView } from './GlobalSetupView';
 
 export class GlobalSetup {
     private declare _fn: (...args: readonly unknown[]) => void;
-    private declare _fnParamNames: readonly string[];
-
-    private declare _iter: ParamIterator;
-    private declare _hasParams: boolean;
+    private declare _paramNames: readonly string[];
+    private declare _params: readonly Params<unknown>[];
 
     public constructor(fn: (...args: unknown[]) => void, params: readonly Params<unknown>[]) {
         this._fn = fn;
-        this._fnParamNames = FunctionInfo.getParameterNames(fn);
-
-        this._iter = new ParamIterator(params);
-        this._hasParams = params.length > 0;
+        this._paramNames = FunctionInfo.getParameterNames(fn);
+        this._params = params;
     }
 
     public get fn() {
         return this._fn;
     }
 
-    public hasParams(): boolean {
-        return this._hasParams;
+    public get paramNames() {
+        return this._paramNames;
     }
 
-    public get params(): Generator<unknown[], void> {
-        return this._iter[Symbol.iterator]();
+    public get params() {
+        return this._params;
+    }
+
+    public hasParams(): boolean {
+        return this._params.length > 0;
+    }
+
+    public *getViewEnumerator(): Generator<GlobalSetupView, void> {
+        const iter = new MultiIndexIterator(this._params.map((param) => param.values.length));
+        for (const indexes of iter) {
+            yield new GlobalSetupView(this, indexes);
+        }
     }
 }

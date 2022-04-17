@@ -189,20 +189,24 @@ export class BenchmarkRunner {
     }
 
     /**
-     * Runs the benchmark.
+     * Runs the benchmark task.
      */
-    public run(bench: BenchmarkTask): void {
-        this._current = bench;
+    public run(task: BenchmarkTask): void {
+        this._current = task;
+
+        task.globalSetup?.execute();
 
         this._runJitting();
 
-        if (bench.testFunction.argsCount === 0) {
+        if (task.testFunction.argsCount === 0) {
             this._runFormal();
         } else {
-            for (const args of bench.testFunction.args) {
+            for (const args of task.testFunction.args) {
                 this._runFormal(args);
             }
         }
+
+        task.globalCleanup?.();
 
         this._current = null;
     }
