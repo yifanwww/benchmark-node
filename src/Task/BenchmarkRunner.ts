@@ -2,7 +2,6 @@ import { Statistics } from '../Data';
 import { Arguments } from '../Parameterization';
 import { TesterContext } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { Formatter } from '../Tools/Formatter';
 import { Time } from '../Tools/TimeTool';
 import { Nanosecond } from '../types';
 import { Optional } from '../types.internal';
@@ -30,7 +29,7 @@ export class BenchmarkRunner {
         workload: boolean,
         order: number,
         ops: number,
-        argsGenerator?: Generator<Arguments<never[]>, void>,
+        jitArgsIter?: Generator<Arguments<unknown[]>, void>,
     ): void {
         const testerContext: TesterContext = {
             ops,
@@ -42,10 +41,10 @@ export class BenchmarkRunner {
         };
 
         let used: Nanosecond = 0;
-        if (!argsGenerator) {
+        if (!jitArgsIter) {
             used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
         } else {
-            for (const args of argsGenerator) {
+            for (const args of jitArgsIter) {
                 testerContext.args = args.args;
                 used += Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
             }
@@ -56,17 +55,17 @@ export class BenchmarkRunner {
         this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
     }
 
-    private benchmarkJitting1(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
-        this.benchmarkJitting(false, 1, 1, getArgsGenerator?.());
-        this.benchmarkJitting(true, 1, 1, getArgsGenerator?.());
+    private benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments<unknown[]>, void>): void {
+        this.benchmarkJitting(false, 1, 1, getJitArgsIter?.());
+        this.benchmarkJitting(true, 1, 1, getJitArgsIter?.());
     }
 
-    private benchmarkJitting2(getArgsGenerator?: () => Generator<Arguments<never[]>, void>): void {
-        this.benchmarkJitting(false, 2, this._current!.settings.initOps, getArgsGenerator?.());
-        this.benchmarkJitting(true, 2, this._current!.settings.initOps, getArgsGenerator?.());
+    private benchmarkJitting2(getJitArgsIter?: () => Generator<Arguments<unknown[]>, void>): void {
+        this.benchmarkJitting(false, 2, this._current!.settings.initOps, getJitArgsIter?.());
+        this.benchmarkJitting(true, 2, this._current!.settings.initOps, getJitArgsIter?.());
     }
 
-    private benchmarkPilot(args?: Arguments<never[]>): number {
+    private benchmarkPilot(args?: Arguments<unknown[]>): number {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
@@ -98,7 +97,7 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<never[]>): void {
+    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments<unknown[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -119,7 +118,7 @@ export class BenchmarkRunner {
         }
     }
 
-    private benchmarkOverheadActual(ops: number, args?: Arguments<never[]>): Nanosecond {
+    private benchmarkOverheadActual(ops: number, args?: Arguments<unknown[]>): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -145,7 +144,7 @@ export class BenchmarkRunner {
         return total / this._current!.settings.measurementCount;
     }
 
-    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<never[]>): void {
+    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments<unknown[]>): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -198,12 +197,10 @@ export class BenchmarkRunner {
 
         this._runJitting();
 
-        if (task.testFunction.argsCount === 0) {
+        if (!task.testFnArgStore.hasArgs()) {
             this._runFormal();
         } else {
-            for (const args of task.testFunction.args) {
-                this._runFormal(args);
-            }
+            this._runFormal(task.testFnArgStore.args);
         }
 
         task.globalCleanup?.();
@@ -214,25 +211,20 @@ export class BenchmarkRunner {
     private _runJitting(): void {
         const logger = ConsoleLogger.default;
 
-        if (this._current!.testFunction.jitArgsCount === 0) {
+        if (!this._current!.testFnArgStore.hasJitArgs()) {
             this.benchmarkJitting1();
             logger.writeLine();
             this.benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(() => this._current!.testFunction.jitArgs);
+            this.benchmarkJitting1(() => this._current!.testFnArgStore.jitArgsList);
             logger.writeLine();
-            this.benchmarkJitting2(() => this._current!.testFunction.jitArgs);
+            this.benchmarkJitting2(() => this._current!.testFnArgStore.jitArgsList);
         }
         logger.writeLine();
     }
 
-    private _runFormal(args?: Arguments<never[]>): void {
+    private _runFormal(args?: Arguments<unknown[]>): void {
         const logger = ConsoleLogger.default;
-
-        if (args) {
-            logger.writeLineInfo(`// arguments: ${args.args.map((arg) => Formatter.limitStringLength(String(arg)))}`);
-            logger.writeLine();
-        }
 
         const ops = this.benchmarkPilot(args);
         logger.writeLine();

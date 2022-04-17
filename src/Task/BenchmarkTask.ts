@@ -1,4 +1,4 @@
-import { Settings, Statistics, TestFunction } from '../Data';
+import { ArgumentStoreView, Settings, Statistics } from '../Data';
 import { GlobalSetupView } from '../Function';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
@@ -16,7 +16,7 @@ export class BenchmarkTask {
 
     private declare readonly _testFn: TestFn;
     private declare readonly _testFnParamNames: readonly string[];
-    private declare readonly _testFunction: TestFunction;
+    private declare readonly _testFnArgStore: ArgumentStoreView;
     private declare readonly _tester: Tester;
 
     private declare readonly _settings: Settings;
@@ -37,8 +37,8 @@ export class BenchmarkTask {
         return this._testFn;
     }
 
-    public get testFunction() {
-        return this._testFunction;
+    public get testFnArgStore() {
+        return this._testFnArgStore;
     }
 
     public get tester() {
@@ -73,7 +73,7 @@ export class BenchmarkTask {
         name: string,
         testFn: TestFn,
         testFnInfo: readonly string[],
-        testFunction: TestFunction,
+        testFnArgStore: ArgumentStoreView,
         settings: Settings,
         globalSetup: Optional<GlobalSetupView>,
         // globalSetupParams: ParamValuePairs,
@@ -87,13 +87,13 @@ export class BenchmarkTask {
 
         this._testFn = testFn;
         this._testFnParamNames = testFnInfo;
-        this._testFunction = testFunction;
+        this._testFnArgStore = testFnArgStore;
 
         // Gets a totally new function to test the performance of `testFn`.
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
         // See "src/test/perf-DynamicFnCall.ts".
         this._tester = CodeGen.createTester({
-            argument: { count: this._testFunction.maxArgsLength },
+            argument: { count: this._testFnArgStore.maxArgsLength },
         });
 
         this._settings = settings;

@@ -1,4 +1,4 @@
-import { TestFunction } from '../Data';
+import { ArgumentStore } from '../Data';
 import { FunctionInfo } from '../Function';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
@@ -21,7 +21,7 @@ export class Benchmark<T extends TestFn = TestFn> {
     private declare readonly _testFn: T;
     private declare readonly _testFnName: string;
     private declare readonly _testFnParamNames: readonly string[];
-    private declare readonly _testFunction: TestFunction;
+    private declare readonly _testArgStore: ArgumentStore;
 
     private declare readonly _settings: Readonly<BenchmarkingSettings>;
 
@@ -40,8 +40,8 @@ export class Benchmark<T extends TestFn = TestFn> {
         return this._testFnParamNames;
     }
 
-    public get testFunction() {
-        return this._testFunction;
+    public get testArgStore() {
+        return this._testArgStore;
     }
 
     public get settings() {
@@ -76,7 +76,7 @@ export class Benchmark<T extends TestFn = TestFn> {
         this._testFn = testFn;
         this._testFnName = FunctionInfo.getFunctionName(testFn);
         this._testFnParamNames = FunctionInfo.getParameterNames(testFn);
-        this._testFunction = new TestFunction(options);
+        this._testArgStore = new ArgumentStore(options.args, options.jitArgs);
 
         this._name = name ?? this._testFnName;
 

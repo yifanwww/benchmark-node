@@ -129,21 +129,23 @@ export class BenchmarkJob extends JobConfigBase {
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
-        for (const view of this._setup.getViewEnumerator()) {
+        for (const setupView of this._setup.getViewEnumerator()) {
             for (const bench of this._benchs) {
-                tasks.push(
-                    new BenchmarkTask(
-                        bench.name,
-                        bench.testFn,
-                        bench.testFnParamNames,
-                        bench.testFunction,
-                        this._settings.merge(bench.settings),
-                        view,
-                        this._cleanup,
-                        bench.setup,
-                        bench.cleanup,
-                    ),
-                );
+                for (const argsView of bench.testArgStore.getViewEnumerator()) {
+                    tasks.push(
+                        new BenchmarkTask(
+                            bench.name,
+                            bench.testFn,
+                            bench.testFnParamNames,
+                            argsView,
+                            this._settings.merge(bench.settings),
+                            setupView,
+                            this._cleanup,
+                            bench.setup,
+                            bench.cleanup,
+                        ),
+                    );
+                }
             }
         }
 
