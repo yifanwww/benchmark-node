@@ -1,27 +1,15 @@
-import { ANONYMOUS_FN_NAME } from '../constants';
-
 export class FunctionInfo {
-    private declare _name: string;
-    private declare _paramNames: string[];
+    public static ANONYMOUS_NAME = 'anonymous';
 
-    public get name() {
-        return this._name;
+    public static getFunctionName(fn: Function): string {
+        return fn.name || FunctionInfo.ANONYMOUS_NAME;
     }
 
-    public get paramNames() {
-        return this._paramNames;
-    }
+    private static FUNCTION_EXPRESSION = /^(?:function(?:\s?[^(]+)?)?\(\s*([^)]*\s*)\)/i;
+    private static DELIMITER_EXPRESSION = /,\s*/i;
 
-    public constructor(fn: Function) {
-        this._name = fn.name || ANONYMOUS_FN_NAME;
-        this._paramNames = FunctionInfo.getParameterNames(fn);
-    }
-
-    private static functionExpression = /^(?:function(?:\s?[^(]+)?)?\(\s*([^)]*\s*)\)/i;
-    private static delimiterExpression = /,\s*/i;
-
-    private static getParameterNames(fn: Function): string[] {
-        const matching = FunctionInfo.functionExpression.exec(fn.toString());
+    public static getParameterNames(fn: Function): string[] {
+        const matching = FunctionInfo.FUNCTION_EXPRESSION.exec(fn.toString());
         if (!matching) {
             throw new Error(`Failed to get the function names, fn: ${fn}`);
         }
@@ -30,7 +18,7 @@ export class FunctionInfo {
         return (
             group
                 // Split the arguments string into an array comma-like delimited.
-                .split(FunctionInfo.delimiterExpression)
+                .split(FunctionInfo.DELIMITER_EXPRESSION)
                 // Ensure no default value and trim the whitespace.
                 .map((arg) => arg.replace(/=[\w\W]*/, '').trim())
                 // Ensure no inline comments are parsed and trim the whitespace.

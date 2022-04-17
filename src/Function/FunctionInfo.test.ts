@@ -1,35 +1,34 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { ANONYMOUS_FN_NAME } from '../constants';
 import { UnknownFn } from '../types.internal';
 import { FunctionInfo } from './FunctionInfo';
 
 describe(`Test class \`${FunctionInfo.name}\``, () => {
     it('gets the function name', () => {
-        expect(new FunctionInfo(function fn() {}).name).toBe('fn');
-        expect(new FunctionInfo(function () {}).name).toBe(ANONYMOUS_FN_NAME);
-        expect(new FunctionInfo(() => {}).name).toBe(ANONYMOUS_FN_NAME);
+        expect(FunctionInfo.getFunctionName(function fn() {})).toBe('fn');
+        expect(FunctionInfo.getFunctionName(function () {})).toBe(FunctionInfo.ANONYMOUS_NAME);
+        expect(FunctionInfo.getFunctionName(() => {})).toBe(FunctionInfo.ANONYMOUS_NAME);
 
         {
             const func = function fn() {};
-            expect(new FunctionInfo(func).name).toBe('fn');
+            expect(FunctionInfo.getFunctionName(func)).toBe('fn');
         }
 
         {
             const fn = function () {};
-            expect(new FunctionInfo(fn).name).toBe('fn');
+            expect(FunctionInfo.getFunctionName(fn)).toBe('fn');
         }
 
         {
             const fn = () => {};
-            expect(new FunctionInfo(fn).name).toBe('fn');
+            expect(FunctionInfo.getFunctionName(fn)).toBe('fn');
         }
     });
 
     it('gets the function parameter names', () => {
         function _test<T extends UnknownFn>(fn: T, expected: string[]) {
-            expect(new FunctionInfo(fn).paramNames).toStrictEqual(expected);
+            expect(FunctionInfo.getParameterNames(fn)).toStrictEqual(expected);
         }
 
         _test(function fn() {}, []);
@@ -86,6 +85,6 @@ describe(`Test class \`${FunctionInfo.name}\``, () => {
     });
 
     it('throws an error if cannot parse the parameter names', () => {
-        expect(() => new FunctionInfo('' as never)).toThrowError();
+        expect(() => FunctionInfo.getParameterNames('' as never)).toThrowError();
     });
 });

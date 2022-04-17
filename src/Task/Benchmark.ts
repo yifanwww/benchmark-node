@@ -1,4 +1,3 @@
-import { ANONYMOUS_FN_NAME } from '../constants';
 import { Settings, TestFunction } from '../Data';
 import { FunctionInfo } from '../Function';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -21,7 +20,8 @@ export class Benchmark<T extends TestFn = TestFn> {
     private declare readonly _name: string;
 
     private declare readonly _testFn: T;
-    private declare readonly _testFnInfo: FunctionInfo;
+    private declare readonly _testFnName: string;
+    private declare readonly _testFnParamNames: readonly string[];
     private declare readonly _testFunction: TestFunction;
 
     private declare readonly _settings: Readonly<BenchmarkingSettings>;
@@ -47,10 +47,11 @@ export class Benchmark<T extends TestFn = TestFn> {
         this._id = ++Benchmark.id;
 
         this._testFn = testFn;
-        this._testFnInfo = new FunctionInfo(testFn);
+        this._testFnName = FunctionInfo.getFunctionName(testFn);
+        this._testFnParamNames = FunctionInfo.getParameterNames(testFn);
         this._testFunction = new TestFunction(options);
 
-        this._name = name ?? this._testFnInfo.name;
+        this._name = name ?? this._testFnName;
 
         this._settings = options;
 
@@ -81,7 +82,7 @@ export class Benchmark<T extends TestFn = TestFn> {
 
         const prefix = `[No.${this._id} Benchmark]`;
 
-        if (this._name === ANONYMOUS_FN_NAME && this._testFnInfo.name === ANONYMOUS_FN_NAME) {
+        if (this._name === FunctionInfo.ANONYMOUS_NAME && this._testFnName === FunctionInfo.ANONYMOUS_NAME) {
             logger.writeLineError(
                 `${prefix} The name of benchmark cannot be the anonymous function name, please give a specific name`,
             );
