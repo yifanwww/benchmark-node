@@ -1,10 +1,9 @@
-import { Benchmark, BenchmarkOptions } from '../Benchmark';
-import { BenchmarkTask } from '../BenchmarkTask';
 import { StatisticColumn } from '../Columns';
 import { Settings } from '../Data';
 import { GlobalCleanup, GlobalSetup } from '../Function';
 import { MapToParams } from '../Parameterization';
 import { RuntimeInfo } from '../RuntimeInfo';
+import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
 import { StatisticColumnOrder, Table } from '../View';
@@ -126,15 +125,15 @@ export class BenchmarkJob extends JobConfigBase {
         return this;
     }
 
-    private runBenchmark(benchs: BenchmarkTask[]) {
+    private runBenchmark(tasks: BenchmarkTask[]) {
         const logger = ConsoleLogger.default;
 
-        for (const bench of benchs) {
-            logger.writeLineHeader(`* Benchmark: ${bench.name} *`);
-            bench.logConfigs();
+        for (const task of tasks) {
+            logger.writeLineHeader(`* Benchmark: ${task.name} *`);
+            task.logConfigs();
             logger.writeLine();
 
-            this._runner.run(bench);
+            this._runner.run(task);
         }
     }
 
@@ -143,11 +142,11 @@ export class BenchmarkJob extends JobConfigBase {
 
         const logger = ConsoleLogger.default;
 
-        const benchs = this._benchs.map((bench) => bench.toBenchmarkTask(this._settings));
+        const tasks = this._benchs.map((bench) => bench.toBenchmarkTask(this._settings));
 
-        logger.writeLineInfo(`Found ${benchs.length} ${benchs.length > 1 ? 'benchmarks' : 'benchmark'}:`);
-        for (const bench of benchs) {
-            logger.writeLineInfo(`- ${bench.name}`);
+        logger.writeLineInfo(`Found ${tasks.length} ${tasks.length > 1 ? 'benchmarks' : 'benchmark'}:`);
+        for (const task of tasks) {
+            logger.writeLineInfo(`- ${task.name}`);
         }
         logger.writeLine();
 
@@ -156,12 +155,12 @@ export class BenchmarkJob extends JobConfigBase {
 
         if (!setup || !setup.hasParams()) {
             setup?.fn();
-            this.runBenchmark(benchs);
+            this.runBenchmark(tasks);
             cleanup?.fn();
         } else {
             for (const args of setup.params) {
                 setup.fn(...args);
-                this.runBenchmark(benchs);
+                this.runBenchmark(tasks);
                 cleanup?.fn();
             }
         }
@@ -172,8 +171,8 @@ export class BenchmarkJob extends JobConfigBase {
 
         const table = new Table();
         table.addStatisticColumns(this._statsColumnOrder.getOrder());
-        for (const bench of benchs) {
-            table.addStats(bench.stats);
+        for (const task of tasks) {
+            table.addStats(task.stats);
         }
         table.drawSummaryTable();
         table.writeDescription();

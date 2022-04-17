@@ -1,10 +1,10 @@
-import { Settings, Statistics, TestFunction } from './Data';
-import { GlobalCleanup, GlobalSetup } from './Function';
-import { RuntimeInfo } from './RuntimeInfo';
-import { CodeGen, Tester } from './Tools/CodeGen';
-import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { Formatter } from './Tools/Formatter';
-import { TestFn } from './types';
+import { Settings, Statistics, TestFunction } from '../Data';
+import { GlobalCleanup, GlobalSetup } from '../Function';
+import { RuntimeInfo } from '../RuntimeInfo';
+import { CodeGen, Tester } from '../Tools/CodeGen';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { Formatter } from '../Tools/Formatter';
+import { TestFn } from '../types';
 
 export class BenchmarkTask {
     private static id = 0;

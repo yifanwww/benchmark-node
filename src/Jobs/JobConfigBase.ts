@@ -1,4 +1,4 @@
-import { BenchmarkRunner } from '../BenchmarkRunner';
+import { BenchmarkRunner } from '../Task';
 
 export class JobConfigBase {
     protected declare readonly _runner: BenchmarkRunner;

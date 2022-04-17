@@ -1,12 +1,12 @@
+import { Statistics } from '../Data';
+import { Arguments } from '../Parameterization';
+import { TesterContext } from '../Tools/CodeGen';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { Formatter } from '../Tools/Formatter';
+import { Time } from '../Tools/TimeTool';
+import { Nanosecond } from '../types';
+import { Optional } from '../types.internal';
 import { BenchmarkTask } from './BenchmarkTask';
-import { Statistics } from './Data';
-import { Arguments } from './Parameterization';
-import { TesterContext } from './Tools/CodeGen';
-import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { Formatter } from './Tools/Formatter';
-import { Time } from './Tools/TimeTool';
-import { Nanosecond } from './types';
-import { Optional } from './types.internal';
 
 enum Stage {
     ActualOverhead /*  */ = 'OverheadActual  ',

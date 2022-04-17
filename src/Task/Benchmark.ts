@@ -1,9 +1,8 @@
+import { ANONYMOUS_FN_NAME } from '../constants';
+import { Settings, TestFunction } from '../Data';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
 import { BenchmarkTask } from './BenchmarkTask';
-import { ANONYMOUS_FN_NAME } from './constants';
-import { Settings, TestFunction } from './Data';
-import { CodeGen, Tester } from './Tools/CodeGen';
-import { ConsoleLogger } from './Tools/ConsoleLogger';
-import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from './types';
 
 interface ConstructorArgs<T extends TestFn> {
     name?: string;
@@ -21,7 +20,6 @@ export class Benchmark<T extends TestFn> {
 
     private declare readonly _testFn: T;
     private declare readonly _testFunction: TestFunction<T>;
-    private declare readonly _tester: Tester;
 
     private declare readonly _settings: Readonly<BenchmarkingSettings>;
 
@@ -54,13 +52,6 @@ export class Benchmark<T extends TestFn> {
 
         this._setup = options.setup;
         this._cleanup = options.cleanup;
-
-        // Gets a totally new function to test the performance of `testFn`.
-        // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
-        // See "src/test/perf-DynamicFnCall.ts".
-        this._tester = CodeGen.createTester({
-            argument: { count: this._testFunction.maxArgsLength },
-        });
     }
 
     private parseArgs(
@@ -96,12 +87,12 @@ export class Benchmark<T extends TestFn> {
         return pass;
     }
 
-    public toBenchmarkTask(settings: Settings): BenchmarkTask {
+    public toBenchmarkTask(jobSettings: Settings): BenchmarkTask {
         return new BenchmarkTask(
             this._name,
             this._testFn,
             this._testFunction,
-            settings.merge(this._settings),
+            jobSettings.merge(this._settings),
             this._setup,
             this._cleanup,
         );
