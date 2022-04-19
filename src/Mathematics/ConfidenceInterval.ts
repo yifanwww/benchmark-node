@@ -12,32 +12,27 @@ export class ConfidenceInterval {
     private declare readonly _degreeOfFreedom: number;
     private declare readonly _level: ConfidenceLevel;
 
-    public get margin() {
+    get margin() {
         return this._margin;
     }
 
-    public get marginPercent() {
+    get marginPercent() {
         return this._marginPercent;
     }
 
-    public get lower() {
+    get lower() {
         return this._lower;
     }
 
-    public get upper() {
+    get upper() {
         return this._upper;
     }
 
-    public get level() {
+    get level() {
         return this._level;
     }
 
-    public constructor(
-        sampleSize: number,
-        estimation: number,
-        standardError: number,
-        confidenceLevel: ConfidenceLevel,
-    ) {
+    constructor(sampleSize: number, estimation: number, standardError: number, confidenceLevel: ConfidenceLevel) {
         this._level = confidenceLevel;
 
         this._degreeOfFreedom = sampleSize - 1;

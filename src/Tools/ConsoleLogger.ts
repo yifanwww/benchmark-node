@@ -13,11 +13,11 @@ type ColorScheme = {
 };
 
 export class ConsoleLogger {
-    public static readonly default: ConsoleLogger = new ConsoleLogger();
+    static readonly default: ConsoleLogger = new ConsoleLogger();
 
     private declare readonly colorScheme: ColorScheme;
 
-    public constructor(colorScheme?: ColorScheme) {
+    constructor(colorScheme?: ColorScheme) {
         this.colorScheme = colorScheme ?? this.createColorfulScheme();
     }
 
@@ -36,10 +36,10 @@ export class ConsoleLogger {
         write(this.colorScheme[kind](text));
     }
 
-    public write(text: string): void;
-    public write(kind: LogKind, text: string): void;
+    write(text: string): void;
+    write(kind: LogKind, text: string): void;
 
-    public write(...args: [string] | [LogKind, string]) {
+    write(...args: [string] | [LogKind, string]) {
         if (args.length === 1) {
             this._write(LogKind.Default, this._writeImpl, args[0]);
         } else {
@@ -47,11 +47,11 @@ export class ConsoleLogger {
         }
     }
 
-    public writeLine(): void;
-    public writeLine(text: string): void;
-    public writeLine(kind: LogKind, text: string): void;
+    writeLine(): void;
+    writeLine(text: string): void;
+    writeLine(kind: LogKind, text: string): void;
 
-    public writeLine(...args: [] | [string] | [LogKind, string]) {
+    writeLine(...args: [] | [string] | [LogKind, string]) {
         if (args.length === 0) {
             this._writeLineImpl();
         } else if (args.length === 1) {
@@ -61,13 +61,13 @@ export class ConsoleLogger {
         }
     }
 
-    public writeHeader = (text: string) => this.write(LogKind.Header, text);
-    public writeStatistic = (text: string) => this.write(LogKind.Statistic, text);
-    public writeInfo = (text: string) => this.write(LogKind.Info, text);
-    public writeError = (text: string) => this.write(LogKind.Error, text);
+    writeHeader = (text: string) => this.write(LogKind.Header, text);
+    writeStatistic = (text: string) => this.write(LogKind.Statistic, text);
+    writeInfo = (text: string) => this.write(LogKind.Info, text);
+    writeError = (text: string) => this.write(LogKind.Error, text);
 
-    public writeLineHeader = (text: string) => this.writeLine(LogKind.Header, text);
-    public writeLineStatistic = (text: string) => this.writeLine(LogKind.Statistic, text);
-    public writeLineInfo = (text: string) => this.writeLine(LogKind.Info, text);
-    public writeLineError = (text: string) => this.writeLine(LogKind.Error, text);
+    writeLineHeader = (text: string) => this.writeLine(LogKind.Header, text);
+    writeLineStatistic = (text: string) => this.writeLine(LogKind.Statistic, text);
+    writeLineInfo = (text: string) => this.writeLine(LogKind.Info, text);
+    writeLineError = (text: string) => this.writeLine(LogKind.Error, text);
 }

@@ -63,11 +63,12 @@
         // Disabled for better code comments
         "@typescript-eslint/brace-style": "off",
         "@typescript-eslint/comma-dangle": "off",
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/docs/getting-started/linting/FAQ.md#the-indent--typescript-eslintindent-rules
+        // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/explicit-member-accessibility.md
+        "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "no-public" }],
         // Disable this rule and use rule `prettier/prettier` instead.
         "@typescript-eslint/indent": "off",
         "@typescript-eslint/lines-between-class-members": "off",
-        // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/docs/rules/naming-convention.md
+        // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/naming-convention.md
         "@typescript-eslint/naming-convention": [
             "error",
             { "selector": "accessor", "format": ["camelCase"] },

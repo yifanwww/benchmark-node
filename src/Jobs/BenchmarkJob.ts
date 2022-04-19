@@ -32,7 +32,7 @@ export class BenchmarkJob extends JobConfigBase {
 
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
-    public constructor(options?: Readonly<BenchmarkJobOptions>) {
+    constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
 
         this._benchs = [];
@@ -52,16 +52,16 @@ export class BenchmarkJob extends JobConfigBase {
         }
     }
 
-    public setColumnOrder(order: StatisticColumn[]): this {
+    setColumnOrder(order: StatisticColumn[]): this {
         this._statsColumnOrder.setOrder(order);
         return this;
     }
 
-    public add<T extends TestFn>(bench: Benchmark<T>): this;
-    public add<T extends TestFn>(testFn: T, options?: BenchmarkOptions<T>): this;
-    public add<T extends TestFn>(name: string, testFn: T, options?: BenchmarkOptions<T>): this;
+    add<T extends TestFn>(bench: Benchmark<T>): this;
+    add<T extends TestFn>(testFn: T, options?: BenchmarkOptions<T>): this;
+    add<T extends TestFn>(name: string, testFn: T, options?: BenchmarkOptions<T>): this;
 
-    public add(
+    add(
         ...args: [Benchmark] | [TestFn, BenchmarkOptions<TestFn>?] | [string, TestFn, BenchmarkOptions<TestFn>?]
     ): this {
         if (args[0] instanceof Benchmark) {
@@ -73,7 +73,7 @@ export class BenchmarkJob extends JobConfigBase {
     }
 
     /** @deprecated Please use `setSetup` instead. */
-    public addSetup(setup: () => void): this {
+    addSetup(setup: () => void): this {
         return this.setSetup(setup);
     }
 
@@ -86,7 +86,7 @@ export class BenchmarkJob extends JobConfigBase {
      * @param setup A callback function that does some setup work.
      * @returns The benchmark instance itself.
      */
-    public setSetup(setup: () => void): this;
+    setSetup(setup: () => void): this;
     /**
      * Adds global setup.
      * The global setup function will be executed only once before all the benchmark function invocations.
@@ -97,9 +97,9 @@ export class BenchmarkJob extends JobConfigBase {
      * @param params The parameters passed to the setup function.
      * @returns The benchmark instance itself.
      */
-    public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
+    setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
 
-    public setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
+    setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
         const globalSetup = new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []);
         this._setup = globalSetup;
         this._setups.push(globalSetup);
@@ -107,7 +107,7 @@ export class BenchmarkJob extends JobConfigBase {
     }
 
     /** @deprecated Please use `setCleanup` instead. */
-    public addCleanup(cleanup: () => void): this {
+    addCleanup(cleanup: () => void): this {
         return this.setCleanup(cleanup);
     }
 
@@ -120,7 +120,7 @@ export class BenchmarkJob extends JobConfigBase {
      * @param cleanup A callback function that does some cleanup work.
      * @returns The benchmark instance itself.
      */
-    public setCleanup(cleanup: () => void): this {
+    setCleanup(cleanup: () => void): this {
         this._cleanup = cleanup;
         this._cleanups.push(cleanup);
         return this;
@@ -152,7 +152,7 @@ export class BenchmarkJob extends JobConfigBase {
         return tasks;
     }
 
-    public run(): void {
+    run(): void {
         if (!this.validate()) return;
 
         const logger = ConsoleLogger.default;
@@ -190,7 +190,7 @@ export class BenchmarkJob extends JobConfigBase {
      * Validates this benchmark job.
      * @returns Returns `false` if problems in this benchmark job, otherwise `true`.
      */
-    public validate(): boolean {
+    validate(): boolean {
         const logger = ConsoleLogger.default;
 
         logger.writeLineInfo('Validating benchmarks...');

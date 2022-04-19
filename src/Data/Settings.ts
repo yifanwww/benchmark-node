@@ -10,7 +10,7 @@ interface ISettings {
 }
 
 export class Settings {
-    public static readonly DefaultValue: Settings = new Settings({
+    static readonly DefaultValue: Settings = new Settings({
         delay: Time.ms2ns(5),
         initOps: 16,
         measurementCount: 15,
@@ -18,7 +18,7 @@ export class Settings {
         warmupCount: 7,
     });
 
-    public static readonly MimimumValue: Settings = new Settings({
+    static readonly MimimumValue: Settings = new Settings({
         delay: Time.ms2ns(1),
         initOps: 1,
         measurementCount: 3,
@@ -32,23 +32,23 @@ export class Settings {
     private declare _minMeasurementTime: Nanosecond;
     private declare _warmupCount: number;
 
-    public get delay(): Nanosecond {
+    get delay(): Nanosecond {
         return this._delay;
     }
 
-    public get initOps(): number {
+    get initOps(): number {
         return this._initOps;
     }
 
-    public get measurementCount(): number {
+    get measurementCount(): number {
         return this._measurementCount;
     }
 
-    public get minMeasurementTime(): Nanosecond {
+    get minMeasurementTime(): Nanosecond {
         return this._minMeasurementTime;
     }
 
-    public get warmupCount(): number {
+    get warmupCount(): number {
         return this._warmupCount;
     }
 
@@ -82,7 +82,7 @@ export class Settings {
         return num ? Math.max(Settings.MimimumValue.warmupCount, Math.floor(num)) : d;
     }
 
-    public static from(settings: Readonly<BenchmarkingSettings>): Settings {
+    static from(settings: Readonly<BenchmarkingSettings>): Settings {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
         const _default = Settings.DefaultValue;
@@ -96,7 +96,7 @@ export class Settings {
         });
     }
 
-    public merge(settings: Readonly<BenchmarkingSettings>): Settings {
+    merge(settings: Readonly<BenchmarkingSettings>): Settings {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
         return new Settings({

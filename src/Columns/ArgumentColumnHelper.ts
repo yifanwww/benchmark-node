@@ -7,7 +7,7 @@ import { TableColumnHelper } from './TableColumnHelper';
 export class ArgumentColumnHelper extends TableColumnHelper<ReadonlyArray<unknown> | undefined> {
     protected declare _column: ArgumentColumn;
 
-    public override format(stats: Statistics): string {
+    override format(stats: Statistics): string {
         const data = this.column.getData(stats);
 
         let arg;

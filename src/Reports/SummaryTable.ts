@@ -23,7 +23,7 @@ export class SummaryTable {
 
     private declare _timeUnit: TimeUnit;
 
-    public constructor() {
+    constructor() {
         this._fnNameColumnHelper = new TableColumnHelper(SummaryTable.fnNameColumn);
         this._argColumnHelpers = [];
         this._statsColumnHelpers = [];
@@ -33,13 +33,13 @@ export class SummaryTable {
         this._timeUnit = TimeUnit.NS;
     }
 
-    public addStatisticColumns(columns: StatisticColumn[]): void {
+    addStatisticColumns(columns: StatisticColumn[]): void {
         for (const column of columns) {
             this._statsColumnHelpers.push(new StatisticColumnHelper(column));
         }
     }
 
-    public addStats(statsArr: Statistics[]): void {
+    addStats(statsArr: Statistics[]): void {
         this._statsArr.push(...statsArr);
 
         const maxLength = statsArr.reduce((prev, curr) => Math.max(prev, curr.args?.args.length ?? 0), 0);
@@ -68,7 +68,7 @@ export class SummaryTable {
         }
     }
 
-    public drawSummaryTable(): void {
+    drawSummaryTable(): void {
         this.setFractionDigit();
 
         const helpers = [this._fnNameColumnHelper, ...this._argColumnHelpers, ...this._statsColumnHelpers];
@@ -88,7 +88,7 @@ export class SummaryTable {
         logger.writeLine();
     }
 
-    public writeDescription(): void {
+    writeDescription(): void {
         const logger = ConsoleLogger.default;
 
         logger.writeLineStatistic('Description:');

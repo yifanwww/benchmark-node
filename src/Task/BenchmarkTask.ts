@@ -29,47 +29,47 @@ export class BenchmarkTask {
 
     private declare readonly _stats: Statistics[];
 
-    public get name(): string {
+    get name(): string {
         return this._name;
     }
 
-    public get testFn() {
+    get testFn() {
         return this._testFn;
     }
 
-    public get testFnArgStore() {
+    get testFnArgStore() {
         return this._testFnArgStore;
     }
 
-    public get tester() {
+    get tester() {
         return this._tester;
     }
 
-    public get settings() {
+    get settings() {
         return this._settings;
     }
 
-    public get globalSetup() {
+    get globalSetup() {
         return this._globalSetup;
     }
 
-    public get globalCleanup() {
+    get globalCleanup() {
         return this._globalCleanup;
     }
 
-    public get iterationSetup() {
+    get iterationSetup() {
         return this._iterationSetup;
     }
 
-    public get iterationCleanup() {
+    get iterationCleanup() {
         return this._iterationCleanup;
     }
 
-    public get stats() {
+    get stats() {
         return this._stats;
     }
 
-    public constructor(
+    constructor(
         name: string,
         testFn: TestFn,
         testFnInfo: readonly string[],
@@ -107,7 +107,7 @@ export class BenchmarkTask {
         this._stats = [];
     }
 
-    public logConfigs(): void {
+    logConfigs(): void {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = this._settings;
 
         const logger = ConsoleLogger.default;

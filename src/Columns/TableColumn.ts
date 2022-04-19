@@ -6,15 +6,15 @@ export class TableColumn<T> {
     protected declare _columnName: string;
     protected declare _getData: GetData<T>;
 
-    public get columnName() {
+    get columnName() {
         return this._columnName;
     }
 
-    public get getData() {
+    get getData() {
         return this._getData;
     }
 
-    public constructor(columnName: string, getData: GetData<T>) {
+    constructor(columnName: string, getData: GetData<T>) {
         this._columnName = columnName;
         this._getData = getData;
     }

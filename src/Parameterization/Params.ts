@@ -1,7 +1,7 @@
 export class Params<T = unknown> {
     private declare readonly _values: readonly T[];
 
-    public constructor(...values: readonly T[]) {
+    constructor(...values: readonly T[]) {
         if (values.length === 0) {
             throw new Error(`\`${Params.name}\` received no value.`);
         }
@@ -9,7 +9,7 @@ export class Params<T = unknown> {
         this._values = values;
     }
 
-    public get values() {
+    get values() {
         return this._values;
     }
 }

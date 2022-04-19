@@ -3,12 +3,12 @@ import os from 'os';
 import { exec } from '../Tools/exec';
 
 export class CpuInfo {
-    public declare readonly name: string;
-    public declare readonly processors: number;
-    public declare readonly logicalCores: number;
-    public declare readonly plysicalCores: number;
+    declare readonly name: string;
+    declare readonly processors: number;
+    declare readonly logicalCores: number;
+    declare readonly plysicalCores: number;
 
-    public constructor() {
+    constructor() {
         this.name = os.cpus()[0].model.trim();
 
         this.processors = this.getNumberOfProcesors();
@@ -67,7 +67,7 @@ export class CpuInfo {
         }
     }
 
-    public toString(): string {
+    toString(): string {
         const processorsDesc = this.processors > 0 ? `${this.processors} CPU` : '';
 
         let coresDesc;

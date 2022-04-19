@@ -21,7 +21,7 @@ enum Stage {
 export class BenchmarkRunner {
     private declare _current: Optional<BenchmarkTask>;
 
-    public constructor() {
+    constructor() {
         this._current = null;
     }
 
@@ -190,7 +190,7 @@ export class BenchmarkRunner {
     /**
      * Runs the benchmark task.
      */
-    public run(task: BenchmarkTask): void {
+    run(task: BenchmarkTask): void {
         this._current = task;
 
         task.globalSetup?.execute();

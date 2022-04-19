@@ -13,30 +13,30 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
     private declare _timeUnit: TimeUnit;
     private declare _fractionDigit: number;
 
-    public override get column() {
+    override get column() {
         return this._column;
     }
 
-    public get timeUnit() {
+    get timeUnit() {
         return this._timeUnit;
     }
 
-    public set timeUnit(value: TimeUnit) {
+    set timeUnit(value: TimeUnit) {
         this._timeUnit = value;
     }
 
-    public constructor(column: StatisticColumn) {
+    constructor(column: StatisticColumn) {
         super(column);
 
         this._timeUnit = TimeUnit.NS;
         this._fractionDigit = 4;
     }
 
-    public setFractionDigit(fractionDigit: number): void {
+    setFractionDigit(fractionDigit: number): void {
         this._fractionDigit = fractionDigit;
     }
 
-    public findMinNumber(statsArr: Statistics[]): number {
+    findMinNumber(statsArr: Statistics[]): number {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const stats of statsArr) {
@@ -47,7 +47,7 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
         return min;
     }
 
-    public findFractionDigit(statsArr: Statistics[]): void {
+    findFractionDigit(statsArr: Statistics[]): void {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const _stats of statsArr) {
@@ -71,7 +71,7 @@ export class StatisticColumnHelper extends TableColumnHelper<number> {
         }
     }
 
-    public override format(stats: Statistics): string {
+    override format(stats: Statistics): string {
         let never: never;
         switch (this._column.unit) {
             case UnitType.Dimensionless: {

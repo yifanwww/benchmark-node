@@ -6,15 +6,15 @@ interface ParamValuePair {
 export class ParamValuePairs {
     private declare _pairs: ParamValuePair[];
 
-    public constructor() {
+    constructor() {
         this._pairs = [];
     }
 
-    public add(name: string, value: unknown): void {
+    add(name: string, value: unknown): void {
         this._pairs.push({ name, value });
     }
 
-    public get(name: string): unknown {
+    get(name: string): unknown {
         const pair = this._pairs.find((param) => param.name === name);
         if (pair === undefined) {
             throw new Error(`Cannot find parameter ${name}`);
@@ -23,7 +23,7 @@ export class ParamValuePairs {
         return pair.value;
     }
 
-    public get params() {
+    get params() {
         return this._pairs.map((pair) => pair.value);
     }
 
@@ -31,7 +31,7 @@ export class ParamValuePairs {
         return `${pair.name}=${String(pair.value)}`;
     }
 
-    public toString(): string {
+    toString(): string {
         return this._pairs.map(this.buildPairStr).join(', ');
     }
 }

@@ -1,14 +1,14 @@
 export class FunctionInfo {
-    public static ANONYMOUS_NAME = 'anonymous';
+    static ANONYMOUS_NAME = 'anonymous';
 
-    public static getFunctionName(fn: Function): string {
+    static getFunctionName(fn: Function): string {
         return fn.name || FunctionInfo.ANONYMOUS_NAME;
     }
 
     private static FUNCTION_EXPRESSION = /^(?:function(?:\s?[^(]+)?)?\(\s*([^)]*\s*)\)/i;
     private static DELIMITER_EXPRESSION = /,\s*/i;
 
-    public static getParameterNames(fn: Function): string[] {
+    static getParameterNames(fn: Function): string[] {
         const fnStr = fn.toString();
 
         const matching = FunctionInfo.FUNCTION_EXPRESSION.exec(fnStr);

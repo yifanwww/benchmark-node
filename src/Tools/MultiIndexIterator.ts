@@ -1,7 +1,7 @@
 export class MultiIndexIterator {
     private _capacities: readonly number[];
 
-    public constructor(capacities: readonly number[]) {
+    constructor(capacities: readonly number[]) {
         if (capacities.length === 0) {
             throw new Error('capacities should contain the capacities of the arrays');
         }
@@ -15,7 +15,7 @@ export class MultiIndexIterator {
         this._capacities = capacities;
     }
 
-    public *[Symbol.iterator](): Generator<readonly number[], void> {
+    *[Symbol.iterator](): Generator<readonly number[], void> {
         const indexes = this._capacities.map(() => 0);
 
         yield indexes;

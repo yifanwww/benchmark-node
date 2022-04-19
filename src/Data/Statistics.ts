@@ -29,81 +29,81 @@ export class Statistics {
 
     private declare _ops: number;
 
-    public get name() {
+    get name() {
         return this._name;
     }
 
-    public get args() {
+    get args() {
         return this._args;
     }
 
     /**
      * The measurements count.
      */
-    public get n() {
+    get n() {
         return this._n;
     }
 
     /**
      * The arithmetic mean of measurements in nanoseconds.
      */
-    public get mean() {
+    get mean() {
         return this._mean;
     }
 
     /**
      * The variance of measurements.
      */
-    public get variance() {
+    get variance() {
         return this._variance;
     }
 
     /**
      * The standard deviation of measurements.
      */
-    public get standardDeviation() {
+    get standardDeviation() {
         return this._standardDeviation;
     }
 
     /**
      * The standard error of measurements in nanoseconds.
      */
-    public get standardError() {
+    get standardError() {
         return this._standardError;
     }
 
-    public get confidenceInterval() {
+    get confidenceInterval() {
         return this._ci;
     }
 
-    public get min() {
+    get min() {
         return this._q0;
     }
 
-    public get q1() {
+    get q1() {
         return this._q1;
     }
 
-    public get median() {
+    get median() {
         return this._q2;
     }
 
-    public get q3() {
+    get q3() {
         return this._q3;
     }
 
-    public get max() {
+    get max() {
         return this._q4;
     }
 
     /**
      * The number of executions per second.
      */
-    public get ops(): number {
+    get ops(): number {
         return this._ops;
     }
 
-    public constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
+    constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
         this._name = name;
         this._args = args;
 
@@ -129,7 +129,7 @@ export class Statistics {
         this._ops = 1e9 / this._mean;
     }
 
-    public log(): void {
+    log(): void {
         const logger = ConsoleLogger.default;
 
         logger.writeLineStatistic(

@@ -9,15 +9,15 @@ export class StatisticColumn extends TableColumn<number> {
     private declare readonly _desc: string;
     private declare readonly _unit: UnitType;
 
-    public get desc() {
+    get desc() {
         return this._desc;
     }
 
-    public get unit() {
+    get unit() {
         return this._unit;
     }
 
-    public constructor(columnName: string, desc: string, calc: Calc, unit: UnitType) {
+    constructor(columnName: string, desc: string, calc: Calc, unit: UnitType) {
         super(columnName, calc);
 
         this._desc = desc;

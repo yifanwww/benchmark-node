@@ -8,20 +8,20 @@ export class ArgumentStoreView {
     private declare _store: ArgumentStore;
     private declare _index: number;
 
-    public get maxArgsLength() {
+    get maxArgsLength() {
         return this._store.maxArgsLength;
     }
 
-    public constructor(store: ArgumentStore, argIndex: Optional<number>) {
+    constructor(store: ArgumentStore, argIndex: Optional<number>) {
         this._store = store;
         this._index = argIndex ?? NO_ARGUMENT_INDEX;
     }
 
-    public hasArgs(): boolean {
+    hasArgs(): boolean {
         return this._index !== NO_ARGUMENT_INDEX;
     }
 
-    public get args() {
+    get args() {
         return this._store.argsList[this._index];
     }
 
@@ -31,11 +31,11 @@ export class ArgumentStoreView {
         }
     }
 
-    public hasJitArgs(): boolean {
+    hasJitArgs(): boolean {
         return this._store.jitArgsList.length > 0;
     }
 
-    public get jitArgsList(): Generator<Arguments, void> {
+    get jitArgsList(): Generator<Arguments, void> {
         return this.getJitArgsEnumerator();
     }
 }

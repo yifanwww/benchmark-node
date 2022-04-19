@@ -28,31 +28,31 @@ export class Benchmark<T extends TestFn = TestFn> {
     private declare readonly _setup: Optional<() => void>;
     private declare readonly _cleanup: Optional<() => void>;
 
-    public get name(): string {
+    get name(): string {
         return this._name;
     }
 
-    public get testFn() {
+    get testFn() {
         return this._testFn;
     }
 
-    public get testFnParamNames() {
+    get testFnParamNames() {
         return this._testFnParamNames;
     }
 
-    public get testArgStore() {
+    get testArgStore() {
         return this._testArgStore;
     }
 
-    public get settings() {
+    get settings() {
         return this._settings;
     }
 
-    public get setup() {
+    get setup() {
         return this._setup;
     }
 
-    public get cleanup() {
+    get cleanup() {
         return this._cleanup;
     }
 
@@ -60,15 +60,15 @@ export class Benchmark<T extends TestFn = TestFn> {
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    public constructor(testFn: T, options?: Readonly<BenchmarkOptions<T>>);
+    constructor(testFn: T, options?: Readonly<BenchmarkOptions<T>>);
     /**
      * @param name The name used to identify this benchmark.
      * @param testFn The function to benchmark.
      * @param options The options of benchmark.
      */
-    public constructor(name: string, testFn: T, options?: Readonly<BenchmarkOptions<T>>);
+    constructor(name: string, testFn: T, options?: Readonly<BenchmarkOptions<T>>);
 
-    public constructor(...args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?]) {
+    constructor(...args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?]) {
         const { name, options, testFn } = this.parseArgs(args);
 
         this._id = ++Benchmark.id;
@@ -102,7 +102,7 @@ export class Benchmark<T extends TestFn = TestFn> {
      * Validates this benchmark.
      * @returns Returns `false` if problems in this benchmark, otherwise `true`.
      */
-    public validate(): boolean {
+    validate(): boolean {
         const logger = ConsoleLogger.default;
 
         let pass = true;

@@ -9,19 +9,19 @@ export class ArgumentStore {
 
     private declare _maxArgsLength: number;
 
-    public get argsList() {
+    get argsList() {
         return this._argsList;
     }
 
-    public get jitArgsList() {
+    get jitArgsList() {
         return this._jitArgsList;
     }
 
-    public get maxArgsLength() {
+    get maxArgsLength() {
         return this._maxArgsLength;
     }
 
-    public constructor(argsList: LooseReadonlyArray<Arguments> = [], jitArgsList: LooseReadonlyArray<Arguments> = []) {
+    constructor(argsList: LooseReadonlyArray<Arguments> = [], jitArgsList: LooseReadonlyArray<Arguments> = []) {
         this._argsList = Array.isArray(argsList) ? argsList : [argsList];
         this._jitArgsList = [...(Array.isArray(jitArgsList) ? jitArgsList : [jitArgsList]), ...this._argsList];
 
@@ -36,7 +36,7 @@ export class ArgumentStore {
         return max;
     }
 
-    public *getViewEnumerator(): Generator<ArgumentStoreView, void> {
+    *getViewEnumerator(): Generator<ArgumentStoreView, void> {
         if (this._argsList.length === 0) {
             yield new ArgumentStoreView(this, null);
         } else {

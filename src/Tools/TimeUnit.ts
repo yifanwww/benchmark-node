@@ -20,14 +20,14 @@ const TimeUnitDescription = {
 };
 
 export class TimeUnitHelper {
-    public static getUnitStr = (unit: TimeUnit) => TimeUnitStr[unit];
+    static getUnitStr = (unit: TimeUnit) => TimeUnitStr[unit];
 
-    public static getUnitDescription = (unit: TimeUnit) => TimeUnitDescription[unit];
+    static getUnitDescription = (unit: TimeUnit) => TimeUnitDescription[unit];
 
-    public static getFullDescription = (unit: TimeUnit, maxHeaderLen: number) =>
+    static getFullDescription = (unit: TimeUnit, maxHeaderLen: number) =>
         `1 ${TimeUnitHelper.getUnitStr(unit).padEnd(maxHeaderLen - 2)}: ${TimeUnitHelper.getUnitDescription(unit)}`;
 
-    public static chooseUnit(time: number): TimeUnit {
+    static chooseUnit(time: number): TimeUnit {
         if (time <= 1e3) {
             return TimeUnit.NS;
         } else if (time <= 1e6) {

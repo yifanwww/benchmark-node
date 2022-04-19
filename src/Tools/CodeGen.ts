@@ -39,13 +39,13 @@ export interface CodeGenOptions {
 export class CodeGen {
     private static cgid: number = 0;
 
-    public static createTester = (options: CodeGenOptions) => new CodeGen(options).createTester();
+    static createTester = (options: CodeGenOptions) => new CodeGen(options).createTester();
 
     private declare readonly id: string;
 
     private declare readonly argument: CodeGenArgumentOptions;
 
-    public constructor(options: CodeGenOptions) {
+    constructor(options: CodeGenOptions) {
         CodeGen.cgid++;
         this.id = CodeGen.cgid.toString();
 
@@ -91,7 +91,7 @@ export class CodeGen {
             .join('\n');
     }
 
-    public createTester(): Tester {
+    createTester(): Tester {
         const body = this.removeEmptyLines(
             `
 if (context#.${TesterContextEnum.Setup}) context#.${TesterContextEnum.Setup}();

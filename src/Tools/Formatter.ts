@@ -5,7 +5,7 @@ export class Formatter {
      * @param number The number to beautify.
      * @returns The more readable string representation.
      */
-    public static beautifyNumber(number: number | string, beautifyRight: boolean = false): string {
+    static beautifyNumber(number: number | string, beautifyRight: boolean = false): string {
         function insertComma(from: Buffer): Buffer {
             const toLength = from.length + Math.ceil(from.length / 3) - 1;
             const to = Buffer.alloc(toLength, ',');
@@ -39,7 +39,7 @@ export class Formatter {
         return nums.length === 1 ? _beautifyLeft(nums[0]) : `${_beautifyLeft(nums[0])}.${_beautifyRight(nums[1])}`;
     }
 
-    public static limitStringLength(str: string): string {
+    static limitStringLength(str: string): string {
         return str.length > 10 ? `${str.slice(0, 10)}...` : str;
     }
 }
