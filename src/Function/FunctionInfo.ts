@@ -9,9 +9,11 @@ export class FunctionInfo {
     private static DELIMITER_EXPRESSION = /,\s*/i;
 
     public static getParameterNames(fn: Function): string[] {
-        const matching = FunctionInfo.FUNCTION_EXPRESSION.exec(fn.toString());
+        const fnStr = fn.toString();
+
+        const matching = FunctionInfo.FUNCTION_EXPRESSION.exec(fnStr);
         if (!matching) {
-            throw new Error(`Failed to get the function names, fn: ${fn}`);
+            throw new Error(`Failed to get the function names, fn: ${fnStr}`);
         }
 
         const group = matching[1];

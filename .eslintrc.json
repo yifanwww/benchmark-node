@@ -59,6 +59,7 @@
         // This rule is disabled by `eslint-config-prettier`, enable it manually for better eslint error informantion.
         "quotes": ["error", "single", { "avoidEscape": true, "allowTemplateLiterals": false }],
 
+        "@typescript-eslint/await-thenable": "error",
         // Disabled for better code comments
         "@typescript-eslint/brace-style": "off",
         "@typescript-eslint/comma-dangle": "off",
@@ -109,6 +110,12 @@
             }
         ],
         "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-for-in-array": "off",
+        // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-template-expressions.md
+        "@typescript-eslint/restrict-template-expressions": [
+            "error",
+            { "allowNumber": true, "allowBoolean": true, "allowAny": false, "allowNullish": true, "allowRegExp": true }
+        ],
         // From:
         // - https://github.com/iamturns/eslint-config-airbnb-typescript/blob/v16.1.0/lib/shared.js#L209
         // - https://github.com/airbnb/javascript/blob/eslint-config-airbnb-base-v15.0.0/packages/eslint-config-airbnb-base/rules/best-practices.js#L299
