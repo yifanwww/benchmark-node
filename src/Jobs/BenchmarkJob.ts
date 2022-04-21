@@ -1,6 +1,6 @@
 import { StatisticColumn, StatisticColumnOrder } from '../Columns';
-import { Settings } from '../Data';
-import { GlobalSetup } from '../Function';
+import { ArgumentStoreView, Settings } from '../Data';
+import { GlobalSetup, GlobalSetupView } from '../Function';
 import { MapToParams } from '../Parameterization';
 import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
@@ -129,9 +129,9 @@ export class BenchmarkJob extends JobConfigBase {
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
-        for (const setupView of this._setup.getViewEnumerator()) {
+        for (const setupView of GlobalSetupView.iteratesGlobalSetupExecutors(this._setup)) {
             for (const bench of this._benchs) {
-                for (const argsView of bench.testArgStore.getViewEnumerator()) {
+                for (const argsView of ArgumentStoreView.iteratesStoreArgs(bench.testArgStore)) {
                     tasks.push(
                         new BenchmarkTask(
                             bench.name,

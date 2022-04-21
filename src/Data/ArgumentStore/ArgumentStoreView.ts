@@ -38,4 +38,14 @@ export class ArgumentStoreView {
     get jitArgsList(): Generator<Arguments, void> {
         return this.getJitArgsEnumerator();
     }
+
+    static *iteratesStoreArgs(store: ArgumentStore): Generator<ArgumentStoreView, void> {
+        if (store.argsList.length === 0) {
+            yield new ArgumentStoreView(store, null);
+        } else {
+            for (let i = 0; i < store.argsList.length; i++) {
+                yield new ArgumentStoreView(store, i);
+            }
+        }
+    }
 }

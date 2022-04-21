@@ -1,7 +1,5 @@
 import { Arguments } from '../../Parameterization/Arguments';
-import { range } from '../../Tools/range';
 import { LooseReadonlyArray } from '../../types';
-import { ArgumentStoreView } from './ArgumentStoreView';
 
 export class ArgumentStore {
     private declare _argsList: readonly Arguments[];
@@ -34,15 +32,5 @@ export class ArgumentStore {
             max = Math.max(max, args.args.length);
         }
         return max;
-    }
-
-    *getViewEnumerator(): Generator<ArgumentStoreView, void> {
-        if (this._argsList.length === 0) {
-            yield new ArgumentStoreView(this, null);
-        } else {
-            for (const index of range(0, this._argsList.length)) {
-                yield new ArgumentStoreView(this, index);
-            }
-        }
     }
 }
