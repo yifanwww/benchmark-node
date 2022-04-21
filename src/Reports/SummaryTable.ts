@@ -1,18 +1,19 @@
 import {
     ArgumentColumn,
     ArgumentColumnHelper,
+    BaseColumn,
+    BaseColumnHelper,
     Column,
+    ColumnType,
     StatisticColumn,
     StatisticColumnHelper,
-    TableColumn,
-    TableColumnHelper,
 } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
 
 export class SummaryTable {
-    private static readonly fnNameColumn = new TableColumn('Function', (stats) => stats.name);
+    private static readonly fnNameColumn = new BaseColumn(ColumnType.Fn, 'Function', (stats) => stats.name);
     private static readonly argColumn: ArgumentColumn[] = [];
 
     private declare readonly _fnNameColumnHelper;
@@ -24,7 +25,7 @@ export class SummaryTable {
     private declare _timeUnit: TimeUnit;
 
     constructor() {
-        this._fnNameColumnHelper = new TableColumnHelper(SummaryTable.fnNameColumn);
+        this._fnNameColumnHelper = new BaseColumnHelper(SummaryTable.fnNameColumn);
         this._argColumnHelpers = [];
         this._statsColumnHelpers = [];
 

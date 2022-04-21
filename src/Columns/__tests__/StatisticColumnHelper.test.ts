@@ -1,5 +1,6 @@
 import { Statistics } from '../../Data';
 import { testConstants } from '../../TestTools/constants.test';
+import { ColumnType } from '../ColumnType';
 import { StatisticColumn } from '../StatisticColumn';
 import { StatisticColumnHelper } from '../StatisticColumnHelper';
 import { UnitType } from '../UnitType';
@@ -11,7 +12,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn('name', 'desc', (_stats) => _stats.mean, UnitType.Dimensionless),
+            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.mean, UnitType.Dimensionless),
         );
         helper.findFractionDigit(stats);
 
@@ -24,7 +25,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn('name', 'desc', (_stats) => _stats.n, UnitType.DimensionlessInteger),
+            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.n, UnitType.DimensionlessInteger),
         );
         helper.findFractionDigit(stats);
 
@@ -37,7 +38,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn('name', 'desc', (_stats) => _stats.mean, UnitType.Time),
+            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.mean, UnitType.Time),
         );
         helper.findFractionDigit(stats);
 

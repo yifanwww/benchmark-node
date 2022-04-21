@@ -1,4 +1,5 @@
-import { Column, StatisticColumn } from '../Columns';
+import { Column } from './Column';
+import { StatisticColumn } from './StatisticColumn';
 
 export class StatisticColumnOrder {
     private declare _id: number;

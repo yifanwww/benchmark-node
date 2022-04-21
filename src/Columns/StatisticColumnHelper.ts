@@ -2,12 +2,11 @@ import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
 import { TimeTool } from '../Tools/TimeTool';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
-
+import { BaseColumnHelper } from './BaseColumnHelper';
 import { StatisticColumn } from './StatisticColumn';
-import { TableColumnHelper } from './TableColumnHelper';
 import { UnitType } from './UnitType';
 
-export class StatisticColumnHelper extends TableColumnHelper<number> {
+export class StatisticColumnHelper extends BaseColumnHelper<number> {
     protected declare _column: StatisticColumn;
 
     private declare _timeUnit: TimeUnit;

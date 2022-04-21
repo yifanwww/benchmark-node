@@ -1,10 +1,9 @@
 import { Statistics } from '../Data';
 import { Formatter } from '../Tools/Formatter';
-
 import { ArgumentColumn } from './ArgumentColumn';
-import { TableColumnHelper } from './TableColumnHelper';
+import { BaseColumnHelper } from './BaseColumnHelper';
 
-export class ArgumentColumnHelper extends TableColumnHelper<ReadonlyArray<unknown> | undefined> {
+export class ArgumentColumnHelper extends BaseColumnHelper<ReadonlyArray<unknown> | undefined> {
     protected declare _column: ArgumentColumn;
 
     override format(stats: Statistics): string {

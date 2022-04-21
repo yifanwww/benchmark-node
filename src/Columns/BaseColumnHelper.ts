@@ -1,9 +1,8 @@
 import { Statistics } from '../Data';
+import { BaseColumn } from './BaseColumn';
 
-import { TableColumn } from './TableColumn';
-
-export class TableColumnHelper<T> {
-    protected declare _column: TableColumn<T>;
+export class BaseColumnHelper<T> {
+    protected declare _column: BaseColumn<T>;
 
     protected declare _maxLength: number;
 
@@ -15,7 +14,7 @@ export class TableColumnHelper<T> {
         return this._maxLength;
     }
 
-    constructor(column: TableColumn<T>) {
+    constructor(column: BaseColumn<T>) {
         this._column = column;
 
         this._maxLength = 0;

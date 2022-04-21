@@ -1,6 +1,7 @@
-import { TableColumn } from './TableColumn';
+import { BaseColumn } from './BaseColumn';
+import { ColumnType } from './ColumnType';
 
-export class ArgumentColumn extends TableColumn<ReadonlyArray<unknown> | undefined> {
+export class ArgumentColumn extends BaseColumn<ReadonlyArray<unknown> | undefined> {
     private declare readonly _index: number;
 
     get index() {
@@ -8,7 +9,7 @@ export class ArgumentColumn extends TableColumn<ReadonlyArray<unknown> | undefin
     }
 
     constructor(index: number) {
-        super(`arg ${index}`, (stats) => stats.args?.args);
+        super(ColumnType.FnArgument, `arg ${index}`, (stats) => stats.args?.args);
 
         this._index = index;
     }

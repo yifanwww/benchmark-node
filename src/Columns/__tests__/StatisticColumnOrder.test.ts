@@ -1,4 +1,4 @@
-import { Column } from '../../Columns';
+import { Column } from '../Column';
 import { StatisticColumnOrder } from '../StatisticColumnOrder';
 
 describe(`Test class \`${StatisticColumnOrder.name}\``, () => {

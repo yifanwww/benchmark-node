@@ -1,8 +1,8 @@
-import { StatisticColumn } from '../Columns';
+import { StatisticColumn, StatisticColumnOrder } from '../Columns';
 import { Settings } from '../Data';
 import { GlobalSetup } from '../Function';
 import { MapToParams } from '../Parameterization';
-import { StatisticColumnOrder, SummaryTable } from '../Reports';
+import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
