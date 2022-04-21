@@ -1,5 +1,5 @@
 import { Arguments } from '../../Parameterization/Arguments';
-import { LooseReadonlyArray } from '../../types';
+import { LooseArray } from '../../types';
 
 export class ArgumentStore {
     private declare _argsList: readonly Arguments[];
@@ -19,7 +19,7 @@ export class ArgumentStore {
         return this._maxArgsLength;
     }
 
-    constructor(argsList: LooseReadonlyArray<Arguments> = [], jitArgsList: LooseReadonlyArray<Arguments> = []) {
+    constructor(argsList: LooseArray<Arguments> = [], jitArgsList: LooseArray<Arguments> = []) {
         this._argsList = Array.isArray(argsList) ? argsList : [argsList];
         this._jitArgsList = [...(Array.isArray(jitArgsList) ? jitArgsList : [jitArgsList]), ...this._argsList];
 

@@ -5,7 +5,7 @@ export type GetData<T> = (stats: Statistics) => T;
 
 export class BaseColumn<T> {
     protected declare _type: ColumnType;
-    protected declare _columnName: string;
+    protected declare _name: string;
 
     protected declare _getData: GetData<T>;
 
@@ -13,8 +13,8 @@ export class BaseColumn<T> {
         return this._type;
     }
 
-    get columnName() {
-        return this._columnName;
+    get name() {
+        return this._name;
     }
 
     get getData() {
@@ -23,7 +23,7 @@ export class BaseColumn<T> {
 
     constructor(type: ColumnType, name: string, getData: GetData<T>) {
         this._type = type;
-        this._columnName = name;
+        this._name = name;
 
         this._getData = getData;
     }

@@ -53,11 +53,11 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
     /**
      * Used for pilot benchmarking and formal benchmarking.
      */
-    args?: LooseReadonlyArray<Arguments<Parameters<T>>>;
+    args?: LooseArray<Arguments<Parameters<T>>>;
     /**
      * Used for jitting benchmarking. The arguments provided in `args` will be also added into `preArgs`.
      */
-    jitArgs?: LooseReadonlyArray<Arguments<Parameters<T>>>;
+    jitArgs?: LooseArray<Arguments<Parameters<T>>>;
     /**
      * Set iteration setup.
      * A callback function to be executed exactly once before each benchmark function invocation.
@@ -76,6 +76,4 @@ export interface BenchmarkTestFnOptions<T extends TestFn> {
 
 /* ----- Type Utils ----- */
 
-export type LooseArray<T> = T | T[];
-
-export type LooseReadonlyArray<T> = T | readonly T[];
+export type LooseArray<T> = T | readonly T[];

@@ -56,7 +56,7 @@ export class SummaryTable {
         let minTime: number;
 
         for (const helper of this._statsColumnHelpers) {
-            if (helper.column.columnName === Column.Mean.columnName) {
+            if (helper.column.name === Column.Mean.name) {
                 minTime = helper.findMinNumber(this._statsArr);
                 break;
             }
@@ -93,12 +93,9 @@ export class SummaryTable {
         const logger = ConsoleLogger.default;
 
         logger.writeLineStatistic('Description:');
-        const maxLen = this._statsColumnHelpers.reduce(
-            (prev, curr) => Math.max(prev, curr.column.columnName.length),
-            0,
-        );
+        const maxLen = this._statsColumnHelpers.reduce((prev, curr) => Math.max(prev, curr.column.name.length), 0);
         for (const helper of this._statsColumnHelpers) {
-            logger.writeLineStatistic(`- ${helper.column.columnName.padEnd(maxLen)}: ${helper.column.desc}`);
+            logger.writeLineStatistic(`- ${helper.column.name.padEnd(maxLen)}: ${helper.column.desc}`);
         }
         logger.writeLineStatistic(`- ${TimeUnitHelper.getFullDescription(this._timeUnit, maxLen)}`);
     }

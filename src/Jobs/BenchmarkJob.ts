@@ -53,7 +53,7 @@ export class BenchmarkJob extends JobConfigBase {
     }
 
     setColumnOrder(order: StatisticColumn[]): this {
-        this._statsColumnOrder.setOrder(order);
+        this._statsColumnOrder.addOrder(order);
         return this;
     }
 

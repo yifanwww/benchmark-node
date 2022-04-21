@@ -21,7 +21,7 @@ export class BaseColumnHelper<T> {
     }
 
     calculateMaxLen(statsArr: Statistics[]): void {
-        let maxLen = this._column.columnName.length;
+        let maxLen = this._column.name.length;
 
         for (const _stats of statsArr) {
             const data = this.format(_stats);
@@ -31,7 +31,7 @@ export class BaseColumnHelper<T> {
         this._maxLength = maxLen;
     }
 
-    drawColumnName = () => this._column.columnName.padStart(this._maxLength);
+    drawColumnName = () => this._column.name.padStart(this._maxLength);
 
     drawSperator = () => ''.padEnd(this._maxLength, '-');
 
