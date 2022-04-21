@@ -74,7 +74,7 @@
             { "selector": "accessor", "format": ["camelCase"] },
             { "selector": "class", "format": ["PascalCase"] },
             { "selector": "enum", "format": ["PascalCase"] },
-            { "selector": "enumMember", "format": ["PascalCase", "UPPER_CASE"] },
+            { "selector": "enumMember", "format": ["PascalCase"] },
             { "selector": "function", "format": ["camelCase"], "leadingUnderscore": "allow" },
             { "selector": "interface", "format": ["PascalCase"] },
             { "selector": "method", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow" },

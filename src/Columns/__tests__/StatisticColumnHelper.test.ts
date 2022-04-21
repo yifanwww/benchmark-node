@@ -12,7 +12,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.mean, UnitType.Dimensionless),
+            new StatisticColumn(ColumnType.Mean, 'name', 'desc', (_stats) => _stats.mean, UnitType.Dimensionless),
         );
         helper.findFractionDigit(stats);
 
@@ -25,7 +25,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.n, UnitType.DimensionlessInteger),
+            new StatisticColumn(ColumnType.Mean, 'name', 'desc', (_stats) => _stats.n, UnitType.DimensionlessInteger),
         );
         helper.findFractionDigit(stats);
 
@@ -38,7 +38,7 @@ describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
         const stats = [new Statistics('name', testConstants.measurements.slice(), testConstants.ops)];
 
         const helper = new StatisticColumnHelper(
-            new StatisticColumn(ColumnType.MEAN, 'name', 'desc', (_stats) => _stats.mean, UnitType.Time),
+            new StatisticColumn(ColumnType.Mean, 'name', 'desc', (_stats) => _stats.mean, UnitType.Time),
         );
         helper.findFractionDigit(stats);
 
