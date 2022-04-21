@@ -76,7 +76,7 @@
             { "selector": "enum", "format": ["PascalCase"] },
             { "selector": "enumMember", "format": ["PascalCase", "UPPER_CASE"] },
             { "selector": "function", "format": ["camelCase"], "leadingUnderscore": "allow" },
-            { "selector": "interface", "format": ["PascalCase"], "leadingUnderscore": "allow" },
+            { "selector": "interface", "format": ["PascalCase"] },
             { "selector": "method", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow" },
             { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
             {
@@ -84,7 +84,7 @@
                 "format": ["camelCase", "PascalCase", "UPPER_CASE"],
                 "leadingUnderscore": "allow"
             },
-            { "selector": "typeAlias", "format": ["PascalCase"], "leadingUnderscore": "allow" },
+            { "selector": "typeAlias", "format": ["PascalCase"] },
             { "selector": "typeParameter", "format": ["PascalCase"] },
             {
                 "selector": "variable",
@@ -111,7 +111,12 @@
             }
         ],
         "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-extra-non-null-assertion": "error",
         "@typescript-eslint/no-for-in-array": "off",
+        "@typescript-eslint/no-misused-new": "error",
+        "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
+        "@typescript-eslint/no-unnecessary-type-assertion": "error",
+        "@typescript-eslint/no-unnecessary-type-constraint": "error",
         // https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/restrict-template-expressions.md
         "@typescript-eslint/restrict-template-expressions": [
             "error",
