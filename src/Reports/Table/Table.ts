@@ -7,6 +7,10 @@ export class Table {
     private declare readonly _header: Row;
     private declare readonly _rows: Row[][];
 
+    get columnCount() {
+        return this._columnInfos.length;
+    }
+
     constructor() {
         this._columnInfos = [];
         this._header = new Row(this._columnInfos);
@@ -25,14 +29,6 @@ export class Table {
 
     appendColumn(col: ColumnInfo) {
         this._columnInfos.push(col);
-        this.expandRows();
-    }
-
-    setColumn(index: number, col: ColumnInfo) {
-        if (this._columnInfos.length < index) {
-            this._columnInfos.length = index;
-        }
-        this._columnInfos[index] = col;
         this.expandRows();
     }
 

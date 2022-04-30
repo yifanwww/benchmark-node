@@ -35,7 +35,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
         this._fractionDigit = fractionDigit;
     }
 
-    findMinNumber(statsArr: Statistics[]): number {
+    findMinNumber(statsArr: readonly Statistics[]): number {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const stats of statsArr) {
@@ -46,7 +46,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
         return min;
     }
 
-    findFractionDigit(statsArr: Statistics[]): void {
+    findFractionDigit(statsArr: readonly Statistics[]): void {
         let min = Number.MAX_SAFE_INTEGER;
 
         for (const _stats of statsArr) {

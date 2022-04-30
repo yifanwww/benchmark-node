@@ -31,8 +31,12 @@ export class BaseColumnHelper<T> {
         this._maxLength = maxLen;
     }
 
+    /** @deprecated */
     drawColumnName = () => this._column.name.padStart(this._maxLength);
 
+    drawHeader = () => this.column.name;
+
+    /** @deprecated */
     drawSperator = () => ''.padEnd(this._maxLength, '-');
 
     draw = (stats: Statistics) => this.format(stats).padStart(this._maxLength);

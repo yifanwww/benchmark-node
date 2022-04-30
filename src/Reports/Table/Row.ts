@@ -45,10 +45,8 @@ export class Row {
     }
 
     render() {
-        const count = this._cols.length;
-
         const arr: string[] = [];
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < this._cols.length; i++) {
             arr.push(Row.renderContent(this._cols[i], this._cells[i]));
         }
         return `| ${arr.join(' | ')} |`;
