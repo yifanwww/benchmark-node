@@ -177,13 +177,17 @@ export class BenchmarkJob extends JobConfigBase {
 
         RuntimeInfo.log();
 
-        const table = new SummaryTable();
+        const table = new SummaryTable({
+            argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
+            paramLen: this._setup.params.length,
+        });
+
         table.addStatisticColumns(this._statsColumnOrder.getOrder());
         for (const task of tasks) {
             table.addStats(task.stats);
         }
-        table.drawSummaryTable();
-        table.writeDescription();
+        table.draw();
+        table.drawDescription();
     }
 
     /**
