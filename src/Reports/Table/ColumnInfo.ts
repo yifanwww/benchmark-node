@@ -19,6 +19,10 @@ export class ColumnInfo {
         return this._width;
     }
 
+    set width(value: number) {
+        this._width = value;
+    }
+
     constructor(align: ColumnAlign, type: UnitType) {
         this._align = align;
         this._type = type;

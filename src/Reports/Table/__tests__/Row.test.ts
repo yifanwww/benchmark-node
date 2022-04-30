@@ -18,12 +18,12 @@ describe(`Test class \`${Row.name}\``, () => {
             new ColumnInfo(ColumnAlign.LEFT, UnitType.String),
         ];
 
-        infos[3].increaseWidthMaxTo(5);
-        infos[4].increaseWidthMaxTo(5);
-        infos[5].increaseWidthMaxTo(5);
-        infos[6].increaseWidthMaxTo(10);
-        infos[7].increaseWidthMaxTo(10);
-        infos[8].increaseWidthMaxTo(10);
+        infos[3].width = 5;
+        infos[4].width = 5;
+        infos[5].width = 5;
+        infos[6].width = 10;
+        infos[7].width = 10;
+        infos[8].width = 10;
 
         return infos;
     }

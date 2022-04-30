@@ -14,13 +14,13 @@ describe(`Test class \`${ColumnInfo.name}\``, () => {
         expect(info.align).toStrictEqual(ColumnAlign.RIGHT);
         expect(info.width).toBe(0);
 
-        info.increaseWidthMaxTo(10);
+        info.width = 10;
         expect(info.width).toBe(10);
 
-        info.increaseWidthMaxTo(10);
+        info.width = 10;
         expect(info.width).toBe(10);
 
-        info.increaseWidthMaxTo(1);
-        expect(info.width).toBe(10);
+        info.width = 1;
+        expect(info.width).toBe(1);
     });
 });

@@ -60,6 +60,8 @@ export class Table {
     }
 
     render(): string {
+        this.calculateWidths();
+
         const lines: string[] = [this._header.render(), Row.renderAlignment(this._props.infos)];
 
         if (this._rows.length > 0) {
@@ -76,5 +78,24 @@ export class Table {
         }
 
         return lines.join('\n');
+    }
+
+    private calculateWidths() {
+        for (let i = 0; i < this._props.infos.length; i++) {
+            let max = 0;
+            for (const cell of this.iterateRows(i)) {
+                max = Math.max(max, cell.length);
+            }
+            this._props.infos[i].width = max;
+        }
+    }
+
+    private *iterateRows(columnIndex: number): Generator<string, void> {
+        yield this._header.getCell(columnIndex);
+        for (const rows of this._rows) {
+            for (const row of rows) {
+                yield row.getCell(columnIndex);
+            }
+        }
     }
 }

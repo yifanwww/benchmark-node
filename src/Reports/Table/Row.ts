@@ -21,8 +21,11 @@ export class Row {
         }
     }
 
+    getCell(index: number): string {
+        return this._cells[index];
+    }
+
     setCell(index: number, value: string) {
-        this._props.infos[index].increaseWidthMaxTo(value.length);
         this._cells[index] = value;
     }
 
