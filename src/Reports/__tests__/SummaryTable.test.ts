@@ -15,6 +15,7 @@ describe(`Test class \`${SummaryTable.name}\``, () => {
         table.addStats([new Statistics('fn 2', constantsTestTool.measurements.slice(), constantsTestTool.ops)]);
 
         table.draw();
+        table.drawDescription();
     });
 
     it('renders a simple table 2', () => {
@@ -27,6 +28,7 @@ describe(`Test class \`${SummaryTable.name}\``, () => {
         ]);
 
         table.draw();
+        table.drawDescription();
     });
 
     it('renders a complex table', () => {
@@ -47,5 +49,6 @@ describe(`Test class \`${SummaryTable.name}\``, () => {
         ]);
 
         table.draw();
+        table.drawDescription();
     });
 });

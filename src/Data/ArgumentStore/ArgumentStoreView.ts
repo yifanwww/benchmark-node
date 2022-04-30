@@ -8,6 +8,10 @@ export class ArgumentStoreView {
     private declare _store: ArgumentStore;
     private declare _index: number;
 
+    get argsLength() {
+        return this._store.argsLength;
+    }
+
     get maxArgsLength() {
         return this._store.maxArgsLength;
     }
