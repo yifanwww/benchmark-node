@@ -1,16 +1,17 @@
+import { UnitType } from '../../../Tools/UnitType';
 import { ColumnInfo } from '../ColumnInfo';
-import { ColumnAlign } from '../types';
 import { Table } from '../Table';
+import { ColumnAlign } from '../types';
 
 describe(`Test class \`${Table.name}\``, () => {
     function createTable() {
         const table = new Table();
 
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
 
         table.setHeader(0, 'Function');
         table.setHeader(1, 'N');

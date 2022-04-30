@@ -3,5 +3,6 @@ export enum UnitType {
     Dimensionless,
     /** Dimensionless integer. */
     DimensionlessInteger,
+    String,
     Time,
 }

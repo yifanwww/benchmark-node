@@ -51,7 +51,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
 
         for (const _stats of statsArr) {
             let data = this._column.getData(_stats);
-            if (this._column.unit === UnitType.Time) {
+            if (this._column.unitType === UnitType.Time) {
                 data = TimeTool.convert(data, TimeUnit.NS, this._timeUnit);
             }
             min = Math.min(min, data);
@@ -72,7 +72,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
 
     override format(stats: Statistics): string {
         let never: never;
-        switch (this._column.unit) {
+        switch (this._column.unitType) {
             case UnitType.Dimensionless: {
                 const data = this._column.getData(stats);
                 return Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
@@ -83,6 +83,9 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
                 return Formatter.beautifyNumber(Math.round(data));
             }
 
+            case UnitType.String:
+                return String(this._column.getData(stats));
+
             case UnitType.Time: {
                 const data = TimeTool.convert(this._column.getData(stats), TimeUnit.NS, this._timeUnit);
                 const num = Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
@@ -90,7 +93,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
             }
 
             default:
-                never = this._column.unit;
+                never = this._column.unitType;
                 return never;
         }
     }
