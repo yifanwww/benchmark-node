@@ -1,4 +1,4 @@
-export enum Align {
+export enum ColumnAlign {
     LEFT,
     MEDIUM,
     RIGHT,

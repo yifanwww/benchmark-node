@@ -1,16 +1,16 @@
 import { ColumnInfo } from '../ColumnInfo';
-import { Align } from '../types';
+import { ColumnAlign } from '../types';
 import { Table } from '../Table';
 
 describe(`Test class \`${Table.name}\``, () => {
     function createTable() {
         const table = new Table();
 
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
 
         table.setHeader(0, 'Function');
         table.setHeader(1, 'N');
@@ -108,7 +108,7 @@ describe(`Test class \`${Table.name}\``, () => {
         table.setCell([0, 0], 3, '1.23456 ns');
         table.setCell([0, 0], 4, '12.3456 ns');
 
-        table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
+        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
 
         expect(table.render()).toBe(
             `

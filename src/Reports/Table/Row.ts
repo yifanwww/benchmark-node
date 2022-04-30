@@ -1,5 +1,5 @@
 import { ColumnInfo } from './ColumnInfo';
-import { Align } from './types';
+import { ColumnAlign } from './types';
 
 export class Row {
     private declare readonly _cols: readonly ColumnInfo[];
@@ -31,15 +31,15 @@ export class Row {
         const len = content.length;
 
         switch (align) {
-            case Align.LEFT:
+            case ColumnAlign.LEFT:
                 return content.padEnd(width, ' ');
 
-            case Align.MEDIUM: {
+            case ColumnAlign.MEDIUM: {
                 const right = Math.floor((width - len) / 2);
                 return content.padEnd(len + right, ' ').padStart(width, ' ');
             }
 
-            case Align.RIGHT:
+            case ColumnAlign.RIGHT:
                 return content.padStart(width, ' ');
         }
     }
@@ -60,13 +60,13 @@ export class Row {
         const { align, width } = col;
 
         switch (align) {
-            case Align.LEFT:
+            case ColumnAlign.LEFT:
                 return ':'.padEnd(width + 2, '-');
 
-            case Align.MEDIUM:
+            case ColumnAlign.MEDIUM:
                 return `${':'.padEnd(width + 1, '-')}:`;
 
-            case Align.RIGHT:
+            case ColumnAlign.RIGHT:
                 return ':'.padStart(width + 2, '-');
         }
     }

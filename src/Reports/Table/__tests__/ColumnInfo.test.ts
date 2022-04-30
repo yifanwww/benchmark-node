@@ -1,16 +1,16 @@
 import { ColumnInfo } from '../ColumnInfo';
-import { Align } from '../types';
+import { ColumnAlign } from '../types';
 
 describe(`Test class \`${ColumnInfo.name}\``, () => {
     it('sets a column info', () => {
-        const col = new ColumnInfo(Align.RIGHT, 0);
-        expect(col.align).toStrictEqual(Align.RIGHT);
+        const col = new ColumnInfo(ColumnAlign.RIGHT, 0);
+        expect(col.align).toStrictEqual(ColumnAlign.RIGHT);
         expect(col.width).toBe(0);
     });
 
     it('increases width', () => {
-        const col = new ColumnInfo(Align.RIGHT, 0);
-        expect(col.align).toStrictEqual(Align.RIGHT);
+        const col = new ColumnInfo(ColumnAlign.RIGHT, 0);
+        expect(col.align).toStrictEqual(ColumnAlign.RIGHT);
         expect(col.width).toBe(0);
 
         col.increaseWidthMaxTo(10);

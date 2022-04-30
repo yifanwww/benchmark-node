@@ -10,9 +10,7 @@ import {
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
-import { Table } from './Table';
-import { ColumnInfo } from './Table/ColumnInfo';
-import { Align } from './Table/types';
+import { ColumnAlign, ColumnInfo, Table } from './Table';
 
 export interface SummaryTableOptions {
     argLen: number;
@@ -39,7 +37,7 @@ export class SummaryTable {
         this._table = new Table();
 
         this._fnNameColumnHelper = new BaseColumnHelper(SummaryTable._fnColumn);
-        this._table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
+        this._table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
         this._table.setHeader(0, SummaryTable._fnColumn.name);
 
         this._paramColumns = [];
@@ -50,7 +48,7 @@ export class SummaryTable {
             const col = new ArgumentColumn(i);
             this._argColumns.push(col);
             this._argColumnHelpers.push(new ArgumentColumnHelper(col));
-            this._table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
+            this._table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
             this._table.setHeader(i + 1, col.name);
         }
 
@@ -67,7 +65,7 @@ export class SummaryTable {
         for (let i = 0; i < columns.length; i++) {
             const col = columns[i];
             this._statsColumnHelpers.push(new StatisticColumnHelper(col));
-            this._table.appendColumn(new ColumnInfo(Align.RIGHT, 0));
+            this._table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
             this._table.setHeader(start + i, col.name);
         }
     }

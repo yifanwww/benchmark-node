@@ -1,19 +1,19 @@
 import { ColumnInfo } from '../ColumnInfo';
 import { Row } from '../Row';
-import { Align } from '../types';
+import { ColumnAlign } from '../types';
 
 describe(`Test class \`${Row.name}\``, () => {
     function createColumnInfos() {
         const cols: ColumnInfo[] = [];
-        cols.push(new ColumnInfo(Align.RIGHT, 0));
-        cols.push(new ColumnInfo(Align.MEDIUM, 0));
-        cols.push(new ColumnInfo(Align.LEFT, 0));
-        cols.push(new ColumnInfo(Align.RIGHT, 5));
-        cols.push(new ColumnInfo(Align.MEDIUM, 5));
-        cols.push(new ColumnInfo(Align.LEFT, 5));
-        cols.push(new ColumnInfo(Align.RIGHT, 10));
-        cols.push(new ColumnInfo(Align.MEDIUM, 10));
-        cols.push(new ColumnInfo(Align.LEFT, 10));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        cols.push(new ColumnInfo(ColumnAlign.MEDIUM, 0));
+        cols.push(new ColumnInfo(ColumnAlign.LEFT, 0));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 5));
+        cols.push(new ColumnInfo(ColumnAlign.MEDIUM, 5));
+        cols.push(new ColumnInfo(ColumnAlign.LEFT, 5));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 10));
+        cols.push(new ColumnInfo(ColumnAlign.MEDIUM, 10));
+        cols.push(new ColumnInfo(ColumnAlign.LEFT, 10));
         return cols;
     }
 
@@ -30,9 +30,9 @@ describe(`Test class \`${Row.name}\``, () => {
         const rowStr = row.render();
         expect(rowStr).toBe('| asdf | asdf | asdf |  asdf |  asdf | asdf  |       asdf |    asdf    | asdf       |');
 
-        cols.push(new ColumnInfo(Align.RIGHT, 0));
-        cols.push(new ColumnInfo(Align.RIGHT, 0));
-        cols.push(new ColumnInfo(Align.RIGHT, 0));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        cols.push(new ColumnInfo(ColumnAlign.RIGHT, 0));
         row.expand(12);
         expect(row.render()).toBe(
             '| asdf | asdf | asdf |  asdf |  asdf | asdf  |       asdf |    asdf    | asdf       |  |  |  |',
