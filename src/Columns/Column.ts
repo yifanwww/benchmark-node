@@ -1,7 +1,7 @@
 import { ConfidenceInterval, ConfidenceLevel } from '../Mathematics';
+import { UnitType } from '../Tools/UnitType';
 import { ColumnType } from './ColumnType';
 import { StatisticColumn } from './StatisticColumn';
-import { UnitType } from './UnitType';
 
 function getColumnType(level: ConfidenceLevel): ColumnType {
     let never: never;

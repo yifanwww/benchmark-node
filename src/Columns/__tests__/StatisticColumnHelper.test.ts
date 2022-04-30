@@ -1,9 +1,9 @@
 import { Statistics } from '../../Data';
+import { UnitType } from '../../Tools/UnitType';
 import { constantsTestTool } from '../../__tests__/constantsTestTool';
 import { ColumnType } from '../ColumnType';
 import { StatisticColumn } from '../StatisticColumn';
 import { StatisticColumnHelper } from '../StatisticColumnHelper';
-import { UnitType } from '../UnitType';
 
 describe(`Test class \`${StatisticColumnHelper.name}\``, () => {
     const formatFnName = StatisticColumnHelper.prototype.format.name;

@@ -7,4 +7,3 @@ export * from './ColumnType';
 export * from './StatisticColumn';
 export * from './StatisticColumnHelper';
 export * from './StatisticColumnOrder';
-export * from './UnitType';
