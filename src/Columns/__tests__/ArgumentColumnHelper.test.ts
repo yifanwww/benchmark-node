@@ -1,6 +1,6 @@
 import { Statistics } from '../../Data';
 import { Arguments } from '../../Parameterization';
-import { testConstants } from '../../TestTools/constants.test';
+import { constantsTestTool } from '../../__tests__/constantsTestTool';
 import { ArgumentColumn } from '../ArgumentColumn';
 import { ArgumentColumnHelper } from '../ArgumentColumnHelper';
 
@@ -8,7 +8,7 @@ describe(`Test class \`${ArgumentColumnHelper.name}\``, () => {
     const formatFnName = ArgumentColumnHelper.prototype.format.name;
 
     it(`calls method ${formatFnName} with no args`, () => {
-        const stats = new Statistics('name', testConstants.measurements.slice(), testConstants.ops);
+        const stats = new Statistics('name', constantsTestTool.measurements.slice(), constantsTestTool.ops);
 
         const helper = new ArgumentColumnHelper(new ArgumentColumn(0));
         expect(helper.format(stats)).toBe('?');
@@ -17,8 +17,8 @@ describe(`Test class \`${ArgumentColumnHelper.name}\``, () => {
     it(`calls method ${formatFnName} with short args`, () => {
         const stats = new Statistics(
             'name',
-            testConstants.measurements.slice(),
-            testConstants.ops,
+            constantsTestTool.measurements.slice(),
+            constantsTestTool.ops,
             new Arguments('Hello', 123.456),
         );
 
@@ -35,8 +35,8 @@ describe(`Test class \`${ArgumentColumnHelper.name}\``, () => {
     it(`calls method ${formatFnName} with long args`, () => {
         const stats = new Statistics(
             'name',
-            testConstants.measurements.slice(),
-            testConstants.ops,
+            constantsTestTool.measurements.slice(),
+            constantsTestTool.ops,
             new Arguments('Hello benchmark-node'),
         );
 

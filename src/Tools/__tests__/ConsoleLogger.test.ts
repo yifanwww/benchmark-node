@@ -1,12 +1,8 @@
+import { mockConsoleLogger } from '../../__tests__/ConsoleLoggerTestTool';
 import { ConsoleLogger } from '../ConsoleLogger';
 
 describe(`Test class \`${ConsoleLogger.name}\``, () => {
-    beforeEach(() => {
-        jest.spyOn(process.stdout, 'write').mockImplementation((str) => {
-            expect(str).toMatchSnapshot();
-            return true;
-        });
-    });
+    beforeEach(() => mockConsoleLogger());
 
     it(`calls method ${ConsoleLogger.prototype.write.name}`, () => {
         expect(ConsoleLogger.default.write('Hello world'));

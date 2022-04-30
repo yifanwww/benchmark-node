@@ -1,9 +1,9 @@
-import { testConstants } from '../../TestTools/constants.test';
+import { constantsTestTool } from '../../__tests__/constantsTestTool';
 import { Statistics } from '../Statistics';
 
 describe(`Test class \`${Statistics.name}\``, () => {
     it('calculates', () => {
-        const stats = new Statistics('name', testConstants.measurements.slice(), testConstants.ops);
+        const stats = new Statistics('name', constantsTestTool.measurements.slice(), constantsTestTool.ops);
 
         expect(stats).toMatchSnapshot();
 

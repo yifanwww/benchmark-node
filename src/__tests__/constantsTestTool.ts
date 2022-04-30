@@ -3,7 +3,7 @@ const measurements: ReadonlyArray<number> = [
     33242780, 33088980, 33790080, 33530180,
 ];
 
-export const testConstants = {
+export const constantsTestTool = {
     measurements,
     ops: 141386309,
 };
