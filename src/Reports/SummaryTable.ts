@@ -1,12 +1,4 @@
-import {
-    ArgumentColumn,
-    ArgumentColumnHelper,
-    BaseColumn,
-    Column,
-    ColumnType,
-    StatisticColumn,
-    StatisticColumnHelper,
-} from '../Columns';
+import { ArgumentColumn, BaseColumn, Column, ColumnType, StatisticColumn } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
@@ -27,9 +19,6 @@ export class SummaryTable {
     private declare readonly _argColumns: ArgumentColumn[];
     private declare readonly _statsColumns: StatisticColumn[];
 
-    private declare readonly _argColumnHelpers: ArgumentColumnHelper[];
-    private declare readonly _statsColumnHelpers: StatisticColumnHelper[];
-
     private declare _timeUnit: TimeUnit;
 
     /** @deprecated */
@@ -44,17 +33,14 @@ export class SummaryTable {
         this._paramColumns = [];
 
         this._argColumns = [];
-        this._argColumnHelpers = [];
         for (let i = 0; i < options.argLen; i++) {
             const col = new ArgumentColumn(i);
             this._argColumns.push(col);
-            this._argColumnHelpers.push(new ArgumentColumnHelper(col));
             this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
             this._table.setHeader(i + 1, col.name);
         }
 
         this._statsColumns = [];
-        this._statsColumnHelpers = [];
 
         this._timeUnit = TimeUnit.NS;
 
@@ -68,7 +54,6 @@ export class SummaryTable {
 
         for (let i = 0; i < columns.length; i++) {
             const col = columns[i];
-            this._statsColumnHelpers.push(new StatisticColumnHelper(col));
             this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, col.unitType));
             this._table.setHeader(start + i, col.name);
         }
@@ -99,9 +84,9 @@ export class SummaryTable {
         const logger = ConsoleLogger.default;
 
         logger.writeLineStatistic('Description:');
-        const maxLen = this._statsColumnHelpers.reduce((prev, curr) => Math.max(prev, curr.column.name.length), 0);
-        for (const helper of this._statsColumnHelpers) {
-            logger.writeLineStatistic(`- ${helper.column.name.padEnd(maxLen)}: ${helper.column.desc}`);
+        const maxLen = this._statsColumns.reduce((prev, curr) => Math.max(prev, curr.name.length), 0);
+        for (const column of this._statsColumns) {
+            logger.writeLineStatistic(`- ${column.name.padEnd(maxLen)}: ${column.desc}`);
         }
         logger.writeLineStatistic(`- ${TimeUnitHelper.getFullDescription(this._timeUnit, maxLen)}`);
     }
