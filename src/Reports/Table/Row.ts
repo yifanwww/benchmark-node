@@ -1,10 +1,11 @@
+import { renderData } from '../../Tools/renderData';
 import { ColumnInfo } from './ColumnInfo';
 import { TableProps } from './TableProps';
 import { ColumnAlign } from './types';
 
 export class Row {
-    private declare readonly _props: TableProps;
-    private declare readonly _cells: string[];
+    protected declare readonly _props: TableProps;
+    protected declare readonly _cells: (number | string)[];
 
     get length() {
         return this._cells.length;
@@ -15,43 +16,46 @@ export class Row {
         this._cells = props.infos.map(() => '');
     }
 
-    expand(len: number) {
+    expand(len: number): void {
         for (let i = this._cells.length; i < len; i++) {
             this._cells.push('');
         }
     }
 
-    getCell(index: number): string {
+    getCell(index: number): number | string {
         return this._cells[index];
     }
 
-    setCell(index: number, value: string) {
+    setCell(index: number, value: number | string): void {
         this._cells[index] = value;
     }
 
-    private static renderContent(col: ColumnInfo, content: string) {
+    protected static renderContent(value: string, col: ColumnInfo) {
         const { align, width } = col;
 
-        const len = content.length;
+        const len = value.length;
 
         switch (align) {
             case ColumnAlign.LEFT:
-                return content.padEnd(width, ' ');
+                return value.padEnd(width, ' ');
 
             case ColumnAlign.MEDIUM: {
                 const right = Math.floor((width - len) / 2);
-                return content.padEnd(len + right, ' ').padStart(width, ' ');
+                return value.padEnd(len + right, ' ').padStart(width, ' ');
             }
 
             case ColumnAlign.RIGHT:
-                return content.padStart(width, ' ');
+                return value.padStart(width, ' ');
         }
     }
 
-    render() {
+    render(): string {
+        const { infos } = this._props;
+
         const arr: string[] = [];
-        for (let i = 0; i < this._props.infos.length; i++) {
-            arr.push(Row.renderContent(this._props.infos[i], this._cells[i]));
+        for (let i = 0; i < infos.length; i++) {
+            const content = renderData(this._cells[i], infos[i].type, infos[i].fractionDigit, this._props.timeUnit);
+            arr.push(Row.renderContent(content, infos[i]));
         }
         return `| ${arr.join(' | ')} |`;
     }

@@ -35,6 +35,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
         this._fractionDigit = fractionDigit;
     }
 
+    /** @deprecated */
     findMinNumber(statsArr: readonly Statistics[]): number {
         let min = Number.MAX_SAFE_INTEGER;
 
@@ -46,6 +47,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
         return min;
     }
 
+    /** @deprecated */
     findFractionDigit(statsArr: readonly Statistics[]): void {
         let min = Number.MAX_SAFE_INTEGER;
 
@@ -70,8 +72,8 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
         }
     }
 
+    /** @deprecated */
     override format(stats: Statistics): string {
-        let never: never;
         switch (this._column.unitType) {
             case UnitType.Dimensionless: {
                 const data = this._column.getData(stats);
@@ -83,7 +85,7 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
                 return Formatter.beautifyNumber(Math.round(data));
             }
 
-            case UnitType.String:
+            case UnitType.Origin:
                 return String(this._column.getData(stats));
 
             case UnitType.Time: {
@@ -91,10 +93,6 @@ export class StatisticColumnHelper extends BaseColumnHelper<number> {
                 const num = Formatter.beautifyNumber(data.toFixed(this._fractionDigit));
                 return `${num} ${TimeUnitHelper.getUnitStr(this._timeUnit)}`;
             }
-
-            default:
-                never = this._column.unitType;
-                return never;
         }
     }
 }

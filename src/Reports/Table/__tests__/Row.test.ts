@@ -1,54 +1,36 @@
 import { TimeUnit } from '../../../Tools/TimeUnit';
 import { UnitType } from '../../../Tools/UnitType';
-import { ColumnInfo } from '../ColumnInfo';
+import { createColumnInfo } from '../ColumnInfo';
 import { Row } from '../Row';
 import { ColumnAlign } from '../types';
+import { createColumnInfos } from './utils';
 
 describe(`Test class \`${Row.name}\``, () => {
-    function createColumnInfos() {
-        const infos: ColumnInfo[] = [
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
-            new ColumnInfo(ColumnAlign.MEDIUM, UnitType.String),
-            new ColumnInfo(ColumnAlign.LEFT, UnitType.String),
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
-            new ColumnInfo(ColumnAlign.MEDIUM, UnitType.String),
-            new ColumnInfo(ColumnAlign.LEFT, UnitType.String),
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
-            new ColumnInfo(ColumnAlign.MEDIUM, UnitType.String),
-            new ColumnInfo(ColumnAlign.LEFT, UnitType.String),
-        ];
-
-        infos[3].width = 5;
-        infos[4].width = 5;
-        infos[5].width = 5;
-        infos[6].width = 10;
-        infos[7].width = 10;
-        infos[8].width = 10;
-
-        return infos;
-    }
-
-    it('adds columns', () => {
+    it('adds cells', () => {
         const infos = createColumnInfos();
 
         const row = new Row({ infos, timeUnit: TimeUnit.NS });
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 9; i += 3) {
             row.setCell(i, 'asdf');
+            row.setCell(i + 1, 1.23456);
+            row.setCell(i + 2, 1.23456);
         }
 
         expect(row.length).toBe(9);
 
         const rowStr = row.render();
-        expect(rowStr).toBe('| asdf | asdf | asdf |  asdf |  asdf | asdf  |       asdf |    asdf    | asdf       |');
+        expect(rowStr).toBe(
+            '| asdf | 1.235 | 1.235 ns |  asdf | 1.235 | 1.235 ns |       asdf |    1.235   | 1.235 ns   |',
+        );
 
         infos.push(
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
-            new ColumnInfo(ColumnAlign.RIGHT, UnitType.String),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
         );
         row.expand(12);
         expect(row.render()).toBe(
-            '| asdf | asdf | asdf |  asdf |  asdf | asdf  |       asdf |    asdf    | asdf       |  |  |  |',
+            '| asdf | 1.235 | 1.235 ns |  asdf | 1.235 | 1.235 ns |       asdf |    1.235   | 1.235 ns   |  |  |  |',
         );
     });
 

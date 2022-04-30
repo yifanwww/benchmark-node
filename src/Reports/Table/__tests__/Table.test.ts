@@ -1,5 +1,6 @@
+import { Column } from '../../../Columns';
 import { UnitType } from '../../../Tools/UnitType';
-import { ColumnInfo } from '../ColumnInfo';
+import { createColumnInfo } from '../ColumnInfo';
 import { Table } from '../Table';
 import { ColumnAlign } from '../types';
 
@@ -7,11 +8,11 @@ describe(`Test class \`${Table.name}\``, () => {
     function createTable() {
         const table = new Table();
 
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, UnitType.String));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
 
         table.setHeader(0, 'Function');
         table.setHeader(1, 'N');
@@ -39,23 +40,25 @@ describe(`Test class \`${Table.name}\``, () => {
         const table = createTable();
 
         table.setCell([0, 0], 0, 'Function 1');
-        table.setCell([0, 0], 1, '100');
-        table.setCell([0, 0], 2, '123.456 ns');
-        table.setCell([0, 0], 3, '1.23456 ns');
-        table.setCell([0, 0], 4, '12.3456 ns');
+        table.setCell([0, 0], 1, 100);
+        table.setCell([0, 0], 2, 123.456);
+        table.setCell([0, 0], 3, 1.23456);
+        table.setCell([0, 0], 4, 12.3456);
 
         table.setCell([0, 1], 0, 'Function 1');
-        table.setCell([0, 1], 1, '1000');
-        table.setCell([0, 1], 2, '1234.56 ns');
-        table.setCell([0, 1], 3, '12.3456 ns');
-        table.setCell([0, 1], 4, '123.456 ns');
+        table.setCell([0, 1], 1, 1000);
+        table.setCell([0, 1], 2, 1234.56);
+        table.setCell([0, 1], 3, 12.3456);
+        table.setCell([0, 1], 4, 123.456);
+
+        table.chooseTimeUnit(table.findColumn(Column.Mean.name));
 
         expect(table.render()).toBe(
             `
-|   Function |    N |       Mean |      Error |     StdDev |
-|-----------:|-----:|-----------:|-----------:|-----------:|
-| Function 1 |  100 | 123.456 ns | 1.23456 ns | 12.3456 ns |
-| Function 1 | 1000 | 1234.56 ns | 12.3456 ns | 123.456 ns |
+|   Function |    N |       Mean |     Error |    StdDev |
+|-----------:|-----:|-----------:|----------:|----------:|
+| Function 1 |  100 |   123.5 ns |  1.235 ns |  12.35 ns |
+| Function 1 | 1000 | 1,234.6 ns | 12.346 ns | 123.46 ns |
 `.trim(),
         );
     });
@@ -64,38 +67,40 @@ describe(`Test class \`${Table.name}\``, () => {
         const table = createTable();
 
         table.setCell([0, 0], 0, 'Function 1');
-        table.setCell([0, 0], 1, '100');
-        table.setCell([0, 0], 2, '123.456 ns');
-        table.setCell([0, 0], 3, '1.23456 ns');
-        table.setCell([0, 0], 4, '12.3456 ns');
+        table.setCell([0, 0], 1, 100);
+        table.setCell([0, 0], 2, 123.456);
+        table.setCell([0, 0], 3, 1.23456);
+        table.setCell([0, 0], 4, 12.3456);
 
         table.setCell([0, 1], 0, 'Function 1');
-        table.setCell([0, 1], 1, '1000');
-        table.setCell([0, 1], 2, '1234.56 ns');
-        table.setCell([0, 1], 3, '12.3456 ns');
-        table.setCell([0, 1], 4, '123.456 ns');
+        table.setCell([0, 1], 1, 1000);
+        table.setCell([0, 1], 2, 1234.56);
+        table.setCell([0, 1], 3, 12.3456);
+        table.setCell([0, 1], 4, 123.456);
 
         table.setCell([1, 0], 0, 'Function 2');
-        table.setCell([1, 0], 1, '100');
-        table.setCell([1, 0], 2, '12.3456 ns');
-        table.setCell([1, 0], 3, '0.12345 ns');
-        table.setCell([1, 0], 4, '1.23456 ns');
+        table.setCell([1, 0], 1, 100);
+        table.setCell([1, 0], 2, 12.3456);
+        table.setCell([1, 0], 3, 0.12345);
+        table.setCell([1, 0], 4, 1.23456);
 
         table.setCell([1, 1], 0, 'Function 2');
-        table.setCell([1, 1], 1, '1000');
-        table.setCell([1, 1], 2, '123.456 ns');
-        table.setCell([1, 1], 3, '1.23456 ns');
-        table.setCell([1, 1], 4, '12.3456 ns');
+        table.setCell([1, 1], 1, 1000);
+        table.setCell([1, 1], 2, 123.456);
+        table.setCell([1, 1], 3, 1.23456);
+        table.setCell([1, 1], 4, 12.3456);
+
+        table.chooseTimeUnit(table.findColumn(Column.Mean.name));
 
         expect(table.render()).toBe(
             `
-|   Function |    N |       Mean |      Error |     StdDev |
-|-----------:|-----:|-----------:|-----------:|-----------:|
-| Function 1 |  100 | 123.456 ns | 1.23456 ns | 12.3456 ns |
-| Function 1 | 1000 | 1234.56 ns | 12.3456 ns | 123.456 ns |
-|            |      |            |            |            |
-| Function 2 |  100 | 12.3456 ns | 0.12345 ns | 1.23456 ns |
-| Function 2 | 1000 | 123.456 ns | 1.23456 ns | 12.3456 ns |
+|   Function |    N |        Mean |      Error |     StdDev |
+|-----------:|-----:|------------:|-----------:|-----------:|
+| Function 1 |  100 |   123.46 ns |  1.2346 ns |  12.346 ns |
+| Function 1 | 1000 | 1,234.56 ns | 12.3456 ns | 123.456 ns |
+|            |      |             |            |            |
+| Function 2 |  100 |    12.35 ns |  0.1235 ns |   1.235 ns |
+| Function 2 | 1000 |   123.46 ns |  1.2346 ns |  12.346 ns |
 `.trim(),
         );
     });
@@ -104,19 +109,29 @@ describe(`Test class \`${Table.name}\``, () => {
         const table = createTable();
 
         table.setCell([0, 0], 0, 'Function 1');
-        table.setCell([0, 0], 1, '100');
-        table.setCell([0, 0], 2, '123.456 ns');
-        table.setCell([0, 0], 3, '1.23456 ns');
-        table.setCell([0, 0], 4, '12.3456 ns');
+        table.setCell([0, 0], 1, 100);
+        table.setCell([0, 0], 2, 123.456);
+        table.setCell([0, 0], 3, 1.23456);
+        table.setCell([0, 0], 4, 12.3456);
 
-        table.appendColumn(new ColumnInfo(ColumnAlign.RIGHT, 0));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
+        table.setHeader(5, 'Max');
+        table.setCell([0, 0], 5, 1234.56);
+
+        table.chooseTimeUnit(table.findColumn(Column.Mean.name));
 
         expect(table.render()).toBe(
             `
-|   Function |   N |       Mean |      Error |     StdDev |  |
-|-----------:|----:|-----------:|-----------:|-----------:|-:|
-| Function 1 | 100 | 123.456 ns | 1.23456 ns | 12.3456 ns |  |
+|   Function |   N |     Mean |    Error |   StdDev |      Max |
+|-----------:|----:|---------:|---------:|---------:|---------:|
+| Function 1 | 100 | 123.5 ns | 1.235 ns | 12.35 ns | 1,235 ns |
 `.trim(),
         );
+    });
+
+    it('find the target column index', () => {
+        const table = createTable();
+        expect(table.findColumn(Column.Mean.name)).toBe(2);
+        expect(table.findColumn('unknown')).toBe(-1);
     });
 });
