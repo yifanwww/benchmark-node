@@ -1,24 +1,31 @@
+import { TimeUnit } from '../../Tools/TimeUnit';
 import { ColumnInfo } from './ColumnInfo';
 import { Row } from './Row';
+import { TableProps } from './TableProps';
 import { RowID } from './types';
 
 export class Table {
-    private declare readonly _columnInfos: ColumnInfo[];
+    private declare readonly _props: TableProps;
+
     private declare readonly _header: Row;
     private declare readonly _rows: Row[][];
 
     get columnCount() {
-        return this._columnInfos.length;
+        return this._props.infos.length;
     }
 
     constructor() {
-        this._columnInfos = [];
-        this._header = new Row(this._columnInfos);
+        this._props = {
+            infos: [],
+            timeUnit: TimeUnit.NS,
+        };
+
+        this._header = new Row(this._props);
         this._rows = [];
     }
 
     private expandRows() {
-        const colLen = this._columnInfos.length;
+        const colLen = this._props.infos.length;
         this._header.expand(colLen);
         for (const rows of this._rows) {
             for (const row of rows) {
@@ -28,7 +35,7 @@ export class Table {
     }
 
     appendColumn(col: ColumnInfo) {
-        this._columnInfos.push(col);
+        this._props.infos.push(col);
         this.expandRows();
     }
 
@@ -39,7 +46,7 @@ export class Table {
 
         const rows = this._rows[rowID[0]];
         for (let i = rows.length; i <= rowID[1]; i++) {
-            rows.push(new Row(this._columnInfos));
+            rows.push(new Row(this._props));
         }
     }
 
@@ -53,7 +60,7 @@ export class Table {
     }
 
     render(): string {
-        const lines: string[] = [this._header.render(), Row.renderAlignment(this._columnInfos)];
+        const lines: string[] = [this._header.render(), Row.renderAlignment(this._props.infos)];
 
         if (this._rows.length > 0) {
             lines.push(...this._rows[0].map((row) => row.render()));
@@ -61,7 +68,7 @@ export class Table {
             for (let i = 1; i < this._rows.length; i++) {
                 const insertEmptyRow = this._rows[i - 1].length > 1 || this._rows[i].length > 1;
                 if (insertEmptyRow) {
-                    lines.push(Row.renderEmpty(this._columnInfos));
+                    lines.push(Row.renderEmpty(this._props.infos));
                 }
 
                 lines.push(...this._rows[i].map((row) => row.render()));

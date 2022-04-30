@@ -1,17 +1,18 @@
 import { ColumnInfo } from './ColumnInfo';
+import { TableProps } from './TableProps';
 import { ColumnAlign } from './types';
 
 export class Row {
-    private declare readonly _cols: readonly ColumnInfo[];
+    private declare readonly _props: TableProps;
     private declare readonly _cells: string[];
 
     get length() {
         return this._cells.length;
     }
 
-    constructor(colInfos: readonly ColumnInfo[]) {
-        this._cols = colInfos;
-        this._cells = colInfos.map(() => '');
+    constructor(props: TableProps) {
+        this._props = props;
+        this._cells = props.infos.map(() => '');
     }
 
     expand(len: number) {
@@ -21,7 +22,7 @@ export class Row {
     }
 
     setCell(index: number, value: string) {
-        this._cols[index].increaseWidthMaxTo(value.length);
+        this._props.infos[index].increaseWidthMaxTo(value.length);
         this._cells[index] = value;
     }
 
@@ -46,8 +47,8 @@ export class Row {
 
     render() {
         const arr: string[] = [];
-        for (let i = 0; i < this._cols.length; i++) {
-            arr.push(Row.renderContent(this._cols[i], this._cells[i]));
+        for (let i = 0; i < this._props.infos.length; i++) {
+            arr.push(Row.renderContent(this._props.infos[i], this._cells[i]));
         }
         return `| ${arr.join(' | ')} |`;
     }
