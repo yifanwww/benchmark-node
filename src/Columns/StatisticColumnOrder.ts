@@ -1,4 +1,3 @@
-import { ArrayUtil } from '../Tools/ArrayUtil';
 import { LooseArray } from '../types';
 import { Column } from './Column';
 import { StatisticColumn } from './StatisticColumn';
@@ -21,7 +20,7 @@ export class StatisticColumnOrder {
     }
 
     addOrder(order: LooseArray<StatisticColumn>): void {
-        if (!ArrayUtil.isReadonlyArray(order)) {
+        if (!Array.isArray(order)) {
             this._addOrder(order);
         } else {
             for (const column of order) {

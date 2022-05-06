@@ -1,4 +1,5 @@
 import { Arguments } from './Parameterization';
+import { UnknownFn } from './types.internal';
 
 /* ----- Types ----- */
 
@@ -14,7 +15,7 @@ export type Millisecond = number & {};
  */
 export type Nanosecond = number & {};
 
-export type TestFn = (...args: never[]) => unknown;
+export type TestFn = UnknownFn;
 
 export interface BenchmarkingSettings {
     /**
