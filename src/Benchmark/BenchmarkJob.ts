@@ -163,12 +163,12 @@ export class BenchmarkJob extends JobConfig {
 
         logger.writeLineInfo(`Found ${tasks.length} ${tasks.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const task of tasks) {
-            logger.writeLineInfo(`- ${task.name}`);
+            logger.writeLineInfo(`- ${task.desc}`);
         }
         logger.writeLine();
 
         for (const task of tasks) {
-            logger.writeLineHeader(`* Benchmark: ${task.name} *`);
+            logger.writeLineHeader(`* Benchmark: ${task.desc} *`);
             task.logConfigs();
             logger.writeLine();
 

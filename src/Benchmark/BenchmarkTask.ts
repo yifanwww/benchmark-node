@@ -32,6 +32,15 @@ export class BenchmarkTask {
         return this._name;
     }
 
+    get desc(): string {
+        const arr: string[] = [this._name];
+        const paramStr = this.params && this._paramStoreView!.strs.join(', ');
+        if (paramStr) {
+            arr.push(`[${paramStr}]`);
+        }
+        return arr.join(' ');
+    }
+
     get testFn() {
         return this._testFn;
     }
