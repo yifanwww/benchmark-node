@@ -10,7 +10,7 @@ import { BenchmarkingSettings, TestFn } from '../types';
 import { AnyFn, Optional } from '../types.internal';
 import { Benchmark, BenchmarkOptions } from './Benchmark';
 import { BenchmarkTask } from './BenchmarkTask';
-import { JobConfigBase } from './JobConfigBase';
+import { JobConfig } from './JobConfig';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
     /**
@@ -22,15 +22,13 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
     columns?: (StatisticColumn | (() => StatisticColumn))[];
 }
 
-export class BenchmarkJob extends JobConfigBase {
+export class BenchmarkJob extends JobConfig {
     private declare readonly _benchs: Benchmark[];
 
-    private declare _setup: Optional<AnyFn>;
     private declare _setupCount: number;
-    private declare _paramStore: Optional<ParameterStore>;
-
-    private declare _cleanup: Optional<() => void>;
     private declare _cleanupCount: number;
+
+    private declare _paramStore: Optional<ParameterStore>;
 
     private declare readonly _settings: Settings;
 
@@ -144,8 +142,6 @@ export class BenchmarkJob extends JobConfigBase {
                             bench.testFnParamNames,
                             argsView,
                             this._settings.merge(bench.settings),
-                            this._setup,
-                            this._cleanup,
                             paramStoreView,
                             bench.setup,
                             bench.cleanup,
@@ -158,7 +154,7 @@ export class BenchmarkJob extends JobConfigBase {
         return tasks;
     }
 
-    run(): void {
+    override run(): void {
         if (!this.validate()) return;
 
         const logger = ConsoleLogger.default;
@@ -176,7 +172,7 @@ export class BenchmarkJob extends JobConfigBase {
             task.logConfigs();
             logger.writeLine();
 
-            this._runner.run(task);
+            super.run(task);
         }
 
         logger.writeLineHeader('* Summary *\n');
