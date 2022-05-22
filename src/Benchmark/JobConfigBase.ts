@@ -1,4 +1,4 @@
-import { BenchmarkRunner } from '../Task';
+import { BenchmarkRunner } from './BenchmarkRunner';
 
 export class JobConfigBase {
     private static id = 0;

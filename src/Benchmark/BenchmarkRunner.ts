@@ -193,7 +193,7 @@ export class BenchmarkRunner {
     run(task: BenchmarkTask): void {
         this._current = task;
 
-        task.globalSetup?.execute();
+        task.globalSetup?.(...(task.params ?? []));
 
         this._runJitting();
 

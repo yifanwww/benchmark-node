@@ -16,7 +16,7 @@ export class ArgumentStoreView {
         return this._store.maxArgsLength;
     }
 
-    constructor(store: ArgumentStore, argIndex: Optional<number>) {
+    private constructor(store: ArgumentStore, argIndex: Optional<number>) {
         this._store = store;
         this._index = argIndex ?? NO_ARGUMENT_INDEX;
     }

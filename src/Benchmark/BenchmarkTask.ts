@@ -1,12 +1,11 @@
 import { Settings, Statistics } from '../Data';
-import { GlobalSetupView } from '../Function';
-import { ArgumentStoreView } from '../ParameterizationStore';
+import { ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Formatter } from '../Tools/Formatter';
 import { TestFn } from '../types';
-import { Optional } from '../types.internal';
+import { AnyFn, Optional } from '../types.internal';
 
 export class BenchmarkTask {
     private static id = 0;
@@ -22,8 +21,9 @@ export class BenchmarkTask {
 
     private declare readonly _settings: Settings;
 
-    private declare readonly _globalSetup: Optional<GlobalSetupView>;
+    private declare readonly _globalSetup: Optional<AnyFn>;
     private declare readonly _globalCleanup: Optional<() => void>;
+    private declare readonly _paramStoreView: Optional<ParameterStoreView>;
 
     private declare readonly _iterationSetup: Optional<() => void>;
     private declare readonly _iterationCleanup: Optional<() => void>;
@@ -50,14 +50,6 @@ export class BenchmarkTask {
         return this._settings;
     }
 
-    get globalSetup() {
-        return this._globalSetup;
-    }
-
-    get globalCleanup() {
-        return this._globalCleanup;
-    }
-
     get iterationSetup() {
         return this._iterationSetup;
     }
@@ -70,15 +62,27 @@ export class BenchmarkTask {
         return this._stats;
     }
 
+    get globalSetup() {
+        return this._globalSetup;
+    }
+
+    get globalCleanup() {
+        return this._globalCleanup;
+    }
+
+    get params() {
+        return this._paramStoreView?.params ?? null;
+    }
+
     constructor(
         name: string,
         testFn: TestFn,
         testFnInfo: readonly string[],
         testFnArgStore: ArgumentStoreView,
         settings: Settings,
-        globalSetup: Optional<GlobalSetupView>,
-        // globalSetupParams: ParamValuePairs,
-        globalCleanup: Optional<() => void>,
+        setup: Optional<AnyFn>,
+        cleanup: Optional<() => void>,
+        paramStoreView: Optional<ParameterStoreView>,
         iterationSetup: Optional<() => void>,
         iterationCleanup: Optional<() => void>,
     ) {
@@ -99,8 +103,9 @@ export class BenchmarkTask {
 
         this._settings = settings;
 
-        this._globalSetup = globalSetup;
-        this._globalCleanup = globalCleanup;
+        this._globalSetup = setup;
+        this._globalCleanup = cleanup;
+        this._paramStoreView = paramStoreView;
 
         this._iterationSetup = iterationSetup;
         this._iterationCleanup = iterationCleanup;

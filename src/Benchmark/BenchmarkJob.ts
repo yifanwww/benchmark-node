@@ -1,14 +1,15 @@
 import { StatisticColumn, StatisticColumnOrder } from '../Columns';
 import { Settings } from '../Data';
-import { GlobalSetup, GlobalSetupView } from '../Function';
+import { FunctionInfo } from '../Function';
 import { MapToParams } from '../Parameterization';
-import { ArgumentStoreView } from '../ParameterizationStore';
+import { ArgumentStoreView, ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
-import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, TestFn } from '../types';
-import { Optional } from '../types.internal';
+import { AnyFn, Optional } from '../types.internal';
+import { Benchmark, BenchmarkOptions } from './Benchmark';
+import { BenchmarkTask } from './BenchmarkTask';
 import { JobConfigBase } from './JobConfigBase';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
@@ -24,9 +25,11 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
 export class BenchmarkJob extends JobConfigBase {
     private declare readonly _benchs: Benchmark[];
 
-    private declare _setup: GlobalSetup;
-    private declare _cleanup: Optional<() => void>;
+    private declare _setup: Optional<AnyFn>;
     private declare _setupCount: number;
+    private declare _paramStore: Optional<ParameterStore>;
+
+    private declare _cleanup: Optional<() => void>;
     private declare _cleanupCount: number;
 
     private declare readonly _settings: Settings;
@@ -38,7 +41,8 @@ export class BenchmarkJob extends JobConfigBase {
 
         this._benchs = [];
 
-        this._setup = GlobalSetup.EMPTY;
+        this._setup = null;
+        this._cleanup = null;
         this._setupCount = 0;
         this._cleanupCount = 0;
 
@@ -98,12 +102,12 @@ export class BenchmarkJob extends JobConfigBase {
      * @param params The parameters passed to the setup function.
      * @returns The benchmark instance itself.
      */
-    setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
+    setSetup<Args extends unknown[]>(setup: (...args: Args) => void, params: MapToParams<Args>): this;
 
-    setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
-        const globalSetup = new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []);
-        this._setup = globalSetup;
+    setSetup<Args extends unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
+        this._setup = setup as AnyFn;
         this._setupCount++;
+        this._paramStore = new ParameterStore(params ?? [], FunctionInfo.getParameterNames(setup));
         return this;
     }
 
@@ -130,7 +134,7 @@ export class BenchmarkJob extends JobConfigBase {
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
-        for (const setupView of GlobalSetupView.iteratesGlobalSetupExecutors(this._setup)) {
+        for (const paramStoreView of ParameterStoreView.iterateStore(this._paramStore)) {
             for (const bench of this._benchs) {
                 for (const argsView of ArgumentStoreView.iteratesStoreArgs(bench.testArgStore)) {
                     tasks.push(
@@ -140,8 +144,9 @@ export class BenchmarkJob extends JobConfigBase {
                             bench.testFnParamNames,
                             argsView,
                             this._settings.merge(bench.settings),
-                            setupView,
+                            this._setup,
                             this._cleanup,
+                            paramStoreView,
                             bench.setup,
                             bench.cleanup,
                         ),
@@ -180,7 +185,7 @@ export class BenchmarkJob extends JobConfigBase {
 
         const table = new SummaryTable({
             argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-            paramLen: this._setup.params.length,
+            paramLen: this._paramStore?.names.length ?? 0,
         });
 
         table.addStatisticColumns(this._statsColumnOrder.getOrder());
