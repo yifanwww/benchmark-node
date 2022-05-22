@@ -2,6 +2,7 @@ import { ConfidenceInterval, ConfidenceLevel, Mathematics } from '../Mathematics
 import { Arguments } from '../Parameterization';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Nanosecond } from '../types';
+import { Optional } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.
@@ -9,6 +10,7 @@ import { Nanosecond } from '../types';
 export class Statistics {
     private declare _name: string;
 
+    private declare _params: Optional<readonly unknown[]>;
     private declare _args?: Arguments;
 
     private declare _n: number;
@@ -31,6 +33,10 @@ export class Statistics {
 
     get name() {
         return this._name;
+    }
+
+    get params() {
+        return this._params;
     }
 
     get args() {
@@ -103,8 +109,16 @@ export class Statistics {
         return this._ops;
     }
 
-    constructor(name: string, measurements: Nanosecond[], ops: number, args?: Arguments) {
+    constructor(
+        name: string,
+        measurements: Nanosecond[],
+        ops: number,
+        params: Optional<readonly unknown[]>,
+        args?: Arguments,
+    ) {
         this._name = name;
+
+        this._params = params;
         this._args = args;
 
         measurements.sort((a, b) => a - b);

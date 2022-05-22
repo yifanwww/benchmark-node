@@ -181,7 +181,7 @@ export class BenchmarkJob extends JobConfig {
 
         const table = new SummaryTable({
             argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-            paramLen: this._paramStore?.names.length ?? 0,
+            paramNames: this._paramStore?.names ?? [],
         });
 
         table.addStatisticColumns(this._statsColumnOrder.getOrder());

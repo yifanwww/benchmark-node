@@ -196,9 +196,9 @@ export class BenchmarkRunner {
         this._runJitting();
 
         if (!task.testFnArgStore.hasArgs()) {
-            this._runFormal();
+            this._runFormal(task.params ?? []);
         } else {
-            this._runFormal(task.testFnArgStore.args);
+            this._runFormal(task.params ?? [], task.testFnArgStore.args);
         }
 
         this._current = null;
@@ -219,7 +219,7 @@ export class BenchmarkRunner {
         logger.writeLine();
     }
 
-    private _runFormal(args?: Arguments): void {
+    private _runFormal(params: readonly unknown[], args?: Arguments): void {
         const logger = ConsoleLogger.default;
 
         const ops = this.benchmarkPilot(args);
@@ -241,7 +241,7 @@ export class BenchmarkRunner {
         this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Statistics(this._current!.name, measurements, ops, args);
+        const stats = new Statistics(this._current!.name, measurements, ops, params, args);
         this._current!.stats.push(stats);
         stats.log();
     }
