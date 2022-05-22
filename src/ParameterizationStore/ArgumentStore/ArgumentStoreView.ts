@@ -5,8 +5,8 @@ import { ArgumentStore } from './ArgumentStore';
 const NO_ARGUMENT_INDEX = -1;
 
 export class ArgumentStoreView {
-    private declare _store: ArgumentStore;
-    private declare _index: number;
+    private declare readonly _store: ArgumentStore;
+    private declare readonly _index: number;
 
     get argsLength() {
         return this._store.argsLength;
