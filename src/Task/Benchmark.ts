@@ -104,10 +104,9 @@ export class Benchmark<T extends TestFn = TestFn> {
      */
     validate(): boolean {
         const logger = ConsoleLogger.default;
+        const prefix = `[No.${this._id} Benchmark]`;
 
         let pass = true;
-
-        const prefix = `[No.${this._id} Benchmark]`;
 
         if (this._name === FunctionInfo.ANONYMOUS_NAME && this._testFnName === FunctionInfo.ANONYMOUS_NAME) {
             logger.writeLineError(

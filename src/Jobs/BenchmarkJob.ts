@@ -26,8 +26,8 @@ export class BenchmarkJob extends JobConfigBase {
 
     private declare _setup: GlobalSetup;
     private declare _cleanup: Optional<() => void>;
-    private declare readonly _setups: Array<GlobalSetup | undefined>;
-    private declare readonly _cleanups: Array<(() => void) | undefined>;
+    private declare _setupCount: number;
+    private declare _cleanupCount: number;
 
     private declare readonly _settings: Settings;
 
@@ -39,8 +39,8 @@ export class BenchmarkJob extends JobConfigBase {
         this._benchs = [];
 
         this._setup = GlobalSetup.EMPTY;
-        this._setups = [];
-        this._cleanups = [];
+        this._setupCount = 0;
+        this._cleanupCount = 0;
 
         this._statsColumnOrder = new StatisticColumnOrder();
 
@@ -103,7 +103,7 @@ export class BenchmarkJob extends JobConfigBase {
     setSetup<Args extends readonly unknown[]>(setup: (...args: Args) => void, params?: MapToParams<Args>): this {
         const globalSetup = new GlobalSetup(setup as (...args: readonly unknown[]) => void, params ?? []);
         this._setup = globalSetup;
-        this._setups.push(globalSetup);
+        this._setupCount++;
         return this;
     }
 
@@ -123,7 +123,7 @@ export class BenchmarkJob extends JobConfigBase {
      */
     setCleanup(cleanup: () => void): this {
         this._cleanup = cleanup;
-        this._cleanups.push(cleanup);
+        this._cleanupCount++;
         return this;
     }
 
@@ -197,8 +197,9 @@ export class BenchmarkJob extends JobConfigBase {
      */
     validate(): boolean {
         const logger = ConsoleLogger.default;
-
         logger.writeLineInfo('Validating benchmarks...');
+
+        const prefix = `[No.${this._id} BenchmarkJob]`;
 
         let pass = true;
 
@@ -206,17 +207,13 @@ export class BenchmarkJob extends JobConfigBase {
             if (!bench.validate()) pass = false;
         }
 
-        if (this._setups.length > 1) {
-            logger.writeLineError(
-                `[No.${this._id} BenchmarkJob] An benchmark job can only have one global setup function`,
-            );
+        if (this._setupCount > 1) {
+            logger.writeLineError(`${prefix} An benchmark job can only have one global setup function`);
             pass = false;
         }
 
-        if (this._cleanups.length > 1) {
-            logger.writeLineError(
-                `[No.${this._id} BenchmarkJob] An benchmark job can only have one global cleanup function`,
-            );
+        if (this._cleanupCount > 1) {
+            logger.writeLineError(`${prefix} An benchmark job can only have one global cleanup function`);
             pass = false;
         }
 
