@@ -1,5 +1,5 @@
-import { ArgumentStore } from '../Data';
 import { FunctionInfo } from '../Function';
+import { ArgumentStore } from '../ParameterizationStore';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';

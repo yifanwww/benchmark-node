@@ -1,7 +1,8 @@
 import { StatisticColumn, StatisticColumnOrder } from '../Columns';
-import { ArgumentStoreView, Settings } from '../Data';
+import { Settings } from '../Data';
 import { GlobalSetup, GlobalSetupView } from '../Function';
 import { MapToParams } from '../Parameterization';
+import { ArgumentStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { Benchmark, BenchmarkOptions, BenchmarkTask } from '../Task';

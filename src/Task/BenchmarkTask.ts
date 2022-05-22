@@ -1,5 +1,6 @@
-import { ArgumentStoreView, Settings, Statistics } from '../Data';
+import { Settings, Statistics } from '../Data';
 import { GlobalSetupView } from '../Function';
+import { ArgumentStoreView } from '../ParameterizationStore';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -91,7 +92,7 @@ export class BenchmarkTask {
 
         // Gets a totally new function to test the performance of `testFn`.
         // Passing different callbacks into one same function who calls the callbacks will cause a optimization problem.
-        // See "src/test/perf-DynamicFnCall.ts".
+        // See "test/perfs/DynamicFnCall.ts".
         this._tester = CodeGen.createTester({
             argument: { count: this._testFnArgStore.maxArgsLength },
         });

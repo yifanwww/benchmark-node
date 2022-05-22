@@ -1,4 +1,4 @@
-import { Arguments } from '../../Parameterization/Arguments';
+import { Arguments } from '../../Parameterization';
 import { LooseArray } from '../../types';
 
 export class ArgumentStore {
