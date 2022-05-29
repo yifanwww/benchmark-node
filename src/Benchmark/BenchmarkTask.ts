@@ -1,6 +1,5 @@
 import { Settings, Statistics } from '../Data';
-import { GlobalSetupView } from '../Function';
-import { ArgumentStoreView } from '../ParameterizationStore';
+import { ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -22,16 +21,24 @@ export class BenchmarkTask {
 
     private declare readonly _settings: Settings;
 
-    private declare readonly _globalSetup: Optional<GlobalSetupView>;
-    private declare readonly _globalCleanup: Optional<() => void>;
+    private declare readonly _paramStoreView: Optional<ParameterStoreView>;
 
-    private declare readonly _iterationSetup: Optional<() => void>;
-    private declare readonly _iterationCleanup: Optional<() => void>;
+    private declare readonly _setup: Optional<() => void>;
+    private declare readonly _cleanup: Optional<() => void>;
 
     private declare readonly _stats: Statistics[];
 
     get name(): string {
         return this._name;
+    }
+
+    get desc(): string {
+        const arr: string[] = [this._name];
+        const paramStr = this.params && this._paramStoreView!.strs.join(', ');
+        if (paramStr) {
+            arr.push(`[${paramStr}]`);
+        }
+        return arr.join(' ');
     }
 
     get testFn() {
@@ -50,24 +57,20 @@ export class BenchmarkTask {
         return this._settings;
     }
 
-    get globalSetup() {
-        return this._globalSetup;
+    get setup() {
+        return this._setup;
     }
 
-    get globalCleanup() {
-        return this._globalCleanup;
-    }
-
-    get iterationSetup() {
-        return this._iterationSetup;
-    }
-
-    get iterationCleanup() {
-        return this._iterationCleanup;
+    get cleanup() {
+        return this._cleanup;
     }
 
     get stats() {
         return this._stats;
+    }
+
+    get params() {
+        return this._paramStoreView?.params ?? null;
     }
 
     constructor(
@@ -76,11 +79,9 @@ export class BenchmarkTask {
         testFnInfo: readonly string[],
         testFnArgStore: ArgumentStoreView,
         settings: Settings,
-        globalSetup: Optional<GlobalSetupView>,
-        // globalSetupParams: ParamValuePairs,
-        globalCleanup: Optional<() => void>,
-        iterationSetup: Optional<() => void>,
-        iterationCleanup: Optional<() => void>,
+        paramStoreView: Optional<ParameterStoreView>,
+        setup: Optional<() => void>,
+        cleanup: Optional<() => void>,
     ) {
         this._id = ++BenchmarkTask.id;
 
@@ -99,11 +100,10 @@ export class BenchmarkTask {
 
         this._settings = settings;
 
-        this._globalSetup = globalSetup;
-        this._globalCleanup = globalCleanup;
+        this._paramStoreView = paramStoreView;
 
-        this._iterationSetup = iterationSetup;
-        this._iterationCleanup = iterationCleanup;
+        this._setup = setup;
+        this._cleanup = cleanup;
 
         this._stats = [];
     }
@@ -120,7 +120,7 @@ export class BenchmarkTask {
         logger.writeLineInfo(`  measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
         logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
         logger.writeLineInfo(`  warmup count        : ${Formatter.beautifyNumber(warmupCount)}`);
-        logger.writeLineInfo(`  ${this._iterationSetup ? 'Has' : 'No'} iteration setup`);
-        logger.writeLineInfo(`  ${this._iterationCleanup ? 'Has' : 'No'} iteration cleanup`);
+        logger.writeLineInfo(`  ${this._setup ? 'Has' : 'No'} iteration setup`);
+        logger.writeLineInfo(`  ${this._cleanup ? 'Has' : 'No'} iteration cleanup`);
     }
 }

@@ -36,8 +36,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload,
 
-            setup: this._current!.iterationSetup,
-            cleanup: this._current!.iterationCleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         let used: Nanosecond = 0;
@@ -72,8 +72,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: true,
 
-            setup: this._current!.iterationSetup,
-            cleanup: this._current!.iterationCleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         for (let index = 1; ; index++) {
@@ -104,8 +104,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload,
 
-            setup: this._current!.iterationSetup,
-            cleanup: this._current!.iterationCleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.warmupCount; index++) {
@@ -125,8 +125,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: false,
 
-            setup: this._current!.iterationSetup,
-            cleanup: this._current!.iterationCleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         let total: Nanosecond = 0;
@@ -151,8 +151,8 @@ export class BenchmarkRunner {
             testFn: this._current!.testFn,
             workload: true,
 
-            setup: this._current!.iterationSetup,
-            cleanup: this._current!.iterationCleanup,
+            setup: this._current!.setup,
+            cleanup: this._current!.cleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
@@ -193,17 +193,13 @@ export class BenchmarkRunner {
     run(task: BenchmarkTask): void {
         this._current = task;
 
-        task.globalSetup?.execute();
-
         this._runJitting();
 
         if (!task.testFnArgStore.hasArgs()) {
-            this._runFormal();
+            this._runFormal(task.params ?? []);
         } else {
-            this._runFormal(task.testFnArgStore.args);
+            this._runFormal(task.params ?? [], task.testFnArgStore.args);
         }
-
-        task.globalCleanup?.();
 
         this._current = null;
     }
@@ -223,7 +219,7 @@ export class BenchmarkRunner {
         logger.writeLine();
     }
 
-    private _runFormal(args?: Arguments): void {
+    private _runFormal(params: readonly unknown[], args?: Arguments): void {
         const logger = ConsoleLogger.default;
 
         const ops = this.benchmarkPilot(args);
@@ -245,7 +241,7 @@ export class BenchmarkRunner {
         this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Statistics(this._current!.name, measurements, ops, args);
+        const stats = new Statistics(this._current!.name, measurements, ops, params, args);
         this._current!.stats.push(stats);
         stats.log();
     }

@@ -1,4 +1,5 @@
 import { ArgumentColumn, BaseColumn, Column, ColumnType, StatisticColumn } from '../Columns';
+import { ParameterColumn } from '../Columns/ParameterColumn';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
@@ -7,7 +8,7 @@ import { ColumnAlign, createColumnInfo, Table } from './Table';
 
 export interface SummaryTableOptions {
     argLen: number;
-    paramLen: number;
+    paramNames: readonly string[];
 }
 
 export class SummaryTable {
@@ -15,7 +16,7 @@ export class SummaryTable {
 
     private static readonly _fnColumn = new BaseColumn(ColumnType.Fn, 'Function', (stats) => stats.name);
 
-    private declare readonly _paramColumns: unknown[];
+    private declare readonly _paramColumns: ParameterColumn[];
     private declare readonly _argColumns: ArgumentColumn[];
     private declare readonly _statsColumns: StatisticColumn[];
 
@@ -25,19 +26,27 @@ export class SummaryTable {
     private declare _rowGroupId: number;
 
     constructor(options: SummaryTableOptions) {
+        const { argLen, paramNames } = options;
+
         this._table = new Table();
 
         this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
         this._table.setHeader(0, SummaryTable._fnColumn.name);
 
         this._paramColumns = [];
+        for (let i = 0; i < paramNames.length; i++) {
+            const col = new ParameterColumn(paramNames[i], i);
+            this._paramColumns.push(col);
+            this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+            this._table.setHeader(i + 1, col.name);
+        }
 
         this._argColumns = [];
-        for (let i = 0; i < options.argLen; i++) {
+        for (let i = 0; i < argLen; i++) {
             const col = new ArgumentColumn(i);
             this._argColumns.push(col);
             this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
-            this._table.setHeader(i + 1, col.name);
+            this._table.setHeader(i + this._paramColumns.length + 1, col.name);
         }
 
         this._statsColumns = [];
@@ -60,7 +69,7 @@ export class SummaryTable {
     }
 
     addStats(statsArr: readonly Statistics[]): void {
-        const helpers = [SummaryTable._fnColumn, ...this._argColumns, ...this._statsColumns];
+        const helpers = [SummaryTable._fnColumn, ...this._paramColumns, ...this._argColumns, ...this._statsColumns];
 
         for (let i = 0; i < statsArr.length; i++) {
             for (let j = 0; j < helpers.length; j++) {

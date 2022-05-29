@@ -1,6 +1,7 @@
 export enum ColumnType {
     Fn,
     FnArgument,
+    Parameter,
 
     Error,
     Iterations,
