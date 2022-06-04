@@ -19,6 +19,10 @@ export class Table {
         return this._props.infos.length;
     }
 
+    get timeUnit() {
+        return this._props.timeUnit;
+    }
+
     constructor() {
         this._props = {
             infos: [],

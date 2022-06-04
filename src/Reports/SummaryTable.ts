@@ -2,7 +2,7 @@ import { ArgumentColumn, BaseColumn, Column, ColumnType, StatisticColumn } from 
 import { ParameterColumn } from '../Columns/ParameterColumn';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { TimeUnit, TimeUnitHelper } from '../Tools/TimeUnit';
+import { TimeUnitHelper } from '../Tools/TimeUnit';
 import { UnitType } from '../Tools/UnitType';
 import { ColumnAlign, createColumnInfo, Table } from './Table';
 
@@ -19,8 +19,6 @@ export class SummaryTable {
     private declare readonly _paramColumns: ParameterColumn[];
     private declare readonly _argColumns: ArgumentColumn[];
     private declare readonly _statsColumns: StatisticColumn[];
-
-    private declare _timeUnit: TimeUnit;
 
     /** @deprecated */
     private declare _rowGroupId: number;
@@ -50,8 +48,6 @@ export class SummaryTable {
         }
 
         this._statsColumns = [];
-
-        this._timeUnit = TimeUnit.NS;
 
         this._rowGroupId = 0;
     }
@@ -97,6 +93,6 @@ export class SummaryTable {
         for (const column of this._statsColumns) {
             logger.writeLineStatistic(`- ${column.name.padEnd(maxLen)}: ${column.desc}`);
         }
-        logger.writeLineStatistic(`- ${TimeUnitHelper.getFullDescription(this._timeUnit, maxLen)}`);
+        logger.writeLineStatistic(`- ${TimeUnitHelper.getFullDescription(this._table.timeUnit, maxLen)}`);
     }
 }
