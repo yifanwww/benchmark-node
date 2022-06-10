@@ -1,4 +1,17 @@
 # CHANGELOG
+## benchmark-node v0.7.0 (2022-06-10)
+### Features
+
+- Use `@stdlib/stats-base-dists-t-quantile` to compute the student-t distribution
+- Support setting global parameters in global setup
+- Run more benchmark tasks based on global setup parameters and test fn parameters
+- Display global parameters in summary table and benchmark descriptions
+- Improve summary table
+
+### Notable Changes
+
+- Deprecate `addSetup` and `addCleanup` (use `setSetup` and `setCleanup` instead)
+
 ## benchmark-node v0.6.0 (2022-02-20)
 ### Features
 
