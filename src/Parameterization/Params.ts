@@ -16,7 +16,7 @@ export class Params<T = unknown> {
 
 type ArgsIteration<Prev extends readonly unknown[], Rest extends readonly unknown[]> = Rest extends readonly [
     infer T,
-    ...infer _Rest
+    ...infer _Rest,
 ]
     ? ArgsIteration<readonly [...Prev, Params<T>], _Rest>
     : Rest extends readonly [infer T]
