@@ -33,11 +33,11 @@ export class BenchmarkRunner {
     ): void {
         const testerContext: TesterContext = {
             ops,
-            testFn: this._current!.testFn,
+            testFn: this._current!.context.testFn,
             workload,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.context.setup,
+            cleanup: this._current!.context.cleanup,
         };
 
         let used: Nanosecond = 0;
@@ -69,11 +69,11 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
-            testFn: this._current!.testFn,
+            testFn: this._current!.context.testFn,
             workload: true,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.context.setup,
+            cleanup: this._current!.context.cleanup,
         };
 
         for (let index = 1; ; index++) {
@@ -101,11 +101,11 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFn,
+            testFn: this._current!.context.testFn,
             workload,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.context.setup,
+            cleanup: this._current!.context.cleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.warmupCount; index++) {
@@ -122,11 +122,11 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFn,
+            testFn: this._current!.context.testFn,
             workload: false,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.context.setup,
+            cleanup: this._current!.context.cleanup,
         };
 
         let total: Nanosecond = 0;
@@ -148,11 +148,11 @@ export class BenchmarkRunner {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
-            testFn: this._current!.testFn,
+            testFn: this._current!.context.testFn,
             workload: true,
 
-            setup: this._current!.setup,
-            cleanup: this._current!.cleanup,
+            setup: this._current!.context.setup,
+            cleanup: this._current!.context.cleanup,
         };
 
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
@@ -241,7 +241,7 @@ export class BenchmarkRunner {
         this.benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
-        const stats = new Statistics(this._current!.name, measurements, ops, params, args);
+        const stats = new Statistics(this._current!.context.name, measurements, ops, params, args);
         this._current!.stats.push(stats);
         stats.log();
     }

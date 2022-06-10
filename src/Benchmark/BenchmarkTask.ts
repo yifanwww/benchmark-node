@@ -4,18 +4,17 @@ import { RuntimeInfo } from '../RuntimeInfo';
 import { CodeGen, Tester } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Formatter } from '../Tools/Formatter';
-import { TestFn } from '../types';
 import { Optional } from '../types.internal';
+import { BenchmarkContext } from './Context';
 
 export class BenchmarkTask {
     private static id = 0;
     private declare readonly _id: number;
 
-    private declare readonly _name: string;
+    private declare readonly _context: BenchmarkContext;
+
     private declare readonly _fullName: string;
 
-    private declare readonly _testFn: TestFn;
-    private declare readonly _testFnParamNames: readonly string[];
     private declare readonly _testFnArgStore: ArgumentStoreView;
     private declare readonly _tester: Tester;
 
@@ -23,26 +22,19 @@ export class BenchmarkTask {
 
     private declare readonly _paramStoreView: Optional<ParameterStoreView>;
 
-    private declare readonly _setup: Optional<() => void>;
-    private declare readonly _cleanup: Optional<() => void>;
-
     private declare readonly _stats: Statistics[];
 
-    get name(): string {
-        return this._name;
+    get context() {
+        return this._context;
     }
 
     get desc(): string {
-        const arr: string[] = [this._name];
+        const arr: string[] = [this._context.name];
         const paramStr = this.params && this._paramStoreView!.strs.join(', ');
         if (paramStr) {
             arr.push(`[${paramStr}]`);
         }
         return arr.join(' ');
-    }
-
-    get testFn() {
-        return this._testFn;
     }
 
     get testFnArgStore() {
@@ -57,14 +49,6 @@ export class BenchmarkTask {
         return this._settings;
     }
 
-    get setup() {
-        return this._setup;
-    }
-
-    get cleanup() {
-        return this._cleanup;
-    }
-
     get stats() {
         return this._stats;
     }
@@ -74,21 +58,15 @@ export class BenchmarkTask {
     }
 
     constructor(
-        name: string,
-        testFn: TestFn,
-        testFnInfo: readonly string[],
         testFnArgStore: ArgumentStoreView,
         settings: Settings,
         paramStoreView: Optional<ParameterStoreView>,
-        setup: Optional<() => void>,
-        cleanup: Optional<() => void>,
+        context: BenchmarkContext,
     ) {
         this._id = ++BenchmarkTask.id;
 
-        this._name = name;
+        this._context = context;
 
-        this._testFn = testFn;
-        this._testFnParamNames = testFnInfo;
         this._testFnArgStore = testFnArgStore;
 
         // Gets a totally new function to test the performance of `testFn`.
@@ -101,9 +79,6 @@ export class BenchmarkTask {
         this._settings = settings;
 
         this._paramStoreView = paramStoreView;
-
-        this._setup = setup;
-        this._cleanup = cleanup;
 
         this._stats = [];
     }
@@ -120,7 +95,7 @@ export class BenchmarkTask {
         logger.writeLineInfo(`  measurement count   : ${Formatter.beautifyNumber(measurementCount)}`);
         logger.writeLineInfo(`  min measurement time: ${Formatter.beautifyNumber(minMeasurementTime)} ns`);
         logger.writeLineInfo(`  warmup count        : ${Formatter.beautifyNumber(warmupCount)}`);
-        logger.writeLineInfo(`  ${this._setup ? 'Has' : 'No'} iteration setup`);
-        logger.writeLineInfo(`  ${this._cleanup ? 'Has' : 'No'} iteration cleanup`);
+        logger.writeLineInfo(`  ${this._context.setup ? 'Has' : 'No'} iteration setup`);
+        logger.writeLineInfo(`  ${this._context.cleanup ? 'Has' : 'No'} iteration cleanup`);
     }
 }

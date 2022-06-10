@@ -1,8 +1,11 @@
+import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
-import { ArgumentStore } from '../ParameterizationStore';
+import { ArgumentStore, ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
 import { Optional } from '../types.internal';
+import { BenchmarkTask } from './BenchmarkTask';
+import { BenchmarkContext } from './Context';
 
 interface ConstructorArgs<T extends TestFn> {
     name?: string;
@@ -16,44 +19,15 @@ export class Benchmark<T extends TestFn = TestFn> {
     private static id = 0;
     private declare readonly _id: number;
 
-    private declare readonly _name: string;
+    private declare readonly _context: BenchmarkContext;
 
-    private declare readonly _testFn: T;
     private declare readonly _testFnName: string;
-    private declare readonly _testFnParamNames: readonly string[];
     private declare readonly _testArgStore: ArgumentStore;
 
     private declare readonly _settings: Readonly<BenchmarkingSettings>;
 
-    private declare readonly _setup: Optional<() => void>;
-    private declare readonly _cleanup: Optional<() => void>;
-
-    get name(): string {
-        return this._name;
-    }
-
-    get testFn() {
-        return this._testFn;
-    }
-
-    get testFnParamNames() {
-        return this._testFnParamNames;
-    }
-
     get testArgStore() {
         return this._testArgStore;
-    }
-
-    get settings() {
-        return this._settings;
-    }
-
-    get setup() {
-        return this._setup;
-    }
-
-    get cleanup() {
-        return this._cleanup;
     }
 
     /**
@@ -69,21 +43,24 @@ export class Benchmark<T extends TestFn = TestFn> {
     constructor(name: string, testFn: T, options?: Readonly<BenchmarkOptions<T>>);
 
     constructor(...args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?]) {
-        const { name, options, testFn } = this.parseArgs(args);
-
         this._id = ++Benchmark.id;
 
-        this._testFn = testFn;
-        this._testFnName = FunctionInfo.getFunctionName(testFn);
-        this._testFnParamNames = FunctionInfo.getParameterNames(testFn);
-        this._testArgStore = new ArgumentStore(options.args, options.jitArgs);
+        const { name, options, testFn } = this.parseArgs(args);
 
-        this._name = name ?? this._testFnName;
+        this._testFnName = FunctionInfo.getFunctionName(testFn);
+        this._testArgStore = new ArgumentStore(options.args, options.jitArgs);
 
         this._settings = options;
 
-        this._setup = options.setup ?? null;
-        this._cleanup = options.cleanup ?? null;
+        this._context = {
+            name: name ?? this._testFnName,
+
+            testFn,
+            testFnParamNames: FunctionInfo.getParameterNames(testFn),
+
+            setup: options.setup ?? null,
+            cleanup: options.cleanup ?? null,
+        };
     }
 
     private parseArgs(
@@ -108,7 +85,7 @@ export class Benchmark<T extends TestFn = TestFn> {
 
         let pass = true;
 
-        if (this._name === FunctionInfo.ANONYMOUS_NAME && this._testFnName === FunctionInfo.ANONYMOUS_NAME) {
+        if (this._context.name === FunctionInfo.ANONYMOUS_NAME && this._testFnName === FunctionInfo.ANONYMOUS_NAME) {
             logger.writeLineError(
                 `${prefix} The name of benchmark cannot be the anonymous function name, please give a specific name`,
             );
@@ -116,5 +93,17 @@ export class Benchmark<T extends TestFn = TestFn> {
         }
 
         return pass;
+    }
+
+    toTask(globalSettings: Settings, paramStoreView: Optional<ParameterStoreView>): BenchmarkTask[] {
+        const tasks: BenchmarkTask[] = [];
+
+        for (const argsView of ArgumentStoreView.iteratesStoreArgs(this._testArgStore)) {
+            tasks.push(
+                new BenchmarkTask(argsView, globalSettings.merge(this._settings), paramStoreView, this._context),
+            );
+        }
+
+        return tasks;
     }
 }

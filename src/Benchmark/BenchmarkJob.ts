@@ -2,7 +2,7 @@ import { StatisticColumn, StatisticColumnOrder } from '../Columns';
 import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
 import { MapToParams } from '../Parameterization';
-import { ArgumentStoreView, ParameterStore, ParameterStoreView } from '../ParameterizationStore';
+import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
@@ -134,20 +134,7 @@ export class BenchmarkJob extends JobConfig {
 
         for (const paramStoreView of ParameterStoreView.iterateStore(this._paramStore)) {
             for (const bench of this._benchs) {
-                for (const argsView of ArgumentStoreView.iteratesStoreArgs(bench.testArgStore)) {
-                    tasks.push(
-                        new BenchmarkTask(
-                            bench.name,
-                            bench.testFn,
-                            bench.testFnParamNames,
-                            argsView,
-                            this._settings.merge(bench.settings),
-                            paramStoreView,
-                            bench.setup,
-                            bench.cleanup,
-                        ),
-                    );
-                }
+                tasks.push(...bench.toTask(this._settings, paramStoreView));
             }
         }
 
