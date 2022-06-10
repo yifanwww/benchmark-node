@@ -5,12 +5,26 @@ import { ColumnType } from './ColumnType';
 export class ParameterColumn extends BaseColumn<string> {
     constructor(title: string, index: number) {
         super(ColumnType.Parameter, title, (stats) => {
-            const data = stats.params![index];
+            const param = stats.params![index];
+
+            const typeofParam = typeof param;
+
+            if (
+                typeofParam === 'bigint' ||
+                typeofParam === 'boolean' ||
+                typeofParam === 'number' ||
+                typeofParam === 'symbol' ||
+                typeofParam === 'undefined'
+            ) {
+                return String(param);
+            }
+
+            if (typeofParam === 'function') {
+                return 'function';
+            }
 
             // If parameter is too long
-            const arg = Formatter.limitStringLength(String(data));
-
-            return arg;
+            return Formatter.limitStringLength(String(param));
         });
     }
 }

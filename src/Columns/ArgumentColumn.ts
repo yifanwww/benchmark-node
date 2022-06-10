@@ -5,24 +5,31 @@ import { ColumnType } from './ColumnType';
 export class ArgumentColumn extends BaseColumn<string> {
     constructor(index: number) {
         super(ColumnType.FnArgument, `arg ${index}`, (stats) => {
-            const data = stats.args?.args;
+            const args = stats.args?.args;
 
-            let arg;
+            if (!args || index >= args.length) {
+                return '?';
+            }
 
-            // Gets argument from arguments
-            if (!data) {
-                arg = '?';
-            } else if (index >= data.length) {
-                arg = '?';
-            } else {
-                const _data = data[index];
-                arg = typeof _data === 'string' ? _data : String(_data);
+            const arg = args[index];
+            const typeofArg = arg;
+
+            if (
+                typeofArg === 'bigint' ||
+                typeofArg === 'boolean' ||
+                typeofArg === 'number' ||
+                typeofArg === 'symbol' ||
+                typeofArg === 'undefined'
+            ) {
+                return String(args);
+            }
+
+            if (typeofArg === 'function') {
+                return 'function';
             }
 
             // If argument is too long
-            arg = Formatter.limitStringLength(arg);
-
-            return arg;
+            return Formatter.limitStringLength(String(arg));
         });
     }
 }

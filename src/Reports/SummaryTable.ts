@@ -1,5 +1,4 @@
-import { ArgumentColumn, BaseColumn, Column, ColumnType, StatisticColumn } from '../Columns';
-import { ParameterColumn } from '../Columns/ParameterColumn';
+import { ArgumentColumn, BaseColumn, Column, ColumnType, ParameterColumn, StatisticColumn } from '../Columns';
 import { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnitHelper } from '../Tools/TimeUnit';
