@@ -1,4 +1,9 @@
 # CHANGELOG
+## benchmark-node v0.7.1 (2022-06-10)
+### Bug Fixes
+
+- Don't cut the length of some primitive param/arg values in the summary table
+
 ## benchmark-node v0.7.0 (2022-06-10)
 ### Features
 
