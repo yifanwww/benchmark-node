@@ -15,6 +15,7 @@
 
 # Source
 
+/perf
 /scripts
 /src
 /test

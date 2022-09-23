@@ -1,4 +1,9 @@
 # CHANGELOG
+## benchmark-node v0.7.2 (2022-09-23)
+### Notable Changes
+
+- Set the allowed node engine range to `>=v8.3.0`
+
 ## benchmark-node v0.7.1 (2022-06-10)
 ### Bug Fixes
 
