@@ -19,10 +19,7 @@ function getConfig() {
         transform: {
             '^.+\\.(js|mjs|cjs|ts)$': paths.transforms.babel,
         },
-        transformIgnorePatterns: [
-            '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$',
-            '^.+\\.module\\.(css|sass|scss)$',
-        ],
+        transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$'],
 
         modulePaths: [],
         moduleFileExtensions: ['js', 'json', 'node', 'ts'],
