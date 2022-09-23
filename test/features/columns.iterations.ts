@@ -17,7 +17,7 @@ new BenchmarkJob({ columns: [Column.Iterations] })
     .run();
 
 /*
-BenchmarkNode v0.7.1, Windows 10.0.22000
+BenchmarkNode v0.7.2-next.0, Windows 10.0.22000
 AMD Ryzen 7 5800H with Radeon Graphics, 1 CPU, 16 logical and 8 plysical cores
 Node.JS 16.13.0 (V8 9.4.146.19-node.13)
 
