@@ -16,10 +16,7 @@
         "url": "git+https://github.com/yifanwww/benchmark-node.git"
     },
     "scripts": {
-        "build": "concurrently -n cjs,esm,types \"pnpm run build:cjs\" \"pnpm run build:esm\" \"pnpm run build:types\"",
-        "build:cjs": "tsc --project tsconfigs/tsconfig.cjs.json",
-        "build:esm": "tsc --project tsconfigs/tsconfig.esm.json",
-        "build:types": "tsc --project tsconfigs/tsconfig.types.json",
+        "build": "tsc --build tsconfigs/tsconfig.build.json",
         "build-test": "tsc --project tsconfigs/tsconfig.test.json",
         "clean": "rimraf coverage dist lib lib-commonjs tsconfigs/*.tsbuildinfo",
         "clean-test": "rimraf dist",
@@ -53,7 +50,6 @@
         "@typescript-eslint/typescript-estree": "^5.38.0",
         "@typescript-eslint/visitor-keys": "^5.38.0",
         "babel-jest": "^29.0.3",
-        "concurrently": "^7.4.0",
         "eslint": "^8.24.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-airbnb-typescript": "^17.0.0",
