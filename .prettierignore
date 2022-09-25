@@ -5,6 +5,10 @@
 /lib
 /lib-commonjs
 
-# Running and Testing
+# Test
 
 /coverage
+
+# PNPM
+
+/pnpm-lock.yaml

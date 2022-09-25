@@ -22,22 +22,27 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM environment
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2
         with:
           node-version: '16'
-          cache: 'npm'
+          cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup node modules
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Build test
-        run: npm run build-test
+        run: pnpm run build-test
 
-      - name: Setup Node.js test environment
+      - name: Setup Node.js environment for test
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
@@ -62,3 +67,8 @@ jobs:
 
       - name: Run test 'validation'
         run: node dist/test/features/validation.js
+
+      - name: Restore Node.js environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
