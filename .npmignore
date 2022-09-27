@@ -22,6 +22,7 @@
 
 # NPM
 
+/.pnpm-store
 /node_modules
 /pnpm-lock.yaml
 
