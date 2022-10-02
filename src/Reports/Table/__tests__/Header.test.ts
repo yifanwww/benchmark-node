@@ -1,5 +1,6 @@
 import { TimeUnit } from '../../../Tools/TimeUnit';
 import { Header } from '../Header';
+
 import { createColumnInfos } from './utils';
 
 describe(`Test class \`${Header.name}\``, () => {

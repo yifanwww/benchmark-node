@@ -1,8 +1,9 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { UnknownFn } from '../types.internal';
 import { FunctionInfo } from './FunctionInfo';
+
+import type { UnknownFn } from '../types.internal';
 
 describe(`Test class \`${FunctionInfo.name}\``, () => {
     it('gets the function name', () => {

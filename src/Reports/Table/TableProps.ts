@@ -1,5 +1,5 @@
-import { TimeUnit } from '../../Tools/TimeUnit';
-import { ColumnInfo } from './ColumnInfo';
+import type { TimeUnit } from '../../Tools/TimeUnit';
+import type { ColumnInfo } from './ColumnInfo';
 
 export interface TableProps {
     infos: ColumnInfo[];

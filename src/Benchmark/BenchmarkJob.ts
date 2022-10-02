@@ -1,16 +1,20 @@
-import { StatisticColumn, StatisticColumnOrder } from '../Columns';
+import { StatisticColumnOrder } from '../Columns';
 import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
-import { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { BenchmarkingSettings, TestFn } from '../types';
-import { AnyFn, Optional } from '../types.internal';
-import { Benchmark, BenchmarkOptions } from './Benchmark';
-import { BenchmarkTask } from './BenchmarkTask';
+
+import { Benchmark } from './Benchmark';
 import { JobConfig } from './JobConfig';
+
+import type { StatisticColumn } from '../Columns';
+import type { MapToParams } from '../Parameterization';
+import type { BenchmarkingSettings, TestFn } from '../types';
+import type { AnyFn, Optional } from '../types.internal';
+import type { BenchmarkOptions } from './Benchmark';
+import type { BenchmarkTask } from './BenchmarkTask';
 
 export interface BenchmarkJobOptions extends BenchmarkingSettings {
     /**

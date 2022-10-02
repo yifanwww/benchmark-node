@@ -1,5 +1,6 @@
-import { BenchmarkingSettings } from '../../types';
 import { Settings } from '../Settings';
+
+import type { BenchmarkingSettings } from '../../types';
 
 describe(`Test class \`${Settings.name}\``, () => {
     it('creates an instance with default settings', () => {

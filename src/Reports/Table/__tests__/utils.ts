@@ -1,6 +1,8 @@
 import { UnitType } from '../../../Tools/UnitType';
-import { ColumnInfo, createColumnInfo } from '../ColumnInfo';
+import { createColumnInfo } from '../ColumnInfo';
 import { ColumnAlign } from '../types';
+
+import type { ColumnInfo } from '../ColumnInfo';
 
 export function createColumnInfos() {
     const infos: ColumnInfo[] = [

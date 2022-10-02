@@ -1,5 +1,5 @@
-import { Arguments } from '../../Parameterization';
-import { LooseArray } from '../../types';
+import type { Arguments } from '../../Parameterization';
+import type { LooseArray } from '../../types';
 
 export class ArgumentStore {
     private declare _argsList: readonly Arguments[];

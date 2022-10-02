@@ -1,5 +1,5 @@
-import { Optional } from '../../types.internal';
-import { ParameterStore } from './ParameterStore';
+import type { Optional } from '../../types.internal';
+import type { ParameterStore } from './ParameterStore';
 
 export class ParameterStoreView {
     private declare readonly _store: ParameterStore;

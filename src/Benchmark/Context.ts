@@ -1,5 +1,5 @@
-import { TestFn } from '../types';
-import { Optional } from '../types.internal';
+import type { TestFn } from '../types';
+import type { Optional } from '../types.internal';
 
 export interface BenchmarkContext {
     readonly name: string;

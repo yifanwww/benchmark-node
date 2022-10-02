@@ -1,11 +1,13 @@
-import { Settings, Statistics } from '../Data';
-import { ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
 import { RuntimeInfo } from '../RuntimeInfo';
-import { CodeGen, Tester } from '../Tools/CodeGen';
+import { CodeGen } from '../Tools/CodeGen';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { Formatter } from '../Tools/Formatter';
-import { Optional } from '../types.internal';
-import { BenchmarkContext } from './Context';
+
+import type { Settings, Statistics } from '../Data';
+import type { ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
+import type { Tester } from '../Tools/CodeGen';
+import type { Optional } from '../types.internal';
+import type { BenchmarkContext } from './Context';
 
 export class BenchmarkTask {
     private static id = 0;

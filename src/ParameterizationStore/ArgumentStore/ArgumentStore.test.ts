@@ -1,4 +1,5 @@
 import { Arguments } from '../../Parameterization';
+
 import { ArgumentStore } from './ArgumentStore';
 
 describe(`Test class \`${ArgumentStore.name}\``, () => {

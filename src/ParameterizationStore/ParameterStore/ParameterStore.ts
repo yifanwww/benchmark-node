@@ -1,5 +1,5 @@
-import { Params } from '../../Parameterization';
-import { Optional } from '../../types.internal';
+import type { Params } from '../../Parameterization';
+import type { Optional } from '../../types.internal';
 
 export class ParameterStore {
     private declare readonly _names: readonly string[];

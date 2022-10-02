@@ -1,5 +1,5 @@
-import { UnitType } from '../../Tools/UnitType';
-import { ColumnAlign } from './types';
+import type { UnitType } from '../../Tools/UnitType';
+import type { ColumnAlign } from './types';
 
 export interface ColumnInfo {
     align: ColumnAlign;

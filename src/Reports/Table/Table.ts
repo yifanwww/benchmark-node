@@ -1,13 +1,15 @@
-import { chooseFractionDigit } from '../../Tools/chooseFractionDigit';
-import { renderData } from '../../Tools/renderData';
 import { TimeTool } from '../../Tools/TimeTool';
 import { TimeUnit, TimeUnitHelper } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
-import { ColumnInfo } from './ColumnInfo';
+import { chooseFractionDigit } from '../../Tools/chooseFractionDigit';
+import { renderData } from '../../Tools/renderData';
+
 import { Header } from './Header';
 import { Row } from './Row';
-import { TableProps } from './TableProps';
-import { RowID } from './types';
+
+import type { ColumnInfo } from './ColumnInfo';
+import type { TableProps } from './TableProps';
+import type { RowID } from './types';
 
 export class Table {
     private declare readonly _props: TableProps;

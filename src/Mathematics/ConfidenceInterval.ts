@@ -1,6 +1,6 @@
 import quantile from '@stdlib/stats-base-dists-t-quantile';
 
-import { ConfidenceLevel } from './ConfidenceLevel';
+import type { ConfidenceLevel } from './ConfidenceLevel';
 
 export class ConfidenceInterval {
     private declare readonly _margin: number;

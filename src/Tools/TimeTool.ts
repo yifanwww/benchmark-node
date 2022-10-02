@@ -1,7 +1,7 @@
-import { Millisecond, Nanosecond } from '../types';
-import { Hrtime } from '../types.internal';
-
 import { TimeUnit } from './TimeUnit';
+
+import type { Millisecond, Nanosecond } from '../types';
+import type { Hrtime } from '../types.internal';
 
 export class TimeTool {
     static convert(time: number, from: TimeUnit, to: TimeUnit): number {

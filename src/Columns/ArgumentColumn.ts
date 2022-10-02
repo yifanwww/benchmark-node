@@ -1,4 +1,5 @@
 import { Formatter } from '../Tools/Formatter';
+
 import { BaseColumn } from './BaseColumn';
 import { ColumnType } from './ColumnType';
 

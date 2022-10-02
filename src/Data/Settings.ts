@@ -1,5 +1,6 @@
 import { Time } from '../Tools/TimeTool';
-import { BenchmarkingSettings, Millisecond, Nanosecond } from '../types';
+
+import type { BenchmarkingSettings, Millisecond, Nanosecond } from '../types';
 
 interface ISettings {
     delay: Nanosecond;

@@ -1,7 +1,8 @@
-import { Statistics } from '../Data';
-import { UnitType } from '../Tools/UnitType';
 import { BaseColumn } from './BaseColumn';
-import { ColumnType } from './ColumnType';
+
+import type { Statistics } from '../Data';
+import type { UnitType } from '../Tools/UnitType';
+import type { ColumnType } from './ColumnType';
 
 export type Calc = (stats: Statistics) => number;
 

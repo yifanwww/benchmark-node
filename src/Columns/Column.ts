@@ -1,5 +1,6 @@
 import { ConfidenceInterval, ConfidenceLevel } from '../Mathematics';
 import { UnitType } from '../Tools/UnitType';
+
 import { ColumnType } from './ColumnType';
 import { StatisticColumn } from './StatisticColumn';
 

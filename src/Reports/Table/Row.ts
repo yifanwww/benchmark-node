@@ -1,7 +1,9 @@
 import { renderData } from '../../Tools/renderData';
-import { ColumnInfo } from './ColumnInfo';
-import { TableProps } from './TableProps';
+
 import { ColumnAlign } from './types';
+
+import type { ColumnInfo } from './ColumnInfo';
+import type { TableProps } from './TableProps';
 
 export class Row {
     protected declare readonly _props: TableProps;

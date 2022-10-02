@@ -1,5 +1,5 @@
 import type { TestFn } from '../types';
-import { Hrtime, Optional } from '../types.internal';
+import type { Hrtime, Optional } from '../types.internal';
 
 enum TesterContextEnum {
     TestFn = 'testFn',

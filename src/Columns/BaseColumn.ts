@@ -1,5 +1,5 @@
-import { Statistics } from '../Data';
-import { ColumnType } from './ColumnType';
+import type { Statistics } from '../Data';
+import type { ColumnType } from './ColumnType';
 
 export type GetData<T> = (stats: Statistics) => T;
 

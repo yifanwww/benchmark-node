@@ -1,5 +1,6 @@
-import { renderData } from '../../Tools/renderData';
 import { UnitType } from '../../Tools/UnitType';
+import { renderData } from '../../Tools/renderData';
+
 import { Row } from './Row';
 
 export class Header extends Row {

@@ -3,6 +3,7 @@ import { UnitType } from '../../../Tools/UnitType';
 import { createColumnInfo } from '../ColumnInfo';
 import { Row } from '../Row';
 import { ColumnAlign } from '../types';
+
 import { createColumnInfos } from './utils';
 
 describe(`Test class \`${Row.name}\``, () => {

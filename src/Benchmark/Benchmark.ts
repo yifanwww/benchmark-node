@@ -1,11 +1,14 @@
-import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
-import { ArgumentStore, ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
+import { ArgumentStore, ArgumentStoreView } from '../ParameterizationStore';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
-import { Optional } from '../types.internal';
+
 import { BenchmarkTask } from './BenchmarkTask';
-import { BenchmarkContext } from './Context';
+
+import type { Settings } from '../Data';
+import type { ParameterStoreView } from '../ParameterizationStore';
+import type { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
+import type { Optional } from '../types.internal';
+import type { BenchmarkContext } from './Context';
 
 interface ConstructorArgs<T extends TestFn> {
     name?: string;

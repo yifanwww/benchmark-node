@@ -1,8 +1,9 @@
 import { ConfidenceInterval, ConfidenceLevel, Mathematics } from '../Mathematics';
-import { Arguments } from '../Parameterization';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { Nanosecond } from '../types';
-import { Optional } from '../types.internal';
+
+import type { Arguments } from '../Parameterization';
+import type { Nanosecond } from '../types';
+import type { Optional } from '../types.internal';
 
 /**
  * Class for stats including mean, margin or error, and standard deviation.

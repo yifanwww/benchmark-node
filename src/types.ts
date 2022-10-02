@@ -1,5 +1,5 @@
-import { Arguments } from './Parameterization';
-import { UnknownFn } from './types.internal';
+import type { Arguments } from './Parameterization';
+import type { UnknownFn } from './types.internal';
 
 /* ----- Types ----- */
 
