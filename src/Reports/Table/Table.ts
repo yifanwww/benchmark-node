@@ -4,10 +4,9 @@ import { UnitType } from '../../Tools/UnitType';
 import { chooseFractionDigit } from '../../Tools/chooseFractionDigit';
 import { renderData } from '../../Tools/renderData';
 
+import type { ColumnInfo } from './ColumnInfo';
 import { Header } from './Header';
 import { Row } from './Row';
-
-import type { ColumnInfo } from './ColumnInfo';
 import type { TableProps } from './TableProps';
 import type { RowID } from './types';
 

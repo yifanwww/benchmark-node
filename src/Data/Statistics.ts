@@ -1,7 +1,6 @@
 import { ConfidenceInterval, ConfidenceLevel, Mathematics } from '../Mathematics';
-import { ConsoleLogger } from '../Tools/ConsoleLogger';
-
 import type { Arguments } from '../Parameterization';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { Nanosecond } from '../types';
 import type { Optional } from '../types.internal';
 

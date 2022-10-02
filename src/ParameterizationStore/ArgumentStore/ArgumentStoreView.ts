@@ -1,5 +1,6 @@
 import type { Arguments } from '../../Parameterization';
 import type { Optional } from '../../types.internal';
+
 import type { ArgumentStore } from './ArgumentStore';
 
 const NO_ARGUMENT_INDEX = -1;

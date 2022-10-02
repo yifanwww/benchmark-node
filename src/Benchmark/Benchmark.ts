@@ -1,13 +1,12 @@
+import type { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
 import { ArgumentStore, ArgumentStoreView } from '../ParameterizationStore';
-import { ConsoleLogger } from '../Tools/ConsoleLogger';
-
-import { BenchmarkTask } from './BenchmarkTask';
-
-import type { Settings } from '../Data';
 import type { ParameterStoreView } from '../ParameterizationStore';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { BenchmarkingSettings, BenchmarkTestFnOptions, TestFn } from '../types';
 import type { Optional } from '../types.internal';
+
+import { BenchmarkTask } from './BenchmarkTask';
 import type { BenchmarkContext } from './Context';
 
 interface ConstructorArgs<T extends TestFn> {

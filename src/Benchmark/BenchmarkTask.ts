@@ -1,12 +1,12 @@
-import { RuntimeInfo } from '../RuntimeInfo';
-import { CodeGen } from '../Tools/CodeGen';
-import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { Formatter } from '../Tools/Formatter';
-
 import type { Settings, Statistics } from '../Data';
 import type { ArgumentStoreView, ParameterStoreView } from '../ParameterizationStore';
+import { RuntimeInfo } from '../RuntimeInfo';
+import { CodeGen } from '../Tools/CodeGen';
 import type { Tester } from '../Tools/CodeGen';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { Formatter } from '../Tools/Formatter';
 import type { Optional } from '../types.internal';
+
 import type { BenchmarkContext } from './Context';
 
 export class BenchmarkTask {

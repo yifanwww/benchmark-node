@@ -1,12 +1,11 @@
 import { ArgumentColumn, BaseColumn, Column, ColumnType, ParameterColumn } from '../Columns';
+import type { StatisticColumn } from '../Columns';
+import type { Statistics } from '../Data';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import { TimeUnitHelper } from '../Tools/TimeUnit';
 import { UnitType } from '../Tools/UnitType';
 
 import { ColumnAlign, createColumnInfo, Table } from './Table';
-
-import type { StatisticColumn } from '../Columns';
-import type { Statistics } from '../Data';
 
 export interface SummaryTableOptions {
     argLen: number;

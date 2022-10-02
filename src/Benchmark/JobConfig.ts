@@ -1,6 +1,6 @@
-import { BenchmarkRunner } from './BenchmarkRunner';
-
 import type { AnyFn, Optional } from '../types.internal';
+
+import { BenchmarkRunner } from './BenchmarkRunner';
 import type { BenchmarkTask } from './BenchmarkTask';
 
 export class JobConfig {

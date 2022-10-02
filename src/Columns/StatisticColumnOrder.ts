@@ -1,6 +1,6 @@
-import { Column } from './Column';
-
 import type { LooseArray } from '../types';
+
+import { Column } from './Column';
 import type { StatisticColumn } from './StatisticColumn';
 
 export class StatisticColumnOrder {

@@ -138,7 +138,7 @@
         "import/order": [
             "error",
             {
-                "groups": [["builtin", "external"], "internal", "parent", "sibling", "type"],
+                "groups": [["builtin", "external"], "internal", "parent", "sibling"],
                 "alphabetize": { "order": "asc" },
                 "newlines-between": "always"
             }

@@ -1,11 +1,11 @@
 import { Statistics } from '../Data';
-import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import { Time } from '../Tools/TimeTool';
-
 import type { Arguments } from '../Parameterization';
 import type { TesterContext } from '../Tools/CodeGen';
+import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import { Time } from '../Tools/TimeTool';
 import type { Nanosecond } from '../types';
 import type { Optional } from '../types.internal';
+
 import type { BenchmarkTask } from './BenchmarkTask';
 
 enum Stage {

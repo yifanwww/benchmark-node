@@ -1,10 +1,9 @@
 import os from 'os';
 
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
+import type { Optional } from '../types.internal';
 
 import { CpuInfo } from './CpuInfo';
-
-import type { Optional } from '../types.internal';
 
 export class RuntimeInfo {
     static readonly version = '0.7.2';

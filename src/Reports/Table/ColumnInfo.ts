@@ -1,4 +1,5 @@
 import type { UnitType } from '../../Tools/UnitType';
+
 import type { ColumnAlign } from './types';
 
 export interface ColumnInfo {

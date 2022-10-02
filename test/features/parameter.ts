@@ -1,8 +1,7 @@
 import crypto from 'crypto';
+import type { BinaryToTextEncoding } from 'crypto';
 
 import { Arguments, BenchmarkJob, Params } from '../../src';
-
-import type { BinaryToTextEncoding } from 'crypto';
 
 let testStr: Buffer;
 
