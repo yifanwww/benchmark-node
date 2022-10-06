@@ -1,5 +1,5 @@
-import { UnitType } from '../../Tools/UnitType';
 import { renderData } from '../../Tools/renderData';
+import { UnitType } from '../../Tools/UnitType';
 
 import { Row } from './Row';
 

@@ -1,6 +1,6 @@
+import { renderData } from '../renderData';
 import { TimeUnit } from '../TimeUnit';
 import { UnitType } from '../UnitType';
-import { renderData } from '../renderData';
 
 describe(`Test class \`${renderData.name}\``, () => {
     it('renders dimensionless', () => {

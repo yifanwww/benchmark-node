@@ -1,7 +1,7 @@
-import { Column } from '../../Columns';
-import { Statistics } from '../../Data';
 import { mockConsoleLogger } from '../../__tests__/ConsoleLoggerTestTool';
 import { constantsTestTool } from '../../__tests__/constantsTestTool';
+import { Column } from '../../Columns';
+import { Statistics } from '../../Data';
 import { SummaryTable } from '../SummaryTable';
 
 describe(`Test class \`${SummaryTable.name}\``, () => {

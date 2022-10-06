@@ -1,8 +1,8 @@
+import { chooseFractionDigit } from '../../Tools/chooseFractionDigit';
+import { renderData } from '../../Tools/renderData';
 import { TimeTool } from '../../Tools/TimeTool';
 import { TimeUnit, TimeUnitHelper } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
-import { chooseFractionDigit } from '../../Tools/chooseFractionDigit';
-import { renderData } from '../../Tools/renderData';
 
 import type { ColumnInfo } from './ColumnInfo';
 import { Header } from './Header';

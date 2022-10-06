@@ -139,7 +139,10 @@
             "error",
             {
                 "groups": [["builtin", "external"], "internal", "parent", "sibling"],
-                "alphabetize": { "order": "asc" },
+                "alphabetize": {
+                    "caseInsensitive": true,
+                    "order": "asc"
+                },
                 "newlines-between": "always"
             }
         ],
