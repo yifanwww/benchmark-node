@@ -2,7 +2,7 @@ import type { BenchmarkingSettings } from '../../types';
 import { Settings } from '../Settings';
 
 describe(`Test class \`${Settings.name}\``, () => {
-    it('creates an instance with default settings', () => {
+    it('should create an instance with default settings', () => {
         const settings = Settings.from({});
 
         expect(settings.delay).toBe(Settings.DefaultValue.delay);
@@ -12,7 +12,7 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.warmupCount).toBe(Settings.DefaultValue.warmupCount);
     });
 
-    it('creates an instance with custom settings', () => {
+    it('should create an instance with custom settings', () => {
         const settings = Settings.from({
             delay: 2,
             initOps: 100,
@@ -28,7 +28,7 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.warmupCount).toBe(8);
     });
 
-    it('creates an instance invalid custom settings', () => {
+    it('should create an instance invalid custom settings', () => {
         const settings = Settings.from({
             delay: -1,
             initOps: -1,
@@ -43,8 +43,10 @@ describe(`Test class \`${Settings.name}\``, () => {
         expect(settings.minMeasurementTime).toBe(1_000_000);
         expect(settings.warmupCount).toBe(1);
     });
+});
 
-    it(`calls method ${Settings.prototype.merge.name}`, () => {
+describe(`Test class method \`${Settings.name}.${Settings.prototype.merge.name}\``, () => {
+    it('should merge two settings', () => {
         const isettings1: BenchmarkingSettings = {
             delay: 2,
             initOps: 100,

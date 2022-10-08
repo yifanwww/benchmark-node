@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test class \`Statistics\` calculates 1`] = `
+exports[`Test class \`Statistics\` should calculate the statistics 1`] = `
 Statistics {
   "_args": undefined,
   "_ci": ConfidenceInterval {
@@ -28,21 +28,21 @@ Statistics {
 }
 `;
 
-exports[`Test class \`Statistics\` calculates 2`] = `"name"`;
+exports[`Test class \`Statistics\` should calculate the statistics 2`] = `"name"`;
 
-exports[`Test class \`Statistics\` calculates 3`] = `undefined`;
+exports[`Test class \`Statistics\` should calculate the statistics 3`] = `undefined`;
 
-exports[`Test class \`Statistics\` calculates 4`] = `15`;
+exports[`Test class \`Statistics\` should calculate the statistics 4`] = `15`;
 
-exports[`Test class \`Statistics\` calculates 5`] = `0.2401317843771328`;
+exports[`Test class \`Statistics\` should calculate the statistics 5`] = `0.2401317843771328`;
 
-exports[`Test class \`Statistics\` calculates 6`] = `0.00004636426559949729`;
+exports[`Test class \`Statistics\` should calculate the statistics 6`] = `0.00004636426559949729`;
 
-exports[`Test class \`Statistics\` calculates 7`] = `0.006809131045845519`;
+exports[`Test class \`Statistics\` should calculate the statistics 7`] = `0.006809131045845519`;
 
-exports[`Test class \`Statistics\` calculates 8`] = `0.001758110076180239`;
+exports[`Test class \`Statistics\` should calculate the statistics 8`] = `0.001758110076180239`;
 
-exports[`Test class \`Statistics\` calculates 9`] = `
+exports[`Test class \`Statistics\` should calculate the statistics 9`] = `
 ConfidenceInterval {
   "_degreeOfFreedom": 14,
   "_level": 0.95,
@@ -53,14 +53,14 @@ ConfidenceInterval {
 }
 `;
 
-exports[`Test class \`Statistics\` calculates 10`] = `0.2340324196453845`;
+exports[`Test class \`Statistics\` should calculate the statistics 10`] = `0.2340324196453845`;
 
-exports[`Test class \`Statistics\` calculates 11`] = `0.2363961562926153`;
+exports[`Test class \`Statistics\` should calculate the statistics 11`] = `0.2363961562926153`;
 
-exports[`Test class \`Statistics\` calculates 12`] = `0.23899117417373134`;
+exports[`Test class \`Statistics\` should calculate the statistics 12`] = `0.23899117417373134`;
 
-exports[`Test class \`Statistics\` calculates 13`] = `0.24283454489217907`;
+exports[`Test class \`Statistics\` should calculate the statistics 13`] = `0.24283454489217907`;
 
-exports[`Test class \`Statistics\` calculates 14`] = `0.26205564217678246`;
+exports[`Test class \`Statistics\` should calculate the statistics 14`] = `0.26205564217678246`;
 
-exports[`Test class \`Statistics\` calculates 15`] = `4164379999.0653286`;
+exports[`Test class \`Statistics\` should calculate the statistics 15`] = `4164379999.0653286`;

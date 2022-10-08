@@ -20,12 +20,19 @@ const TimeUnitDescription = {
 };
 
 export class TimeUnitHelper {
-    static getUnitStr = (unit: TimeUnit) => TimeUnitStr[unit];
+    static getUnitStr(unit: TimeUnit) {
+        return TimeUnitStr[unit];
+    }
 
-    static getUnitDescription = (unit: TimeUnit) => TimeUnitDescription[unit];
+    static getUnitDescription(unit: TimeUnit) {
+        return TimeUnitDescription[unit];
+    }
 
-    static getFullDescription = (unit: TimeUnit, maxHeaderLen: number) =>
-        `1 ${TimeUnitHelper.getUnitStr(unit).padEnd(maxHeaderLen - 2)}: ${TimeUnitHelper.getUnitDescription(unit)}`;
+    static getFullDescription(unit: TimeUnit, maxHeaderLen: number) {
+        const unitStr = TimeUnitHelper.getUnitStr(unit).padEnd(maxHeaderLen - 2);
+        const unitDesc = TimeUnitHelper.getUnitDescription(unit);
+        return `1 ${unitStr}: ${unitDesc}`;
+    }
 
     static chooseUnit(time: number): TimeUnit {
         if (time <= 1e3) {

@@ -5,8 +5,8 @@ import type { UnknownFn } from '../types.internal';
 
 import { FunctionInfo } from './FunctionInfo';
 
-describe(`Test class \`${FunctionInfo.name}\``, () => {
-    it('gets the function name', () => {
+describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getFunctionName.name}\``, () => {
+    it('should get the function name', () => {
         expect(FunctionInfo.getFunctionName(function fn() {})).toBe('fn');
         expect(FunctionInfo.getFunctionName(function () {})).toBe(FunctionInfo.ANONYMOUS_NAME);
         expect(FunctionInfo.getFunctionName(() => {})).toBe(FunctionInfo.ANONYMOUS_NAME);
@@ -26,8 +26,10 @@ describe(`Test class \`${FunctionInfo.name}\``, () => {
             expect(FunctionInfo.getFunctionName(fn)).toBe('fn');
         }
     });
+});
 
-    it('gets the function parameter names', () => {
+describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getParameterNames.name}\``, () => {
+    it('should get the function parameter names', () => {
         function _test<T extends UnknownFn>(fn: T, expected: string[]) {
             expect(FunctionInfo.getParameterNames(fn)).toStrictEqual(expected);
         }
@@ -85,7 +87,7 @@ describe(`Test class \`${FunctionInfo.name}\``, () => {
         );
     });
 
-    it('throws an error if cannot parse the parameter names', () => {
+    it('shoule throw an error if cannot parse the parameter names', () => {
         expect(() => FunctionInfo.getParameterNames('' as never)).toThrowError();
     });
 });

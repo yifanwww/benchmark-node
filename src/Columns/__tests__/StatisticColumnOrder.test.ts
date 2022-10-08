@@ -2,12 +2,12 @@ import { Column } from '../Column';
 import { StatisticColumnOrder } from '../StatisticColumnOrder';
 
 describe(`Test class \`${StatisticColumnOrder.name}\``, () => {
-    it('gets default statistic column order', () => {
+    it('should get default statistic column order', () => {
         const order = new StatisticColumnOrder();
         expect(order.getOrder()).toStrictEqual([Column.Mean, Column.Error, Column.StdDev]);
     });
 
-    it('changes statistic column order', () => {
+    it('should change statistic column order', () => {
         const order = new StatisticColumnOrder();
         order.addOrder(Column.Min);
         order.addOrder([Column.Median, Column.Min, Column.Max]);

@@ -2,7 +2,7 @@ import { constantsTestTool } from '../../__tests__/constantsTestTool';
 import { Statistics } from '../Statistics';
 
 describe(`Test class \`${Statistics.name}\``, () => {
-    it('calculates', () => {
+    it('should calculate the statistics', () => {
         const stats = new Statistics('name', constantsTestTool.measurements.slice(), constantsTestTool.ops, null);
 
         expect(stats).toMatchSnapshot();

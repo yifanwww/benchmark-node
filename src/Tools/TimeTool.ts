@@ -8,9 +8,13 @@ export class TimeTool {
         return time * 1e3 ** (from - to);
     }
 
-    static ms2ns = (ms: Millisecond): Nanosecond => TimeTool.convert(ms, TimeUnit.MS, TimeUnit.NS);
+    static ms2ns(ms: Millisecond): Nanosecond {
+        return TimeTool.convert(ms, TimeUnit.MS, TimeUnit.NS);
+    }
 
-    static hrtime2ns = (hrtime: Hrtime): Nanosecond => hrtime[0] * 1e9 + hrtime[1];
+    static hrtime2ns(hrtime: Hrtime): Nanosecond {
+        return hrtime[0] * 1e9 + hrtime[1];
+    }
 
     static sleep(ns: Nanosecond): void {
         const begin = process.hrtime();

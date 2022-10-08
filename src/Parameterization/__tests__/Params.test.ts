@@ -14,7 +14,7 @@ describe(`Test class \`${Params.name}\``, () => {
         _test({ n: 10, m: 100 }, { n: 100, m: 100 }, { n: 200, m: 500 });
     });
 
-    it('throws error if no values', () => {
+    it('shoule throw error if no values', () => {
         expect(() => new Params()).toThrowError();
     });
 });

@@ -39,7 +39,9 @@ export interface CodeGenOptions {
 export class CodeGen {
     private static cgid: number = 0;
 
-    static createTester = (options: CodeGenOptions) => new CodeGen(options).createTester();
+    static createTester(options: CodeGenOptions) {
+        return new CodeGen(options).createTester();
+    }
 
     private declare readonly id: string;
 
@@ -82,7 +84,9 @@ export class CodeGen {
         return `testFn#(${code.join(', ')})`;
     }
 
-    private interpolate = (str: string) => str.replace(/#/g, this.id);
+    private interpolate(str: string) {
+        return str.replace(/#/g, this.id);
+    }
 
     private removeEmptyLines(str: string) {
         return str

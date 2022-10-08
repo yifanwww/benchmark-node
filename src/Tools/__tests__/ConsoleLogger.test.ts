@@ -8,19 +8,19 @@ describe(`Test class \`${ConsoleLogger.name}\``, () => {
         expect(ConsoleLogger.default.write('Hello world'));
     });
 
-    it('calls method writeHeader', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeHeader.name}`, () => {
         expect(ConsoleLogger.default.writeHeader('Hello world'));
     });
 
-    it('calls method writeStatistic', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeStatistic.name}`, () => {
         expect(ConsoleLogger.default.writeStatistic('Hello world'));
     });
 
-    it('calls method writeInfo', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeInfo.name}`, () => {
         expect(ConsoleLogger.default.writeInfo('Hello world'));
     });
 
-    it('calls method writeError', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeError.name}`, () => {
         expect(ConsoleLogger.default.writeError('Hello world'));
     });
 
@@ -29,19 +29,19 @@ describe(`Test class \`${ConsoleLogger.name}\``, () => {
         expect(ConsoleLogger.default.writeLine('Hello world'));
     });
 
-    it('calls method writeLineHeader', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeLineHeader.name}`, () => {
         expect(ConsoleLogger.default.writeLineHeader('Hello world'));
     });
 
-    it('calls method writeLineStatistic', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeLineStatistic.name}`, () => {
         expect(ConsoleLogger.default.writeLineStatistic('Hello world'));
     });
 
-    it('calls method writeLineInfo', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeLineInfo.name}`, () => {
         expect(ConsoleLogger.default.writeLineInfo('Hello world'));
     });
 
-    it('calls method writeLineError', () => {
+    it(`calls method ${ConsoleLogger.prototype.writeLineError.name}`, () => {
         expect(ConsoleLogger.default.writeLineError('Hello world'));
     });
 });
