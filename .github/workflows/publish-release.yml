@@ -19,9 +19,9 @@ jobs:
           version: 7
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'pnpm'
           registry-url: https://registry.npmjs.org/
 
