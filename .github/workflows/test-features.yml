@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node: ['8.3.0', '9', '10', '12', '14', '16']
+        node: ['8.3.0', 9, 10, 12, 14, 16]
 
     runs-on: ${{ matrix.os }}
 
@@ -30,9 +30,9 @@ jobs:
           version: 7
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
           cache: 'pnpm'
           registry-url: 'https://registry.npmjs.org'
 
@@ -43,7 +43,7 @@ jobs:
         run: pnpm run build-test
 
       - name: Setup Node.js environment for test
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
@@ -69,6 +69,6 @@ jobs:
         run: node dist/test/features/validation.js
 
       - name: Restore Node.js environment
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
