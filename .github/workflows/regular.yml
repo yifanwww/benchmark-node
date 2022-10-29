@@ -1,4 +1,4 @@
-name: Build Lint Test
+name: Regular Workflows
 
 on:
   push:
@@ -106,3 +106,35 @@ jobs:
 
       - name: Do coverage test
         run: pnpm run test-full
+
+  typecheck:
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PNPM environment
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Do type check
+        run: pnpm run typecheck

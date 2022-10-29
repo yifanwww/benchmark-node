@@ -30,7 +30,7 @@
         "prepare": "husky install",
         "test": "node scripts/unit-test.js --color",
         "test-full": "node scripts/unit-test.js --color",
-        "typecheck": "tsc --project tsconfig.json"
+        "typecheck": "tsc --project tsconfig.json --noEmit"
     },
     "engines": {
         "node": ">=8.3.0"
