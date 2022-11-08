@@ -6,7 +6,7 @@ import type { Optional } from '../types.internal';
 import { CpuInfo } from './CpuInfo';
 
 export class RuntimeInfo {
-    static readonly version = '0.7.2';
+    static readonly version = '0.8.0-next.0';
 
     static readonly node = process.versions.node;
     static readonly v8 = process.versions.v8;
