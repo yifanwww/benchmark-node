@@ -5,6 +5,7 @@ import { FunctionInfo } from '../Function';
 import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
+import type { Report } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { BenchmarkingSettings, TestFn } from '../types';
@@ -37,6 +38,8 @@ export class BenchmarkJob extends JobConfig {
 
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
+    private declare readonly _reports: Report<unknown>[];
+
     constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
 
@@ -52,6 +55,8 @@ export class BenchmarkJob extends JobConfig {
         const { columns, ...settings } = options ?? {};
 
         this._settings = Settings.from(settings);
+
+        this._reports = [];
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
@@ -132,6 +137,11 @@ export class BenchmarkJob extends JobConfig {
         return this;
     }
 
+    addReport(report: Report<unknown>): this {
+        this._reports.push(report);
+        return this;
+    }
+
     private benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
@@ -169,17 +179,31 @@ export class BenchmarkJob extends JobConfig {
 
         RuntimeInfo.log();
 
-        const table = new SummaryTable({
+        const table = new SummaryTable();
+        table.temporary_generate({
             argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
+            columns: this._statsColumnOrder.getOrder(),
             paramNames: this._paramStore?.names ?? [],
+            statsGroups: tasks.map((task) => task.stats),
         });
+        logger.writeLineStatistic(table.report!);
 
-        table.addStatisticColumns(this._statsColumnOrder.getOrder());
-        for (const task of tasks) {
-            table.addStats(task.stats);
+        // generate reports
+
+        for (const report of this._reports) {
+            if (report instanceof SummaryTable) {
+                // won't check the instance type once finishing `generate` design
+
+                report.temporary_generate({
+                    argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
+                    columns: this._statsColumnOrder.getOrder(),
+                    paramNames: this._paramStore?.names ?? [],
+                    statsGroups: tasks.map((task) => task.stats),
+                });
+            } else {
+                report.generate();
+            }
         }
-        table.draw();
-        table.drawDescription();
     }
 
     /**
