@@ -9,14 +9,14 @@ import type { Optional } from '../types.internal';
 import type { BenchmarkTask } from './BenchmarkTask';
 
 enum Stage {
-    ActualOverhead /*  */ = 'OverheadActual  ',
-    ActualWorkload /*  */ = 'WorkloadActual  ',
-    JittingOverhead /* */ = 'OverheadJitting ',
-    JittingWorkload /* */ = 'WorkloadJitting ',
-    WarmupOverhead /*  */ = 'OverheadWarmup  ',
-    WarmupWorkload /*  */ = 'WorkloadWarmup  ',
-    WorkloadPilot /*   */ = 'WorkloadPilot   ',
-    WorkloadResult /*  */ = 'WorkloadResult  ',
+    ACTUAL_OVERHEAD /*  */ = 'OverheadActual  ',
+    ACTUAL_WORKLOAD /*  */ = 'WorkloadActual  ',
+    JITTING_OVERHEAD /* */ = 'OverheadJitting ',
+    JITTING_WORKLOAD /* */ = 'WorkloadJitting ',
+    WARMUP_OVERHEAD /*  */ = 'OverheadWarmup  ',
+    WARMUP_WORKLOAD /*  */ = 'WorkloadWarmup  ',
+    WORKLOAD_PILOT /*   */ = 'WorkloadPilot   ',
+    WORKLOAD_RESULT /*  */ = 'WorkloadResult  ',
 }
 
 export class BenchmarkRunner {
@@ -53,7 +53,7 @@ export class BenchmarkRunner {
 
         const elapsed = used / ops;
 
-        this.logOpsData(workload ? Stage.JittingWorkload : Stage.JittingOverhead, order, ops, used, elapsed);
+        this.logOpsData(workload ? Stage.JITTING_WORKLOAD : Stage.JITTING_OVERHEAD, order, ops, used, elapsed);
     }
 
     private benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments, void>): void {
@@ -82,7 +82,7 @@ export class BenchmarkRunner {
 
             const elapsed = used / testerContext.ops;
 
-            this.logOpsData(Stage.WorkloadPilot, index, testerContext.ops, used, elapsed);
+            this.logOpsData(Stage.WORKLOAD_PILOT, index, testerContext.ops, used, elapsed);
 
             // Calculate how many more iterations it will take to achieve the `minTime`.
             // After stage Pilot, we should get a good count number.
@@ -113,7 +113,7 @@ export class BenchmarkRunner {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
             const elapsed = used / ops;
 
-            this.logOpsData(workload ? Stage.WarmupWorkload : Stage.WarmupOverhead, index, ops, used, elapsed);
+            this.logOpsData(workload ? Stage.WARMUP_WORKLOAD : Stage.WARMUP_OVERHEAD, index, ops, used, elapsed);
 
             Time.sleep(this._current!.settings.delay);
         }
@@ -135,7 +135,7 @@ export class BenchmarkRunner {
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ActualOverhead, index, ops, used, used / ops);
+            this.logOpsData(Stage.ACTUAL_OVERHEAD, index, ops, used, used / ops);
 
             total += used;
 
@@ -159,7 +159,7 @@ export class BenchmarkRunner {
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ActualWorkload, index, ops, used, used / ops);
+            this.logOpsData(Stage.ACTUAL_WORKLOAD, index, ops, used, used / ops);
 
             measurements.push(used);
 
@@ -170,7 +170,7 @@ export class BenchmarkRunner {
     private benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
         for (let i = 0; i < measurements.length; i++) {
             measurements[i] = Math.max(measurements[i] - overhead, 0);
-            this.logOpsData(Stage.WorkloadResult, i + 1, ops, measurements[i], measurements[i] / ops);
+            this.logOpsData(Stage.WORKLOAD_RESULT, i + 1, ops, measurements[i], measurements[i] / ops);
         }
     }
 

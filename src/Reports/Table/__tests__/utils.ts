@@ -5,15 +5,15 @@ import { ColumnAlign } from '../types';
 
 export function createColumnInfos() {
     const infos: ColumnInfo[] = [
-        createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
-        createColumnInfo(ColumnAlign.MEDIUM, UnitType.Dimensionless),
-        createColumnInfo(ColumnAlign.LEFT, UnitType.Time),
-        createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
-        createColumnInfo(ColumnAlign.MEDIUM, UnitType.Dimensionless),
-        createColumnInfo(ColumnAlign.LEFT, UnitType.Time),
-        createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
-        createColumnInfo(ColumnAlign.MEDIUM, UnitType.Dimensionless),
-        createColumnInfo(ColumnAlign.LEFT, UnitType.Time),
+        createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
+        createColumnInfo(ColumnAlign.MEDIUM, UnitType.DIMENSIONLESS),
+        createColumnInfo(ColumnAlign.LEFT, UnitType.TIME),
+        createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
+        createColumnInfo(ColumnAlign.MEDIUM, UnitType.DIMENSIONLESS),
+        createColumnInfo(ColumnAlign.LEFT, UnitType.TIME),
+        createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
+        createColumnInfo(ColumnAlign.MEDIUM, UnitType.DIMENSIONLESS),
+        createColumnInfo(ColumnAlign.LEFT, UnitType.TIME),
     ];
 
     infos[1].fractionDigit = 3;

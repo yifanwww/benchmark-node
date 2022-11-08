@@ -25,9 +25,9 @@ describe(`Test class \`${Row.name}\``, () => {
         );
 
         infos.push(
-            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
-            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
-            createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
+            createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN),
         );
         row.expand(12);
         expect(row.render()).toBe(

@@ -8,20 +8,20 @@ function getColumnType(level: ConfidenceLevel): ColumnType {
     let never: never;
     // prettier-ignore
     switch (level) {
-        case ConfidenceLevel.L50: return ColumnType.CIErrorL50
-        case ConfidenceLevel.L70: return ColumnType.CIErrorL70
-        case ConfidenceLevel.L75: return ColumnType.CIErrorL75
-        case ConfidenceLevel.L80: return ColumnType.CIErrorL80
-        case ConfidenceLevel.L85: return ColumnType.CIErrorL85
-        case ConfidenceLevel.L90: return ColumnType.CIErrorL90
-        case ConfidenceLevel.L92: return ColumnType.CIErrorL92
-        case ConfidenceLevel.L95: return ColumnType.CIErrorL95
-        case ConfidenceLevel.L96: return ColumnType.CIErrorL96
-        case ConfidenceLevel.L97: return ColumnType.CIErrorL97
-        case ConfidenceLevel.L98: return ColumnType.CIErrorL98
-        case ConfidenceLevel.L99: return ColumnType.CIErrorL99
-        case ConfidenceLevel.L999: return ColumnType.CIErrorL999
-        case ConfidenceLevel.L9999: return ColumnType.CIErrorL9999
+        case ConfidenceLevel.L50: return ColumnType.CI_ERROR_L50
+        case ConfidenceLevel.L70: return ColumnType.CI_ERROR_L70
+        case ConfidenceLevel.L75: return ColumnType.CI_ERROR_L75
+        case ConfidenceLevel.L80: return ColumnType.CI_ERROR_L80
+        case ConfidenceLevel.L85: return ColumnType.CI_ERROR_L85
+        case ConfidenceLevel.L90: return ColumnType.CI_ERROR_L90
+        case ConfidenceLevel.L92: return ColumnType.CI_ERROR_L92
+        case ConfidenceLevel.L95: return ColumnType.CI_ERROR_L95
+        case ConfidenceLevel.L96: return ColumnType.CI_ERROR_L96
+        case ConfidenceLevel.L97: return ColumnType.CI_ERROR_L97
+        case ConfidenceLevel.L98: return ColumnType.CI_ERROR_L98
+        case ConfidenceLevel.L99: return ColumnType.CI_ERROR_L99
+        case ConfidenceLevel.L999: return ColumnType.CI_ERROR_L999
+        case ConfidenceLevel.L9999: return ColumnType.CI_ERROR_L9999
 
         default:
             never = level;
@@ -31,43 +31,43 @@ function getColumnType(level: ConfidenceLevel): ColumnType {
 
 export class Column {
     static readonly Mean = new StatisticColumn(
-        ColumnType.Mean,
+        ColumnType.MEAN,
         'Mean',
         'Arithmetic mean of all measurements',
         (stats) => stats.mean,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Error = new StatisticColumn(
-        ColumnType.Error,
+        ColumnType.ERROR,
         'Error',
         'Half of 95% confidence interval',
         (stats) => stats.confidenceInterval.margin,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly StdDev = new StatisticColumn(
-        ColumnType.StdDev,
+        ColumnType.STD_DEV,
         'StdDev',
         'Standard deviation of all measurements',
         (stats) => stats.standardDeviation,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly StdErr = new StatisticColumn(
-        ColumnType.StdErr,
+        ColumnType.STD_ERR,
         'StdErr',
         'Standard error of all measurements',
         (stats) => stats.standardError,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Min = new StatisticColumn(
-        ColumnType.Min,
+        ColumnType.MIN,
         'Min',
         'Minimum measurement',
         (stats) => stats.min,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Q1 = new StatisticColumn(
@@ -75,15 +75,15 @@ export class Column {
         'Q1',
         'Quartile 1 (25th percentile)',
         (statss) => statss.q1,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Median = new StatisticColumn(
-        ColumnType.Median,
+        ColumnType.MEDIAN,
         'Median',
         'Value separating the higher half of all measurements (50th percentile)',
         (statss) => statss.median,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Q3 = new StatisticColumn(
@@ -91,23 +91,23 @@ export class Column {
         'Q3',
         'Quartile 3 (75th percentile)',
         (stats) => stats.q3,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Max = new StatisticColumn(
-        ColumnType.Max,
+        ColumnType.MAX,
         'Max',
         'Maximum measurement',
         (stats) => stats.max,
-        UnitType.Time,
+        UnitType.TIME,
     );
 
     static readonly Ops = new StatisticColumn(
-        ColumnType.Ops,
+        ColumnType.OPS,
         'Op/s',
         'Operations per second',
         (stats) => stats.ops,
-        UnitType.Dimensionless,
+        UnitType.DIMENSIONLESS,
     );
 
     static CIError(level: ConfidenceLevel = ConfidenceLevel.L95) {
@@ -116,15 +116,15 @@ export class Column {
             `CI${level * 100}% Margin`,
             `Half of ${level * 100}% confidence interval`,
             (stats) => new ConfidenceInterval(stats.n, stats.mean, stats.standardError, level).margin,
-            UnitType.Time,
+            UnitType.TIME,
         );
     }
 
     static readonly Iterations = new StatisticColumn(
-        ColumnType.Iterations,
+        ColumnType.ITERATIONS,
         'Iterations',
         'Number of target benchmark iterations',
         (stats) => stats.n,
-        UnitType.DimensionlessInteger,
+        UnitType.DIMENSIONLESS_INTEGER,
     );
 }

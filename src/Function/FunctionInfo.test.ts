@@ -88,6 +88,6 @@ describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getPara
     });
 
     it('shoule throw an error if cannot parse the parameter names', () => {
-        expect(() => FunctionInfo.getParameterNames('' as never)).toThrowError();
+        expect(() => FunctionInfo.getParameterNames('' as never)).toThrow();
     });
 });

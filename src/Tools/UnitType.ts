@@ -1,8 +1,8 @@
 export enum UnitType {
     /** Dimensionless number. */
-    Dimensionless,
+    DIMENSIONLESS,
     /** Dimensionless integer. */
-    DimensionlessInteger,
-    Origin,
-    Time,
+    DIMENSIONLESS_INTEGER,
+    ORIGIN,
+    TIME,
 }

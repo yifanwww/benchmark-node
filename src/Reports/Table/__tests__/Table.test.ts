@@ -8,11 +8,11 @@ describe(`Test class \`${Table.name}\``, () => {
     function createTable() {
         const table = new Table();
 
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.TIME));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.TIME));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.TIME));
 
         table.setHeader(0, 'Function');
         table.setHeader(1, 'N');
@@ -114,7 +114,7 @@ describe(`Test class \`${Table.name}\``, () => {
         table.setCell([0, 0], 3, 1.23456);
         table.setCell([0, 0], 4, 12.3456);
 
-        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Time));
+        table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.TIME));
         table.setHeader(5, 'Max');
         table.setCell([0, 0], 5, 1234.56);
 

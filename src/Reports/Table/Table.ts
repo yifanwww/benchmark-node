@@ -118,9 +118,9 @@ export class Table {
 
         for (let i = 0; i < infos.length; i++) {
             const info = infos[i];
-            if (info.type === UnitType.Dimensionless || info.type === UnitType.Time) {
+            if (info.type === UnitType.DIMENSIONLESS || info.type === UnitType.TIME) {
                 let minNum = this.findMinNumber(i);
-                if (info.type === UnitType.Time) {
+                if (info.type === UnitType.TIME) {
                     minNum = TimeTool.convert(minNum, TimeUnit.NS, this._props.timeUnit);
                 }
                 info.fractionDigit = chooseFractionDigit(minNum);

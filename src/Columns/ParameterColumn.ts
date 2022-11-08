@@ -5,7 +5,7 @@ import { ColumnType } from './ColumnType';
 
 export class ParameterColumn extends BaseColumn<string> {
     constructor(title: string, index: number) {
-        super(ColumnType.Parameter, title, (stats) => {
+        super(ColumnType.PARAMETER, title, (stats) => {
             const param = stats.params![index];
 
             const typeofParam = typeof param;

@@ -2,27 +2,27 @@ import type { TestFn } from '../types';
 import type { Hrtime, Optional } from '../types.internal';
 
 enum TesterContextEnum {
-    TestFn = 'testFn',
+    TEST_FN = 'testFn',
 
-    Args = 'args',
-    RestArgs = 'restArgs',
-    Ops = 'ops',
-    Workload = 'workload',
+    ARGS = 'args',
+    REST_ARGS = 'restArgs',
+    OPS = 'ops',
+    WORKLOAD = 'workload',
 
-    Setup = 'setup',
-    Cleanup = 'cleanup',
+    SETUP = 'setup',
+    CLEANUP = 'cleanup',
 }
 
 export interface TesterContext {
-    [TesterContextEnum.TestFn]: TestFn;
+    [TesterContextEnum.TEST_FN]: TestFn;
 
-    [TesterContextEnum.Args]?: ReadonlyArray<unknown>;
-    [TesterContextEnum.RestArgs]?: ReadonlyArray<unknown>;
-    [TesterContextEnum.Ops]: number;
-    [TesterContextEnum.Workload]: boolean;
+    [TesterContextEnum.ARGS]?: ReadonlyArray<unknown>;
+    [TesterContextEnum.REST_ARGS]?: ReadonlyArray<unknown>;
+    [TesterContextEnum.OPS]: number;
+    [TesterContextEnum.WORKLOAD]: boolean;
 
-    [TesterContextEnum.Setup]: Optional<() => void>;
-    [TesterContextEnum.Cleanup]: Optional<() => void>;
+    [TesterContextEnum.SETUP]: Optional<() => void>;
+    [TesterContextEnum.CLEANUP]: Optional<() => void>;
 }
 
 export type Tester = (context: TesterContext) => { elapsed: Hrtime };
@@ -59,12 +59,12 @@ export class CodeGen {
 
         for (let i = 0; i < this.argument.count; i++) {
             // No need to check `context#.${TesterContextEnum.Args}` exists or not.
-            code.push(`const arg${i}_# = context#.${TesterContextEnum.Args}[${i}];`);
+            code.push(`const arg${i}_# = context#.${TesterContextEnum.ARGS}[${i}];`);
         }
 
         if (this.argument.rest) {
             // No need to check `context#.${TesterContextEnum.RestArgs}` exists or not.
-            code.push(`const restArg# = context#.${TesterContextEnum.RestArgs};`);
+            code.push(`const restArg# = context#.${TesterContextEnum.REST_ARGS};`);
         }
 
         return code.join('\n');
@@ -98,17 +98,17 @@ export class CodeGen {
     createTester(): Tester {
         const body = this.removeEmptyLines(
             `
-if (context#.${TesterContextEnum.Setup}) context#.${TesterContextEnum.Setup}();
+if (context#.${TesterContextEnum.SETUP}) context#.${TesterContextEnum.SETUP}();
 
-const testFn# = context#.${TesterContextEnum.TestFn};
-const workload# = context#.${TesterContextEnum.Workload};
+const testFn# = context#.${TesterContextEnum.TEST_FN};
+const workload# = context#.${TesterContextEnum.WORKLOAD};
 
 ${this.generatePickArguments()}
 
 let return#;
 
 const begin# = process.hrtime();
-for (let i# = 0; i# < context#.${TesterContextEnum.Ops}; i#++) {
+for (let i# = 0; i# < context#.${TesterContextEnum.OPS}; i#++) {
     if (workload#) {
         return# = ${this.generateTestFnCall()};
     } else {
@@ -117,7 +117,7 @@ for (let i# = 0; i# < context#.${TesterContextEnum.Ops}; i#++) {
 }
 const elapsed# = process.hrtime(begin#);
 
-if (context#.${TesterContextEnum.Cleanup}) context#.${TesterContextEnum.Cleanup}();
+if (context#.${TesterContextEnum.CLEANUP}) context#.${TesterContextEnum.CLEANUP}();
 
 return { elapsed: elapsed#, _internal_return: return# };
 `,

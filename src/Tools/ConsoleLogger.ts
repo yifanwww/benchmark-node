@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 
 export enum LogKind {
-    Default,
-    Header,
-    Statistic,
-    Info,
-    Error,
+    DEFAULT,
+    HEADER,
+    STATISTIC,
+    INFO,
+    ERROR,
 }
 
 type ColorScheme = {
@@ -23,11 +23,11 @@ export class ConsoleLogger {
 
     private createColorfulScheme(): ColorScheme {
         return {
-            [LogKind.Default]: chalk.white,
-            [LogKind.Header]: chalk.magentaBright,
-            [LogKind.Statistic]: chalk.cyanBright,
-            [LogKind.Info]: chalk.yellow,
-            [LogKind.Error]: chalk.red,
+            [LogKind.DEFAULT]: chalk.white,
+            [LogKind.HEADER]: chalk.magentaBright,
+            [LogKind.STATISTIC]: chalk.cyanBright,
+            [LogKind.INFO]: chalk.yellow,
+            [LogKind.ERROR]: chalk.red,
         };
     }
 
@@ -48,7 +48,7 @@ export class ConsoleLogger {
 
     write(...args: [string] | [LogKind, string]) {
         if (args.length === 1) {
-            this._write(LogKind.Default, this._writeImpl, args[0]);
+            this._write(LogKind.DEFAULT, this._writeImpl, args[0]);
         } else {
             this._write(args[0], this._writeImpl, args[1]);
         }
@@ -62,41 +62,41 @@ export class ConsoleLogger {
         if (args.length === 0) {
             this._writeLineImpl();
         } else if (args.length === 1) {
-            this._write(LogKind.Default, this._writeLineImpl, args[0]);
+            this._write(LogKind.DEFAULT, this._writeLineImpl, args[0]);
         } else {
             this._write(args[0], this._writeLineImpl, args[1]);
         }
     }
 
     writeHeader(text: string) {
-        return this.write(LogKind.Header, text);
+        return this.write(LogKind.HEADER, text);
     }
 
     writeStatistic(text: string) {
-        return this.write(LogKind.Statistic, text);
+        return this.write(LogKind.STATISTIC, text);
     }
 
     writeInfo(text: string) {
-        return this.write(LogKind.Info, text);
+        return this.write(LogKind.INFO, text);
     }
 
     writeError(text: string) {
-        return this.write(LogKind.Error, text);
+        return this.write(LogKind.ERROR, text);
     }
 
     writeLineHeader(text: string) {
-        return this.writeLine(LogKind.Header, text);
+        return this.writeLine(LogKind.HEADER, text);
     }
 
     writeLineStatistic(text: string) {
-        return this.writeLine(LogKind.Statistic, text);
+        return this.writeLine(LogKind.STATISTIC, text);
     }
 
     writeLineInfo(text: string) {
-        return this.writeLine(LogKind.Info, text);
+        return this.writeLine(LogKind.INFO, text);
     }
 
     writeLineError(text: string) {
-        return this.writeLine(LogKind.Error, text);
+        return this.writeLine(LogKind.ERROR, text);
     }
 }

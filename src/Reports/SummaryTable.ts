@@ -15,7 +15,7 @@ export interface SummaryTableOptions {
 export class SummaryTable {
     private declare readonly _table: Table;
 
-    private static readonly _fnColumn = new BaseColumn(ColumnType.Fn, 'Function', (stats) => stats.name);
+    private static readonly _fnColumn = new BaseColumn(ColumnType.FN, 'Function', (stats) => stats.name);
 
     private declare readonly _paramColumns: ParameterColumn[];
     private declare readonly _argColumns: ArgumentColumn[];
@@ -29,14 +29,14 @@ export class SummaryTable {
 
         this._table = new Table();
 
-        this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+        this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
         this._table.setHeader(0, SummaryTable._fnColumn.name);
 
         this._paramColumns = [];
         for (let i = 0; i < paramNames.length; i++) {
             const col = new ParameterColumn(paramNames[i], i);
             this._paramColumns.push(col);
-            this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+            this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
             this._table.setHeader(i + 1, col.name);
         }
 
@@ -44,7 +44,7 @@ export class SummaryTable {
         for (let i = 0; i < argLen; i++) {
             const col = new ArgumentColumn(i);
             this._argColumns.push(col);
-            this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.Origin));
+            this._table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
             this._table.setHeader(i + this._paramColumns.length + 1, col.name);
         }
 

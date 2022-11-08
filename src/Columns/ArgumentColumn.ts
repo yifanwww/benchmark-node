@@ -5,7 +5,7 @@ import { ColumnType } from './ColumnType';
 
 export class ArgumentColumn extends BaseColumn<string> {
     constructor(index: number) {
-        super(ColumnType.FnArgument, `arg ${index}`, (stats) => {
+        super(ColumnType.FN_ARGUMENT, `arg ${index}`, (stats) => {
             const args = stats.args?.args;
 
             if (!args || index >= args.length) {

@@ -16,7 +16,6 @@
         "class-methods-use-this": "off",
         "consistent-return": "off",
         "default-case": "off",
-        "default-param-last": "off",
         // Disable this rule and use rule `prettier/prettier` instead.
         "function-paren-newline": "off",
         "guard-for-in": "off",
@@ -67,7 +66,7 @@
         // https://typescript-eslint.io/rules/consistent-type-exports
         "@typescript-eslint/consistent-type-exports": "error",
         // https://typescript-eslint.io/rules/consistent-type-imports
-        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/consistent-type-imports": ["error", { "disallowTypeAnnotations": false }],
         // https://typescript-eslint.io/rules/explicit-member-accessibility
         "@typescript-eslint/explicit-member-accessibility": ["error", { "accessibility": "no-public" }],
         // Disable this rule and use rule `prettier/prettier` instead.
@@ -79,16 +78,13 @@
             { "selector": "accessor", "format": ["camelCase"] },
             { "selector": "class", "format": ["PascalCase"] },
             { "selector": "enum", "format": ["PascalCase"] },
-            { "selector": "enumMember", "format": ["PascalCase"] },
+            { "selector": "enumMember", "format": ["UPPER_CASE"] },
             { "selector": "function", "format": ["camelCase"], "leadingUnderscore": "allow" },
             { "selector": "interface", "format": ["PascalCase"] },
             { "selector": "method", "format": ["camelCase", "PascalCase"], "leadingUnderscore": "allow" },
             { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow" },
-            {
-                "selector": "property",
-                "format": ["camelCase", "PascalCase", "UPPER_CASE"],
-                "leadingUnderscore": "allow"
-            },
+            { "selector": "property", "format": ["camelCase", "PascalCase", "UPPER_CASE"], "leadingUnderscore": "allow" },
+            { "selector": "objectLiteralProperty", "format": null },
             { "selector": "typeAlias", "format": ["PascalCase"] },
             { "selector": "typeParameter", "format": ["PascalCase"] },
             {
@@ -98,7 +94,7 @@
             }
         ],
         // From:
-        // - https://github.com/iamturns/eslint-config-airbnb-typescript/blob/v16.1.0/lib/shared.js#L118
+        // - https://github.com/iamturns/eslint-config-airbnb-typescript/blob/v17.0.0/lib/shared.js#L122
         // - https://github.com/airbnb/javascript/blob/eslint-config-airbnb-base-v15.0.0/packages/eslint-config-airbnb-base/rules/best-practices.js#L94
         "@typescript-eslint/no-empty-function": [
             "error",
@@ -115,22 +111,26 @@
                 ]
             }
         ],
+        // https://typescript-eslint.io/rules/no-empty-interface
+        "@typescript-eslint/no-empty-interface": ["error", { "allowSingleExtends": true }],
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-extra-non-null-assertion": "error",
         "@typescript-eslint/no-for-in-array": "off",
         "@typescript-eslint/no-misused-new": "error",
         "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-        "@typescript-eslint/no-unnecessary-type-assertion": "error",
-        "@typescript-eslint/no-unnecessary-type-constraint": "error",
+        "@typescript-eslint/no-unnecessary-type-assertion": "warn",
+        "@typescript-eslint/no-unnecessary-type-constraint": "warn",
         // https://typescript-eslint.io/rules/restrict-template-expressions
         "@typescript-eslint/restrict-template-expressions": [
             "error",
             { "allowNumber": true, "allowBoolean": true, "allowAny": false, "allowNullish": true, "allowRegExp": true }
         ],
         // From:
-        // - https://github.com/iamturns/eslint-config-airbnb-typescript/blob/v16.1.0/lib/shared.js#L209
+        // - https://github.com/iamturns/eslint-config-airbnb-typescript/blob/v17.0.0/lib/shared.js#L213
         // - https://github.com/airbnb/javascript/blob/eslint-config-airbnb-base-v15.0.0/packages/eslint-config-airbnb-base/rules/best-practices.js#L299
         "@typescript-eslint/return-await": ["error", "in-try-catch"],
+        // https://typescript-eslint.io/rules/require-await/
+        "@typescript-eslint/require-await": "error",
 
         "import/extensions": "off",
         // https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/order.md
@@ -147,11 +147,11 @@
             }
         ],
         "import/no-cycle": "error",
-        "import/no-default-export": "error",
         // Disabled for import-statement of dev dependencies.
         "import/no-extraneous-dependencies": "off",
         "import/prefer-default-export": "off",
 
+        "jest/no-alias-methods": "error",
         "jest/prefer-strict-equal": "error",
 
         // Enables prettier rules.
@@ -159,15 +159,34 @@
     },
     "overrides": [
         {
-            "files": ["test/**/*.ts"],
-            "rules": {
-                "no-console": "off"
-            }
-        },
-        {
             "files": ["*.d.ts"],
             "rules": {
                 "@typescript-eslint/naming-convention": "off"
+            }
+        },
+        {
+            "files": ["src/**/__tests__/*.{ts,tsx}", "src/**/*.{spec,test}.{ts,tsx}", "test/**/*.{ts,tsx}"],
+            "rules": {
+                // https://typescript-eslint.io/rules/dot-notation
+                "@typescript-eslint/dot-notation": [
+                    "error",
+                    {
+                        "allowPrivateClassPropertyAccess": true,
+                        "allowProtectedClassPropertyAccess": true,
+                        "allowIndexSignaturePropertyAccess": true
+                    }
+                ]
+            }
+        },
+        {
+            "files": [
+                "perf/**/*.ts",
+                "src/**/__tests__/*.{ts,tsx}",
+                "src/**/*.{spec,test}.{ts,tsx}",
+                "test/**/*.{ts,tsx}"
+            ],
+            "rules": {
+                "no-console": "off"
             }
         }
     ]
