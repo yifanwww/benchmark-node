@@ -115,6 +115,33 @@ return { elapsed: elapsed5, _internal_return: return5 };
 }"
 `;
 
+exports[`Test method \`CodeGen\` create tester with normal arguments and rest arguments 1`] = `
+"function anonymous(context7
+) {
+if (context7.setup) context7.setup();
+const testFn7 = context7.testFn;
+const workload7 = context7.workload;
+const arg0_7 = context7.args[0];
+const arg1_7 = context7.args[1];
+const arg2_7 = context7.args[2];
+const arg3_7 = context7.args[3];
+const arg4_7 = context7.args[4];
+const restArg7 = context7.restArgs;
+let return7;
+const begin7 = process.hrtime();
+for (let i7 = 0; i7 < context7.ops; i7++) {
+    if (workload7) {
+        return7 = testFn7(arg0_7, arg1_7, arg2_7, arg3_7, arg4_7, ...restArg7);
+    } else {
+        return7 = undefined;
+    }
+}
+const elapsed7 = process.hrtime(begin7);
+if (context7.cleanup) context7.cleanup();
+return { elapsed: elapsed7, _internal_return: return7 };
+}"
+`;
+
 exports[`Test method \`CodeGen\` create tester with rest arguments 1`] = `
 "function anonymous(context6
 ) {
@@ -126,7 +153,7 @@ let return6;
 const begin6 = process.hrtime();
 for (let i6 = 0; i6 < context6.ops; i6++) {
     if (workload6) {
-        return6 = testFn6(restArg6);
+        return6 = testFn6(...restArg6);
     } else {
         return6 = undefined;
     }

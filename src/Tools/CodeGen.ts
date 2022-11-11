@@ -78,7 +78,7 @@ export class CodeGen {
         }
 
         if (this.argument.rest) {
-            code.push('restArg#');
+            code.push('...restArg#');
         }
 
         return `testFn#(${code.join(', ')})`;

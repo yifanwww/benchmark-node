@@ -30,4 +30,9 @@ describe(`Test method \`${CodeGen.name}\``, () => {
         const tester = CodeGen.createTester({ argument: { count: 0, rest: true } });
         expect(tester.toString()).toMatchSnapshot();
     });
+
+    it('create tester with normal arguments and rest arguments', () => {
+        const tester = CodeGen.createTester({ argument: { count: 5, rest: true } });
+        expect(tester.toString()).toMatchSnapshot();
+    });
 });
