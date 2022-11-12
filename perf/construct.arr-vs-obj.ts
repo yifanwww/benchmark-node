@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import { BenchmarkJob } from '../src';
 
 let a: number;
