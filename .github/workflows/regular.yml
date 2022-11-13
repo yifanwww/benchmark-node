@@ -13,11 +13,7 @@ jobs:
   build:
     timeout-minutes: 5
 
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -44,9 +40,13 @@ jobs:
       - name: Build Test
         run: pnpm run build-test
 
+      - name: Do type check
+        run: pnpm run typecheck
+
   lint:
-    runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -100,29 +100,3 @@ jobs:
 
       - name: Do coverage test
         run: pnpm run test-full
-
-  typecheck:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup PNPM environment
-        uses: pnpm/action-setup@v2
-        with:
-          version: 7
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'pnpm'
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Do type check
-        run: pnpm run typecheck
