@@ -30,7 +30,7 @@ export class ArgumentStoreView {
         return this._store.argsList[this._index];
     }
 
-    private *getJitArgsEnumerator() {
+    private *_getJitArgsEnumerator() {
         for (const args of this._store.jitArgsList) {
             yield args;
         }
@@ -41,7 +41,7 @@ export class ArgumentStoreView {
     }
 
     get jitArgsList(): Generator<Arguments, void> {
-        return this.getJitArgsEnumerator();
+        return this._getJitArgsEnumerator();
     }
 
     static *iteratesStoreArgs(store: ArgumentStore): Generator<ArgumentStoreView, void> {

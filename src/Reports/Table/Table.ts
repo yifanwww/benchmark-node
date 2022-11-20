@@ -34,7 +34,7 @@ export class Table {
         this._rows = [];
     }
 
-    private expandRows() {
+    private _expandRows() {
         const colLen = this._props.infos.length;
         this._header.expand(colLen);
         for (const rows of this._rows) {
@@ -46,10 +46,10 @@ export class Table {
 
     appendColumn(col: ColumnInfo) {
         this._props.infos.push(col);
-        this.expandRows();
+        this._expandRows();
     }
 
-    private extand(rowID: RowID) {
+    private _extand(rowID: RowID) {
         for (let i = this._rows.length; i <= rowID[0]; i++) {
             this._rows.push([]);
         }
@@ -65,20 +65,20 @@ export class Table {
     }
 
     setCell(rowID: RowID, col: number, value: number | string) {
-        this.extand(rowID);
+        this._extand(rowID);
         this._rows[rowID[0]][rowID[1]].setCell(col, value);
     }
 
-    private findMinNumber(columnIndex: number): number {
+    private _findMinNumber(columnIndex: number): number {
         let minNum = Number.MAX_SAFE_INTEGER;
-        for (const value of this.iterateRows(columnIndex)) {
+        for (const value of this._iterateRows(columnIndex)) {
             minNum = Math.min(minNum, value as number);
         }
         return minNum;
     }
 
     chooseTimeUnit(baseIndex: number): void {
-        const minTime = this.findMinNumber(baseIndex);
+        const minTime = this._findMinNumber(baseIndex);
         this._props.timeUnit = TimeUnitHelper.chooseUnit(minTime);
     }
 
@@ -92,8 +92,8 @@ export class Table {
     }
 
     render(): string {
-        this.calculateFractions();
-        this.calculateWidths();
+        this._calculateFractions();
+        this._calculateWidths();
 
         const lines: string[] = [this._header.render(), Row.renderAlignment(this._props.infos)];
 
@@ -113,13 +113,13 @@ export class Table {
         return lines.join('\n');
     }
 
-    private calculateFractions(): void {
+    private _calculateFractions(): void {
         const { infos } = this._props;
 
         for (let i = 0; i < infos.length; i++) {
             const info = infos[i];
             if (info.type === UnitType.DIMENSIONLESS || info.type === UnitType.TIME) {
-                let minNum = this.findMinNumber(i);
+                let minNum = this._findMinNumber(i);
                 if (info.type === UnitType.TIME) {
                     minNum = TimeTool.convert(minNum, TimeUnit.NS, this._props.timeUnit);
                 }
@@ -128,12 +128,12 @@ export class Table {
         }
     }
 
-    private calculateWidths(): void {
+    private _calculateWidths(): void {
         for (let i = 0; i < this._props.infos.length; i++) {
             const info = this._props.infos[i];
 
             let max = (this._header.getCell(i) as string).length;
-            for (const value of this.iterateRows(i)) {
+            for (const value of this._iterateRows(i)) {
                 const cell = renderData(value, info.type, info.fractionDigit, this._props.timeUnit);
                 max = Math.max(max, cell.length);
             }
@@ -141,7 +141,7 @@ export class Table {
         }
     }
 
-    private *iterateRows(columnIndex: number): Generator<number | string, void> {
+    private *_iterateRows(columnIndex: number): Generator<number | string, void> {
         for (const rows of this._rows) {
             for (const row of rows) {
                 yield row.getCell(columnIndex);

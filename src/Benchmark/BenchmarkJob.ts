@@ -50,7 +50,7 @@ export class BenchmarkJob extends JobConfig {
     /** @deprecated This field will be deleted since `v0.9.0`. */
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
-    private declare readonly reporters: Reporter<unknown>[];
+    private declare readonly _reporters: Reporter<unknown>[];
 
     constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
@@ -69,7 +69,7 @@ export class BenchmarkJob extends JobConfig {
 
         this._settings = Settings.from(settings);
 
-        this.reporters = [];
+        this._reporters = [];
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
@@ -167,11 +167,11 @@ export class BenchmarkJob extends JobConfig {
     }
 
     addReport(reporter: Reporter<unknown>): this {
-        this.reporters.push(reporter);
+        this._reporters.push(reporter);
         return this;
     }
 
-    private benchmarkToTask(): BenchmarkTask[] {
+    private _benchmarkToTask(): BenchmarkTask[] {
         const tasks: BenchmarkTask[] = [];
 
         for (const paramStoreView of ParameterStoreView.iterateStore(this._paramStore)) {
@@ -188,7 +188,7 @@ export class BenchmarkJob extends JobConfig {
 
         const logger = ConsoleLogger.default;
 
-        const tasks = this.benchmarkToTask();
+        const tasks = this._benchmarkToTask();
 
         logger.writeLineInfo(`Found ${tasks.length} ${tasks.length > 1 ? 'benchmarks' : 'benchmark'}:`);
         for (const task of tasks) {
@@ -227,7 +227,7 @@ export class BenchmarkJob extends JobConfig {
             logger.writeLineStatistic(report.description!);
         }
 
-        for (const report of this.reporters) {
+        for (const report of this._reporters) {
             report.generate(result);
         }
     }

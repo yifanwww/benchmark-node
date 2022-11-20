@@ -72,7 +72,7 @@ export class StatisticIndicator implements IIndicator {
     private declare readonly _legend: string;
     private declare readonly _unitType: UnitType;
 
-    protected declare calc: Calc;
+    protected declare _calc: Calc;
 
     constructor(indicatorName: string, legend: string, calc: Calc, unit: UnitType = UnitType.TIME) {
         this._indicatorName = indicatorName;
@@ -80,7 +80,7 @@ export class StatisticIndicator implements IIndicator {
         this._legend = legend;
         this._unitType = unit;
 
-        this.calc = calc;
+        this._calc = calc;
     }
 
     get id(): string {
@@ -100,6 +100,6 @@ export class StatisticIndicator implements IIndicator {
     }
 
     getValue(stats: Statistics): number {
-        return this.calc(stats);
+        return this._calc(stats);
     }
 }

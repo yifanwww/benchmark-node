@@ -28,11 +28,11 @@ export class ArgumentStore {
         this._argsList = Array.isArray(argsList) ? argsList : [argsList];
         this._jitArgsList = [...(Array.isArray(jitArgsList) ? jitArgsList : [jitArgsList]), ...this._argsList];
 
-        this._argsLength = this.getArgsLength(this._argsList);
-        this._maxArgsLength = Math.max(this._argsLength, this.getArgsLength(this._jitArgsList));
+        this._argsLength = this._getArgsLength(this._argsList);
+        this._maxArgsLength = Math.max(this._argsLength, this._getArgsLength(this._jitArgsList));
     }
 
-    private getArgsLength(argsArr: readonly Arguments[]): number {
+    private _getArgsLength(argsArr: readonly Arguments[]): number {
         let max = 0;
         for (const args of argsArr) {
             max = Math.max(max, args.args.length);

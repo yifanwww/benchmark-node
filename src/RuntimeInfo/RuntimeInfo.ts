@@ -8,11 +8,11 @@ export class RuntimeInfo {
 
     static readonly versions: Readonly<NodeJS.ProcessVersions> = process.versions;
 
-    static readonly platform = RuntimeInfo.getPlatform();
+    static readonly platform = RuntimeInfo._getPlatform();
 
     static readonly cpu = CpuInfo.instance;
 
-    private static getPlatform() {
+    private static _getPlatform() {
         switch (process.platform) {
             case 'darwin':
                 return `MacOS ${os.release()}`;

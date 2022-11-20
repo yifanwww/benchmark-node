@@ -4,27 +4,27 @@ import type { IIndicator } from './IIndicator';
 import { StatisticIndicator } from './StatisticIndicator';
 
 export class IndicatorOrder {
-    private declare readonly basicIndicators: readonly IIndicator[];
-    private declare readonly extraIndicators: IIndicator[];
+    private declare readonly _basicIndicators: readonly IIndicator[];
+    private declare readonly _extraIndicators: IIndicator[];
 
     constructor() {
-        this.basicIndicators = [StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev];
-        this.extraIndicators = [];
+        this._basicIndicators = [StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev];
+        this._extraIndicators = [];
     }
 
     add(indicators: LooseArray<IIndicator>): void {
         if (Array.isArray(indicators)) {
-            this.extraIndicators.push(...indicators);
+            this._extraIndicators.push(...indicators);
         } else {
-            this.extraIndicators.push(indicators);
+            this._extraIndicators.push(indicators);
         }
     }
 
-    private filterExtraIndicators() {
-        const idSet = new Set<string>(this.basicIndicators.map((indicator) => indicator.id));
+    private _filterExtraIndicators() {
+        const idSet = new Set<string>(this._basicIndicators.map((indicator) => indicator.id));
         const order: IIndicator[] = [];
 
-        for (const indicator of this.extraIndicators) {
+        for (const indicator of this._extraIndicators) {
             if (idSet.has(indicator.id)) continue;
 
             idSet.add(indicator.id);
@@ -35,13 +35,13 @@ export class IndicatorOrder {
     }
 
     getOrder(): IIndicator[] {
-        return [...this.basicIndicators, ...this.filterExtraIndicators()];
+        return [...this._basicIndicators, ...this._filterExtraIndicators()];
     }
 
     /**
      * @deprecated Once we no longer use `StatisticColumnOrder`, we don't need this method any more.
      */
     isCustomized(): boolean {
-        return this.extraIndicators.length > 0;
+        return this._extraIndicators.length > 0;
     }
 }

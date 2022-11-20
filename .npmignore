@@ -28,7 +28,7 @@
 
 # Configs
 
-/.eslintrc.json
+/.eslintrc.js
 /.lintstagedrc
 /.prettierignore
 /.prettierrc

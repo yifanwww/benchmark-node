@@ -12,14 +12,14 @@ export interface ReporterOptions {
 }
 
 export abstract class Reporter<R> {
-    protected declare readonly descriptionFlag: boolean;
-    protected declare readonly runtimeFlag: boolean;
+    protected declare readonly _descriptionFlag: boolean;
+    protected declare readonly _runtimeFlag: boolean;
 
     protected declare _report: R | null;
 
     constructor(options?: ReporterOptions) {
-        this.descriptionFlag = options?.description ?? true;
-        this.runtimeFlag = options?.runtime ?? true;
+        this._descriptionFlag = options?.description ?? true;
+        this._runtimeFlag = options?.runtime ?? true;
 
         this._report = null;
     }

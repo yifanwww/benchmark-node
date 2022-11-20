@@ -42,7 +42,7 @@ export class ConfidenceInterval {
             this._lower = Number.NaN;
             this._upper = Number.NaN;
         } else {
-            this._margin = standardError * this.getZLevel();
+            this._margin = standardError * this._getZLevel();
             this._lower = estimation - this._margin;
             this._upper = estimation + this._margin;
         }
@@ -50,7 +50,7 @@ export class ConfidenceInterval {
         this._marginPercent = (this._margin / estimation) * 100;
     }
 
-    private getZLevel() {
+    private _getZLevel() {
         const p = 1 - (1 - this._level) / 2;
         return quantile(p, this._degreeOfFreedom);
     }

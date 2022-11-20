@@ -62,23 +62,23 @@ export class Settings {
         this._warmupCount = warmupCount;
     }
 
-    private static normalizeDelay(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
+    private static _normalizeDelay(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
         return num ? Math.max(Settings.MimimumValue.delay, Time.ms2ns(Math.floor(num))) : d;
     }
 
-    private static normalizeInitOps(num: number | undefined, d: number): number {
+    private static _normalizeInitOps(num: number | undefined, d: number): number {
         return num ? Math.max(Settings.MimimumValue.initOps, Math.floor(num)) : d;
     }
 
-    private static normalizeMeasurementCount(num: number | undefined, d: number): number {
+    private static _normalizeMeasurementCount(num: number | undefined, d: number): number {
         return num ? Math.max(Settings.MimimumValue.measurementCount, Math.floor(num)) : d;
     }
 
-    private static normalizeMinMeasurementTime(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
+    private static _normalizeMinMeasurementTime(num: Millisecond | undefined, d: Nanosecond): Nanosecond {
         return num ? Math.max(Settings.MimimumValue.minMeasurementTime, Time.ms2ns(Math.floor(num))) : d;
     }
 
-    private static normalizeWarmupCount(num: number | undefined, d: number): number {
+    private static _normalizeWarmupCount(num: number | undefined, d: number): number {
         return num ? Math.max(Settings.MimimumValue.warmupCount, Math.floor(num)) : d;
     }
 
@@ -88,11 +88,11 @@ export class Settings {
         const _default = Settings.DefaultValue;
 
         return new Settings({
-            delay: Settings.normalizeDelay(delay, _default.delay),
-            initOps: Settings.normalizeInitOps(initOps, _default.initOps),
-            measurementCount: Settings.normalizeMeasurementCount(measurementCount, _default.measurementCount),
-            minMeasurementTime: Settings.normalizeMinMeasurementTime(minMeasurementTime, _default.minMeasurementTime),
-            warmupCount: Settings.normalizeWarmupCount(warmupCount, _default.warmupCount),
+            delay: Settings._normalizeDelay(delay, _default.delay),
+            initOps: Settings._normalizeInitOps(initOps, _default.initOps),
+            measurementCount: Settings._normalizeMeasurementCount(measurementCount, _default.measurementCount),
+            minMeasurementTime: Settings._normalizeMinMeasurementTime(minMeasurementTime, _default.minMeasurementTime),
+            warmupCount: Settings._normalizeWarmupCount(warmupCount, _default.warmupCount),
         });
     }
 
@@ -100,11 +100,11 @@ export class Settings {
         const { delay, initOps, measurementCount, minMeasurementTime, warmupCount } = settings;
 
         return new Settings({
-            delay: Settings.normalizeDelay(delay, this._delay),
-            initOps: Settings.normalizeInitOps(initOps, this._initOps),
-            measurementCount: Settings.normalizeMeasurementCount(measurementCount, this._measurementCount),
-            minMeasurementTime: Settings.normalizeMinMeasurementTime(minMeasurementTime, this._minMeasurementTime),
-            warmupCount: Settings.normalizeWarmupCount(warmupCount, this._warmupCount),
+            delay: Settings._normalizeDelay(delay, this._delay),
+            initOps: Settings._normalizeInitOps(initOps, this._initOps),
+            measurementCount: Settings._normalizeMeasurementCount(measurementCount, this._measurementCount),
+            minMeasurementTime: Settings._normalizeMinMeasurementTime(minMeasurementTime, this._minMeasurementTime),
+            warmupCount: Settings._normalizeWarmupCount(warmupCount, this._warmupCount),
         });
     }
 }

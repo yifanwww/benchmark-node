@@ -26,7 +26,7 @@ export class BenchmarkRunner {
         this._current = null;
     }
 
-    private benchmarkJitting(
+    private _benchmarkJitting(
         workload: boolean,
         order: number,
         ops: number,
@@ -53,20 +53,20 @@ export class BenchmarkRunner {
 
         const elapsed = used / ops;
 
-        this.logOpsData(workload ? Stage.JITTING_WORKLOAD : Stage.JITTING_OVERHEAD, order, ops, used, elapsed);
+        this._logOpsData(workload ? Stage.JITTING_WORKLOAD : Stage.JITTING_OVERHEAD, order, ops, used, elapsed);
     }
 
-    private benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments, void>): void {
-        this.benchmarkJitting(false, 1, 1, getJitArgsIter?.());
-        this.benchmarkJitting(true, 1, 1, getJitArgsIter?.());
+    private _benchmarkJitting1(getJitArgsIter?: () => Generator<Arguments, void>): void {
+        this._benchmarkJitting(false, 1, 1, getJitArgsIter?.());
+        this._benchmarkJitting(true, 1, 1, getJitArgsIter?.());
     }
 
-    private benchmarkJitting2(getJitArgsIter?: () => Generator<Arguments, void>): void {
-        this.benchmarkJitting(false, 2, this._current!.settings.initOps, getJitArgsIter?.());
-        this.benchmarkJitting(true, 2, this._current!.settings.initOps, getJitArgsIter?.());
+    private _benchmarkJitting2(getJitArgsIter?: () => Generator<Arguments, void>): void {
+        this._benchmarkJitting(false, 2, this._current!.settings.initOps, getJitArgsIter?.());
+        this._benchmarkJitting(true, 2, this._current!.settings.initOps, getJitArgsIter?.());
     }
 
-    private benchmarkPilot(args?: Arguments): number {
+    private _benchmarkPilot(args?: Arguments): number {
         const testerContext: TesterContext = {
             args: args?.args,
             ops: this._current!.settings.initOps,
@@ -82,7 +82,7 @@ export class BenchmarkRunner {
 
             const elapsed = used / testerContext.ops;
 
-            this.logOpsData(Stage.WORKLOAD_PILOT, index, testerContext.ops, used, elapsed);
+            this._logOpsData(Stage.WORKLOAD_PILOT, index, testerContext.ops, used, elapsed);
 
             // Calculate how many more iterations it will take to achieve the `minTime`.
             // After stage Pilot, we should get a good count number.
@@ -98,7 +98,7 @@ export class BenchmarkRunner {
         return testerContext.ops;
     }
 
-    private benchmarkWarmup(workload: boolean, ops: number, args?: Arguments): void {
+    private _benchmarkWarmup(workload: boolean, ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -113,13 +113,13 @@ export class BenchmarkRunner {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
             const elapsed = used / ops;
 
-            this.logOpsData(workload ? Stage.WARMUP_WORKLOAD : Stage.WARMUP_OVERHEAD, index, ops, used, elapsed);
+            this._logOpsData(workload ? Stage.WARMUP_WORKLOAD : Stage.WARMUP_OVERHEAD, index, ops, used, elapsed);
 
             Time.sleep(this._current!.settings.delay);
         }
     }
 
-    private benchmarkOverheadActual(ops: number, args?: Arguments): Nanosecond {
+    private _benchmarkOverheadActual(ops: number, args?: Arguments): Nanosecond {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -135,7 +135,7 @@ export class BenchmarkRunner {
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ACTUAL_OVERHEAD, index, ops, used, used / ops);
+            this._logOpsData(Stage.ACTUAL_OVERHEAD, index, ops, used, used / ops);
 
             total += used;
 
@@ -145,7 +145,7 @@ export class BenchmarkRunner {
         return total / this._current!.settings.measurementCount;
     }
 
-    private benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments): void {
+    private _benchmarkWorkloadActual(measurements: Nanosecond[], ops: number, args?: Arguments): void {
         const testerContext: TesterContext = {
             args: args?.args,
             ops,
@@ -159,7 +159,7 @@ export class BenchmarkRunner {
         for (let index = 1; index <= this._current!.settings.measurementCount; index++) {
             const used = Time.hrtime2ns(this._current!.tester(testerContext).elapsed);
 
-            this.logOpsData(Stage.ACTUAL_WORKLOAD, index, ops, used, used / ops);
+            this._logOpsData(Stage.ACTUAL_WORKLOAD, index, ops, used, used / ops);
 
             measurements.push(used);
 
@@ -167,14 +167,14 @@ export class BenchmarkRunner {
         }
     }
 
-    private benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
+    private _benchmarkWorkloadResult(measurements: Nanosecond[], overhead: Nanosecond, ops: number): void {
         for (let i = 0; i < measurements.length; i++) {
             measurements[i] = Math.max(measurements[i] - overhead, 0);
-            this.logOpsData(Stage.WORKLOAD_RESULT, i + 1, ops, measurements[i], measurements[i] / ops);
+            this._logOpsData(Stage.WORKLOAD_RESULT, i + 1, ops, measurements[i], measurements[i] / ops);
         }
     }
 
-    private logOpsData(prefix: Stage, index: number, ops: number, used: Nanosecond, elapsed: Nanosecond) {
+    private _logOpsData(prefix: Stage, index: number, ops: number, used: Nanosecond, elapsed: Nanosecond) {
         const len = this._current!.settings.measurementCount.toString().length;
 
         ConsoleLogger.default.writeLine(
@@ -209,13 +209,13 @@ export class BenchmarkRunner {
         const logger = ConsoleLogger.default;
 
         if (!this._current!.testFnArgStore.hasJitArgs()) {
-            this.benchmarkJitting1();
+            this._benchmarkJitting1();
             logger.writeLine();
-            this.benchmarkJitting2();
+            this._benchmarkJitting2();
         } else {
-            this.benchmarkJitting1(() => this._current!.testFnArgStore.jitArgsList);
+            this._benchmarkJitting1(() => this._current!.testFnArgStore.jitArgsList);
             logger.writeLine();
-            this.benchmarkJitting2(() => this._current!.testFnArgStore.jitArgsList);
+            this._benchmarkJitting2(() => this._current!.testFnArgStore.jitArgsList);
         }
         logger.writeLine();
     }
@@ -223,23 +223,23 @@ export class BenchmarkRunner {
     private _runFormal(params: readonly unknown[], args?: Arguments): void {
         const logger = ConsoleLogger.default;
 
-        const ops = this.benchmarkPilot(args);
+        const ops = this._benchmarkPilot(args);
         logger.writeLine();
 
-        this.benchmarkWarmup(false, ops, args);
+        this._benchmarkWarmup(false, ops, args);
         logger.writeLine();
 
-        const overhead = this.benchmarkOverheadActual(ops, args);
+        const overhead = this._benchmarkOverheadActual(ops, args);
         logger.writeLine();
 
-        this.benchmarkWarmup(true, ops, args);
+        this._benchmarkWarmup(true, ops, args);
         logger.writeLine();
 
         const measurements: Nanosecond[] = [];
-        this.benchmarkWorkloadActual(measurements, ops, args);
+        this._benchmarkWorkloadActual(measurements, ops, args);
         logger.writeLine();
 
-        this.benchmarkWorkloadResult(measurements, overhead, ops);
+        this._benchmarkWorkloadResult(measurements, overhead, ops);
         logger.writeLine();
 
         const stats = new Statistics(this._current!.context.name, measurements, ops, params, args);

@@ -10,7 +10,7 @@ export class Header extends Row {
         const arr: string[] = [];
         for (let i = 0; i < infos.length; i++) {
             const content = renderData(this._cells[i], UnitType.ORIGIN, infos[i].fractionDigit, this._props.timeUnit);
-            arr.push(Row.renderContent(content, infos[i]));
+            arr.push(Row._renderContent(content, infos[i]));
         }
         return `| ${arr.join(' | ')} |`;
     }

@@ -15,13 +15,13 @@ type ColorScheme = {
 export class ConsoleLogger {
     static readonly default: ConsoleLogger = new ConsoleLogger();
 
-    private declare readonly colorScheme: ColorScheme;
+    private declare readonly _colorScheme: ColorScheme;
 
     constructor(colorScheme?: ColorScheme) {
-        this.colorScheme = colorScheme ?? this.createColorfulScheme();
+        this._colorScheme = colorScheme ?? this._createColorfulScheme();
     }
 
-    private createColorfulScheme(): ColorScheme {
+    private _createColorfulScheme(): ColorScheme {
         return {
             [LogKind.DEFAULT]: chalk.white,
             [LogKind.HEADER]: chalk.magentaBright,
@@ -40,7 +40,7 @@ export class ConsoleLogger {
     }
 
     private _write(kind: LogKind, write: (text: string) => void, text: string) {
-        write(this.colorScheme[kind](text));
+        write(this._colorScheme[kind](text));
     }
 
     write(text: string): void;

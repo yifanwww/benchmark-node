@@ -10,7 +10,7 @@ import type { Optional } from '../types.internal';
 import type { BenchmarkContext } from './Context';
 
 export class BenchmarkTask {
-    private static id = 0;
+    private static _staticId = 0;
     private declare readonly _id: number;
 
     private declare readonly _context: BenchmarkContext;
@@ -65,7 +65,7 @@ export class BenchmarkTask {
         paramStoreView: Optional<ParameterStoreView>,
         context: BenchmarkContext,
     ) {
-        this._id = ++BenchmarkTask.id;
+        this._id = ++BenchmarkTask._staticId;
 
         this._context = context;
 

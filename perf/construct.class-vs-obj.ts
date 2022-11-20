@@ -3,100 +3,100 @@
 import { BenchmarkJob } from '../src';
 
 class A {
-    private declare a: number;
+    private declare _a: number;
 
     constructor(a: number) {
-        this.a = a;
+        this._a = a;
     }
 }
 
 class B {
-    private declare a: number;
-    private declare b: number;
+    private declare _a: number;
+    private declare _b: number;
 
     constructor(a: number, b: number) {
-        this.a = a;
-        this.b = b;
+        this._a = a;
+        this._b = b;
     }
 }
 
 class C {
-    private declare a: number;
-    private declare b: number;
-    private declare c: number;
+    private declare _a: number;
+    private declare _b: number;
+    private declare _c: number;
 
     constructor(a: number, b: number, c: number) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
+        this._a = a;
+        this._b = b;
+        this._c = c;
     }
 }
 
 class D {
-    private declare a: number;
-    private declare b: number;
-    private declare c: number;
-    private declare d: number;
+    private declare _a: number;
+    private declare _b: number;
+    private declare _c: number;
+    private declare _d: number;
 
     constructor(a: number, b: number, c: number, d: number) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
+        this._a = a;
+        this._b = b;
+        this._c = c;
+        this._d = d;
     }
 }
 
 class E {
-    private declare a: number;
-    private declare b: number;
-    private declare c: number;
-    private declare d: number;
-    private declare e: number;
+    private declare _a: number;
+    private declare _b: number;
+    private declare _c: number;
+    private declare _d: number;
+    private declare _e: number;
 
     constructor(a: number, b: number, c: number, d: number, e: number) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.e = e;
+        this._a = a;
+        this._b = b;
+        this._c = c;
+        this._d = d;
+        this._e = e;
     }
 }
 
 class F {
-    private declare a: number;
-    private declare b: number;
-    private declare c: number;
-    private declare d: number;
-    private declare e: number;
-    private declare f: number;
+    private declare _a: number;
+    private declare _b: number;
+    private declare _c: number;
+    private declare _d: number;
+    private declare _e: number;
+    private declare _f: number;
 
     constructor(a: number, b: number, c: number, d: number, e: number, f: number) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.e = e;
-        this.f = f;
+        this._a = a;
+        this._b = b;
+        this._c = c;
+        this._d = d;
+        this._e = e;
+        this._f = f;
     }
 }
 
 class G {
-    private declare a: number;
-    private declare b: number;
-    private declare c: number;
-    private declare d: number;
-    private declare e: number;
-    private declare f: number;
-    private declare g: number;
+    private declare _a: number;
+    private declare _b: number;
+    private declare _c: number;
+    private declare _d: number;
+    private declare _e: number;
+    private declare _f: number;
+    private declare _g: number;
 
     constructor(a: number, b: number, c: number, d: number, e: number, f: number, g: number) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.e = e;
-        this.f = f;
-        this.g = g;
+        this._a = a;
+        this._b = b;
+        this._c = c;
+        this._d = d;
+        this._e = e;
+        this._f = f;
+        this._g = g;
     }
 }
 

@@ -20,13 +20,13 @@ export class CpuInfo {
     constructor() {
         this.name = os.cpus()[0].model.trim();
 
-        this.processors = this.getNumberOfProcesors();
+        this.processors = this._getNumberOfProcesors();
 
         this.logicalCores = os.cpus().length;
-        this.plysicalCores = this.getPlysicalCores();
+        this.plysicalCores = this._getPhysicalCores();
     }
 
-    private getNumberOfProcesors(): number {
+    private _getNumberOfProcesors(): number {
         switch (process.platform) {
             case 'linux': {
                 const output = exec('lscpu | egrep Socket');
@@ -50,7 +50,7 @@ export class CpuInfo {
         }
     }
 
-    private getPlysicalCores(): number {
+    private _getPhysicalCores(): number {
         switch (process.platform) {
             case 'linux': {
                 const output = exec('lscpu -p | egrep -v "^#" | sort -u -t, -k 2,4 | wc -l');

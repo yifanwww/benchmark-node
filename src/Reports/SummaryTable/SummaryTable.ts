@@ -21,9 +21,9 @@ export interface SummaryTableReport {
 }
 
 export class SummaryTable extends Reporter<SummaryTableReport> {
-    private static readonly fnColumn = new Column('Function', (stats) => stats.fnName);
+    private static readonly _fnColumn = new Column('Function', (stats) => stats.fnName);
 
-    private generateRuntimeInfo(): string {
+    private _generateRuntimeInfo(): string {
         return [
             `BenchmarkNode v${RuntimeInfo.version}, ${RuntimeInfo.platform}`,
             RuntimeInfo.cpu.toString(),
@@ -31,7 +31,7 @@ export class SummaryTable extends Reporter<SummaryTableReport> {
         ].join('\n');
     }
 
-    private generateDescription(indicators: readonly IIndicator[], timeUnit: TimeUnit): string {
+    private _generateDescription(indicators: readonly IIndicator[], timeUnit: TimeUnit): string {
         const maxLen = indicators.reduce((prev, curr) => Math.max(prev, curr.indicatorName.length), 0);
 
         const description = [
@@ -48,7 +48,7 @@ export class SummaryTable extends Reporter<SummaryTableReport> {
 
         const table = new Table();
         table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
-        table.setHeader(0, SummaryTable.fnColumn.name);
+        table.setHeader(0, SummaryTable._fnColumn.name);
 
         const paramColumns: ParameterColumn[] = [];
         const argColumns: ArgumentColumn[] = [];
@@ -81,7 +81,7 @@ export class SummaryTable extends Reporter<SummaryTableReport> {
 
         // setup statistics
 
-        const helpers = [SummaryTable.fnColumn, ...paramColumns, ...argColumns, ...indicators];
+        const helpers = [SummaryTable._fnColumn, ...paramColumns, ...argColumns, ...indicators];
 
         for (let groupId = 0; groupId < statisticGroups.length; groupId++) {
             const group = statisticGroups[groupId];
@@ -97,8 +97,8 @@ export class SummaryTable extends Reporter<SummaryTableReport> {
         // generate report
 
         this._report = {
-            description: !this.descriptionFlag ? undefined : this.generateDescription(indicators, table.timeUnit),
-            runtime: !this.runtimeFlag ? undefined : this.generateRuntimeInfo(),
+            description: !this._descriptionFlag ? undefined : this._generateDescription(indicators, table.timeUnit),
+            runtime: !this._runtimeFlag ? undefined : this._generateRuntimeInfo(),
             table: table.render(),
         };
 

@@ -37,32 +37,32 @@ export interface CodeGenOptions {
 }
 
 export class CodeGen {
-    private static cgid: number = 0;
+    private static _staticId: number = 0;
 
     static createTester(options: CodeGenOptions) {
         return new CodeGen(options).createTester();
     }
 
-    private declare readonly id: string;
+    private declare readonly _id: string;
 
-    private declare readonly argument: CodeGenArgumentOptions;
+    private declare readonly _argument: CodeGenArgumentOptions;
 
     constructor(options: CodeGenOptions) {
-        CodeGen.cgid++;
-        this.id = CodeGen.cgid.toString();
+        CodeGen._staticId++;
+        this._id = CodeGen._staticId.toString();
 
-        this.argument = options.argument;
+        this._argument = options.argument;
     }
 
-    private generatePickArguments(): string {
+    private _generatePickArguments(): string {
         const code: string[] = [];
 
-        for (let i = 0; i < this.argument.count; i++) {
+        for (let i = 0; i < this._argument.count; i++) {
             // No need to check `context#.${TesterContextEnum.Args}` exists or not.
             code.push(`const arg${i}_# = context#.${TesterContextEnum.ARGS}[${i}];`);
         }
 
-        if (this.argument.rest) {
+        if (this._argument.rest) {
             // No need to check `context#.${TesterContextEnum.RestArgs}` exists or not.
             code.push(`const restArg# = context#.${TesterContextEnum.REST_ARGS};`);
         }
@@ -70,25 +70,25 @@ export class CodeGen {
         return code.join('\n');
     }
 
-    private generateTestFnCall(): string {
+    private _generateTestFnCall(): string {
         const code: string[] = [];
 
-        for (let i = 0; i < this.argument.count; i++) {
+        for (let i = 0; i < this._argument.count; i++) {
             code.push(`arg${i}_#`);
         }
 
-        if (this.argument.rest) {
+        if (this._argument.rest) {
             code.push('...restArg#');
         }
 
         return `testFn#(${code.join(', ')})`;
     }
 
-    private interpolate(str: string) {
-        return str.replace(/#/g, this.id);
+    private _interpolate(str: string) {
+        return str.replace(/#/g, this._id);
     }
 
-    private removeEmptyLines(str: string) {
+    private _removeEmptyLines(str: string) {
         return str
             .split('\n')
             .filter((value) => value !== '')
@@ -96,21 +96,21 @@ export class CodeGen {
     }
 
     createTester(): Tester {
-        const body = this.removeEmptyLines(
+        const body = this._removeEmptyLines(
             `
 if (context#.${TesterContextEnum.SETUP}) context#.${TesterContextEnum.SETUP}();
 
 const testFn# = context#.${TesterContextEnum.TEST_FN};
 const workload# = context#.${TesterContextEnum.WORKLOAD};
 
-${this.generatePickArguments()}
+${this._generatePickArguments()}
 
 let return#;
 
 const begin# = process.hrtime();
 for (let i# = 0; i# < context#.${TesterContextEnum.OPS}; i#++) {
     if (workload#) {
-        return# = ${this.generateTestFnCall()};
+        return# = ${this._generateTestFnCall()};
     } else {
         return# = undefined;
     }
@@ -124,6 +124,6 @@ return { elapsed: elapsed#, _internal_return: return# };
         );
 
         // eslint-disable-next-line @typescript-eslint/no-implied-eval
-        return Function(this.interpolate('context#'), this.interpolate(body)) as Tester;
+        return Function(this._interpolate('context#'), this._interpolate(body)) as Tester;
     }
 }

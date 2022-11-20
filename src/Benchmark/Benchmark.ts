@@ -18,7 +18,7 @@ interface ConstructorArgs<T extends TestFn> {
 export interface BenchmarkOptions<T extends TestFn> extends BenchmarkingSettings, BenchmarkTestFnOptions<T> {}
 
 export class Benchmark<T extends TestFn = TestFn> {
-    private static id = 0;
+    private static _staticId = 0;
     private declare readonly _id: number;
 
     private declare readonly _context: BenchmarkContext;
@@ -45,9 +45,9 @@ export class Benchmark<T extends TestFn = TestFn> {
     constructor(name: string, testFn: T, options?: Readonly<BenchmarkOptions<T>>);
 
     constructor(...args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?]) {
-        this._id = ++Benchmark.id;
+        this._id = ++Benchmark._staticId;
 
-        const { name, options, testFn } = this.parseArgs(args);
+        const { name, options, testFn } = this._parseArgs(args);
 
         this._testFnName = FunctionInfo.getFunctionName(testFn);
         this._testArgStore = new ArgumentStore(options.args, options.jitArgs);
@@ -65,7 +65,7 @@ export class Benchmark<T extends TestFn = TestFn> {
         };
     }
 
-    private parseArgs(
+    private _parseArgs(
         args: [T, Readonly<BenchmarkOptions<T>>?] | [string, T, Readonly<BenchmarkOptions<T>>?],
     ): ConstructorArgs<T> {
         if (typeof args[0] === 'string') {

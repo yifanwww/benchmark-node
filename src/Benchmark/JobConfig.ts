@@ -4,7 +4,7 @@ import { BenchmarkRunner } from './BenchmarkRunner';
 import type { BenchmarkTask } from './BenchmarkTask';
 
 export class JobConfig {
-    private static id = 0;
+    private static _staticId = 0;
     protected declare readonly _id: number;
 
     protected declare readonly _runner: BenchmarkRunner;
@@ -13,7 +13,7 @@ export class JobConfig {
     protected declare _cleanup: Optional<() => void>;
 
     protected constructor() {
-        this._id = ++JobConfig.id;
+        this._id = ++JobConfig._staticId;
 
         this._runner = new BenchmarkRunner();
 
@@ -21,7 +21,7 @@ export class JobConfig {
         this._cleanup = null;
     }
 
-    protected run(task: BenchmarkTask): void {
+    run(task: BenchmarkTask): void {
         this._setup?.(...(task.params ?? []));
 
         this._runner.run(task);

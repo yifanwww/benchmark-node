@@ -31,7 +31,7 @@ export class Row {
         this._cells[index] = value;
     }
 
-    protected static renderContent(value: string, col: ColumnInfo) {
+    protected static _renderContent(value: string, col: ColumnInfo) {
         const { align, width } = col;
 
         const len = value.length;
@@ -56,7 +56,7 @@ export class Row {
         const arr: string[] = [];
         for (let i = 0; i < infos.length; i++) {
             const content = renderData(this._cells[i], infos[i].type, infos[i].fractionDigit, this._props.timeUnit);
-            arr.push(Row.renderContent(content, infos[i]));
+            arr.push(Row._renderContent(content, infos[i]));
         }
         return `| ${arr.join(' | ')} |`;
     }
@@ -65,7 +65,7 @@ export class Row {
         return `| ${cols.map((info) => ''.padEnd(info.width, ' ')).join(' | ')} |`;
     }
 
-    private static renderAlignmentCell(col: ColumnInfo) {
+    private static _renderAlignmentCell(col: ColumnInfo) {
         const { align, width } = col;
 
         switch (align) {
@@ -81,6 +81,6 @@ export class Row {
     }
 
     static renderAlignment(cols: readonly ColumnInfo[]): string {
-        return `|${cols.map((info) => Row.renderAlignmentCell(info)).join('|')}|`;
+        return `|${cols.map((info) => Row._renderAlignmentCell(info)).join('|')}|`;
     }
 }
