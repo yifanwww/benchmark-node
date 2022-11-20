@@ -4,7 +4,7 @@ import { CpuInfo } from './CpuInfo';
 
 export class RuntimeInfo {
     /** The version of `benchmark-node`. */
-    static readonly version = '0.8.0-next.0';
+    static readonly version = '0.8.0-next.1';
 
     static readonly versions: Readonly<NodeJS.ProcessVersions> = process.versions;
 
