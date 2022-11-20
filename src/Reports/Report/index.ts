@@ -16,7 +16,9 @@ export abstract class Report<R> {
         this._report = null;
     }
 
-    abstract get report(): R | null;
+    get report(): R | null {
+        return this._report;
+    }
 
     // TODO: should receive a json object which contains all the data this report needs.
     abstract generate(): this;

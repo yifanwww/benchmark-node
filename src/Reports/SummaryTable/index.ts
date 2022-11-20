@@ -22,10 +22,6 @@ export interface SummaryTableData {
 export class SummaryTable extends Report<string> {
     private static readonly _fnColumn = new BaseColumn(ColumnType.FN, 'Function', (stats) => stats.name);
 
-    get report(): string | null {
-        return this._report;
-    }
-
     generate(): this {
         // TODO
 
