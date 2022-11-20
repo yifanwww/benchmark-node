@@ -2,13 +2,15 @@ import { StatisticColumnOrder } from '../Columns';
 import type { StatisticColumn } from '../Columns';
 import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
+import { IndicatorOrder } from '../Indicators';
+import type { IIndicator } from '../Indicators';
 import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import type { BenchmarkResult, Report } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import type { BenchmarkingSettings, TestFn } from '../types';
+import type { BenchmarkingSettings, LooseArray, TestFn } from '../types';
 import type { AnyFn, Optional } from '../types.internal';
 
 import { Benchmark } from './Benchmark';
@@ -22,8 +24,17 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
      *
      * By default the summary table contains the Mean column, Standard Error column and Standard Deviation column,
      * you cannot disable them.
+     *
+     * @deprecated Use `indicators` instead, this field will be deleted since `v0.9.0`.
      */
     columns?: (StatisticColumn | (() => StatisticColumn))[];
+    /**
+     * The indicators specifying what statistic data should be collected and reported.
+     *
+     * Mean indicator, Standard Error indicator and Standard Deviation indicator will be collected and reported by
+     * default, you cannot disable them.
+     */
+    indicators?: (IIndicator | (() => IIndicator))[];
 }
 
 export class BenchmarkJob extends JobConfig {
@@ -36,6 +47,8 @@ export class BenchmarkJob extends JobConfig {
 
     private declare readonly _settings: Settings;
 
+    private declare readonly _indicatorOrder: IndicatorOrder;
+    /** @deprecated This field will be deleted since `v0.9.0`. */
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
     private declare readonly _reports: Report<unknown>[];
@@ -50,9 +63,10 @@ export class BenchmarkJob extends JobConfig {
         this._setupCount = 0;
         this._cleanupCount = 0;
 
+        this._indicatorOrder = new IndicatorOrder();
         this._statsColumnOrder = new StatisticColumnOrder();
 
-        const { columns, ...settings } = options ?? {};
+        const { columns, indicators, ...settings } = options ?? {};
 
         this._settings = Settings.from(settings);
 
@@ -61,11 +75,12 @@ export class BenchmarkJob extends JobConfig {
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
         }
-    }
 
-    setColumnOrder(order: StatisticColumn[]): this {
-        this._statsColumnOrder.addOrder(order);
-        return this;
+        if (indicators) {
+            this.addIndicator(
+                indicators.map((indicator) => (typeof indicator === 'function' ? indicator() : indicator)),
+            );
+        }
     }
 
     add<T extends TestFn>(bench: Benchmark<T>): this;
@@ -137,6 +152,21 @@ export class BenchmarkJob extends JobConfig {
         return this;
     }
 
+    /**
+     * @deprecated Use `addIndicator` instead. This method will be deleted since `v0.9.0`.
+     *
+     * NOTE: `addIndicator` has high priority than this method, this method will do nothing once you use `addIndicator`.
+     */
+    setColumnOrder(order: StatisticColumn[]): this {
+        this._statsColumnOrder.addOrder(order);
+        return this;
+    }
+
+    addIndicator(indicators: LooseArray<IIndicator>): this {
+        this._indicatorOrder.add(indicators);
+        return this;
+    }
+
     addReport(report: Report<unknown>): this {
         this._reports.push(report);
         return this;
@@ -183,7 +213,9 @@ export class BenchmarkJob extends JobConfig {
 
         const result: BenchmarkResult = {
             argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-            columns: this._statsColumnOrder.getOrder(),
+            indicators: this._indicatorOrder.isCustomized()
+                ? this._indicatorOrder.getOrder()
+                : this._statsColumnOrder.getOrder().map((column) => column.toIndicator()),
             paramNames: this._paramStore?.names ?? [],
             statisticGroups: tasks.map((task) => task.stats),
         };

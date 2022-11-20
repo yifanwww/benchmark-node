@@ -1,10 +1,18 @@
 import crypto from 'crypto';
 
-import { BenchmarkJob, Column } from '../../src';
+import { BenchmarkJob, StatisticIndicator } from '../../src';
 
 let testStr: Buffer;
 
-new BenchmarkJob({ columns: [Column.Min, Column.Q1, Column.Median, Column.Q3, Column.Max] })
+new BenchmarkJob({
+    indicators: [
+        StatisticIndicator.Min,
+        StatisticIndicator.Q1,
+        StatisticIndicator.Median,
+        StatisticIndicator.Q3,
+        StatisticIndicator.Max,
+    ],
+})
     .setSetup(() => {
         testStr = crypto.randomBytes(10_000);
     })
@@ -13,12 +21,12 @@ new BenchmarkJob({ columns: [Column.Min, Column.Q1, Column.Median, Column.Q3, Co
     .run();
 
 /*
-BenchmarkNode v0.7.2, Windows 10.0.22000
+BenchmarkNode v0.8.0-next.0, Windows 10.0.22000
 AMD Ryzen 7 5800H with Radeon Graphics, 1 CPU, 16 logical and 8 plysical cores
-Node.JS 16.13.0 (V8 9.4.146.19-node.13)
+Node.JS 16.17.1 (V8 9.4.146.26-node.22)
 
 | Function |      Mean |     Error |    StdDev |       Min |        Q1 |    Median |        Q3 |       Max |
 |---------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|----------:|
-|      md5 | 13.121 us | 0.1362 us | 0.2460 us | 12.610 us | 13.143 us | 13.255 us | 13.298 us | 13.340 us |
-|   sha256 |  6.460 us | 0.0498 us | 0.0899 us |  6.372 us |  6.393 us |  6.459 us |  6.486 us |  6.672 us |
+|      md5 | 12.778 us | 0.2586 us | 0.4670 us | 12.314 us | 12.417 us | 12.522 us | 13.288 us | 13.465 us |
+|   sha256 |  6.294 us | 0.0689 us | 0.1244 us |  6.215 us |  6.236 us |  6.245 us |  6.284 us |  6.596 us |
  */
