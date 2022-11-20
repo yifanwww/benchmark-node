@@ -1,4 +1,11 @@
 # CHANGELOG
+## benchmark-node v0.8.0 (Unreleased)
+### Features
+
+### Bug Fixes
+
+- Export `BenchmarkOptions` and `BenchmarkJobOptions`
+
 ## benchmark-node v0.7.2 (2022-09-23)
 ### Notable Changes
 
