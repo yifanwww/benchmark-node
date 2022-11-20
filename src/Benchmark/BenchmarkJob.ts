@@ -7,8 +7,7 @@ import type { IIndicator } from '../Indicators';
 import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
-import type { BenchmarkResult, Report } from '../Reports';
-import { RuntimeInfo } from '../RuntimeInfo';
+import type { BenchmarkResult, Reporter } from '../Reports';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { BenchmarkingSettings, LooseArray, TestFn } from '../types';
 import type { AnyFn, Optional } from '../types.internal';
@@ -51,7 +50,7 @@ export class BenchmarkJob extends JobConfig {
     /** @deprecated This field will be deleted since `v0.9.0`. */
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
-    private declare readonly _reports: Report<unknown>[];
+    private declare readonly reporters: Reporter<unknown>[];
 
     constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
@@ -70,7 +69,7 @@ export class BenchmarkJob extends JobConfig {
 
         this._settings = Settings.from(settings);
 
-        this._reports = [];
+        this.reporters = [];
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
@@ -167,8 +166,8 @@ export class BenchmarkJob extends JobConfig {
         return this;
     }
 
-    addReport(report: Report<unknown>): this {
-        this._reports.push(report);
+    addReport(reporter: Reporter<unknown>): this {
+        this.reporters.push(reporter);
         return this;
     }
 
@@ -207,8 +206,6 @@ export class BenchmarkJob extends JobConfig {
 
         logger.writeLineHeader('* Summary *\n');
 
-        RuntimeInfo.log();
-
         // generate reports
 
         const result: BenchmarkResult = {
@@ -220,11 +217,17 @@ export class BenchmarkJob extends JobConfig {
             statisticGroups: tasks.map((task) => task.stats),
         };
 
-        const table = new SummaryTable();
-        table.generate(result);
-        logger.writeLineStatistic(table.report!);
+        {
+            const reporter = new SummaryTable();
+            const report = reporter.generate(result).report!;
+            logger.writeLineInfo(report.runtime!);
+            logger.writeLine();
+            logger.writeLineStatistic(report.table);
+            logger.writeLine();
+            logger.writeLineStatistic(report.description!);
+        }
 
-        for (const report of this._reports) {
+        for (const report of this.reporters) {
             report.generate(result);
         }
     }
