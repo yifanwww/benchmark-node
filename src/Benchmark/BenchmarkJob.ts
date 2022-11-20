@@ -5,7 +5,7 @@ import { FunctionInfo } from '../Function';
 import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
-import type { Report } from '../Reports';
+import type { BenchmarkResult, Report } from '../Reports';
 import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { BenchmarkingSettings, TestFn } from '../types';
@@ -179,30 +179,21 @@ export class BenchmarkJob extends JobConfig {
 
         RuntimeInfo.log();
 
-        const table = new SummaryTable();
-        table.temporary_generate({
+        // generate reports
+
+        const result: BenchmarkResult = {
             argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
             columns: this._statsColumnOrder.getOrder(),
             paramNames: this._paramStore?.names ?? [],
-            statsGroups: tasks.map((task) => task.stats),
-        });
+            statisticGroups: tasks.map((task) => task.stats),
+        };
+
+        const table = new SummaryTable();
+        table.generate(result);
         logger.writeLineStatistic(table.report!);
 
-        // generate reports
-
         for (const report of this._reports) {
-            if (report instanceof SummaryTable) {
-                // won't check the instance type once finishing `generate` design
-
-                report.temporary_generate({
-                    argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-                    columns: this._statsColumnOrder.getOrder(),
-                    paramNames: this._paramStore?.names ?? [],
-                    statsGroups: tasks.map((task) => task.stats),
-                });
-            } else {
-                report.generate();
-            }
+            report.generate(result);
         }
     }
 
