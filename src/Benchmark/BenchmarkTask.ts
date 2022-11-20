@@ -90,7 +90,7 @@ export class BenchmarkTask {
 
         const logger = ConsoleLogger.default;
         logger.writeLineInfo('Benchmark Environment Information:');
-        logger.writeLineInfo(`  Node.js ${RuntimeInfo.node} (V8 ${RuntimeInfo.v8})`);
+        logger.writeLineInfo(`  Node.js ${RuntimeInfo.versions.node} (V8 ${RuntimeInfo.versions.v8})`);
         logger.writeLineInfo('Benchmark Configuration:');
         logger.writeLineInfo(`  delay               : ${Formatter.beautifyNumber(delay)} ns`);
         logger.writeLineInfo(`  initial ops         : ${Formatter.beautifyNumber(initOps)}`);

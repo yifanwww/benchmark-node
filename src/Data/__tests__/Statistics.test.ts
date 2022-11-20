@@ -7,7 +7,7 @@ describe(`Test class \`${Statistics.name}\``, () => {
 
         expect(stats).toMatchSnapshot();
 
-        expect(stats.name).toMatchSnapshot();
+        expect(stats.fnName).toMatchSnapshot();
         expect(stats.args).toMatchSnapshot();
         expect(stats.n).toMatchSnapshot();
         expect(stats.mean).toMatchSnapshot();

@@ -29,7 +29,9 @@ function getColumnType(level: ConfidenceLevel): ColumnType {
     }
 }
 
+/** @deprecated Use `StatisticIndicator` instead. This will be deleted since `v0.9.0`. */
 export class Column {
+    /** @deprecated Use `StatisticIndicator.Mean` instead. This will be deleted since `v0.9.0`. */
     static readonly Mean = new StatisticColumn(
         ColumnType.MEAN,
         'Mean',
@@ -38,6 +40,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Error` instead. This will be deleted since `v0.9.0`. */
     static readonly Error = new StatisticColumn(
         ColumnType.ERROR,
         'Error',
@@ -46,6 +49,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.StdDev` instead. This will be deleted since `v0.9.0`. */
     static readonly StdDev = new StatisticColumn(
         ColumnType.STD_DEV,
         'StdDev',
@@ -54,6 +58,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.StdErr` instead. This will be deleted since `v0.9.0`. */
     static readonly StdErr = new StatisticColumn(
         ColumnType.STD_ERR,
         'StdErr',
@@ -62,6 +67,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Min` instead. This will be deleted since `v0.9.0`. */
     static readonly Min = new StatisticColumn(
         ColumnType.MIN,
         'Min',
@@ -70,6 +76,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Q1` instead. This will be deleted since `v0.9.0`. */
     static readonly Q1 = new StatisticColumn(
         ColumnType.Q1,
         'Q1',
@@ -78,6 +85,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Median` instead. This will be deleted since `v0.9.0`. */
     static readonly Median = new StatisticColumn(
         ColumnType.MEDIAN,
         'Median',
@@ -86,6 +94,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Q3` instead. This will be deleted since `v0.9.0`. */
     static readonly Q3 = new StatisticColumn(
         ColumnType.Q3,
         'Q3',
@@ -94,6 +103,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Max` instead. This will be deleted since `v0.9.0`. */
     static readonly Max = new StatisticColumn(
         ColumnType.MAX,
         'Max',
@@ -102,6 +112,7 @@ export class Column {
         UnitType.TIME,
     );
 
+    /** @deprecated Use `StatisticIndicator.Ops` instead. This will be deleted since `v0.9.0`. */
     static readonly Ops = new StatisticColumn(
         ColumnType.OPS,
         'Op/s',
@@ -110,6 +121,7 @@ export class Column {
         UnitType.DIMENSIONLESS,
     );
 
+    /** @deprecated Use `StatisticIndicator.CIError` instead. This will be deleted since `v0.9.0`. */
     static CIError(level: ConfidenceLevel = ConfidenceLevel.L95) {
         return new StatisticColumn(
             getColumnType(level),
@@ -120,6 +132,7 @@ export class Column {
         );
     }
 
+    /** @deprecated Use `StatisticIndicator.Iterations` instead. This will be deleted since `v0.9.0`. */
     static readonly Iterations = new StatisticColumn(
         ColumnType.ITERATIONS,
         'Iterations',

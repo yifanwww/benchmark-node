@@ -1,2 +1,2 @@
-export * from './Report';
+export * from './Reporter';
 export * from './SummaryTable';

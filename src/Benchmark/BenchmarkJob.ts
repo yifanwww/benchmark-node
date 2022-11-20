@@ -2,13 +2,14 @@ import { StatisticColumnOrder } from '../Columns';
 import type { StatisticColumn } from '../Columns';
 import { Settings } from '../Data';
 import { FunctionInfo } from '../Function';
+import { IndicatorOrder } from '../Indicators';
+import type { IIndicator } from '../Indicators';
 import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
-import type { Report } from '../Reports';
-import { RuntimeInfo } from '../RuntimeInfo';
+import type { BenchmarkResult, Reporter } from '../Reports';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import type { BenchmarkingSettings, TestFn } from '../types';
+import type { BenchmarkingSettings, LooseArray, TestFn } from '../types';
 import type { AnyFn, Optional } from '../types.internal';
 
 import { Benchmark } from './Benchmark';
@@ -22,8 +23,17 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
      *
      * By default the summary table contains the Mean column, Standard Error column and Standard Deviation column,
      * you cannot disable them.
+     *
+     * @deprecated Use `indicators` instead, this field will be deleted since `v0.9.0`.
      */
     columns?: (StatisticColumn | (() => StatisticColumn))[];
+    /**
+     * The indicators specifying what statistic data should be collected and reported.
+     *
+     * Mean indicator, Standard Error indicator and Standard Deviation indicator will be collected and reported by
+     * default, you cannot disable them.
+     */
+    indicators?: (IIndicator | (() => IIndicator))[];
 }
 
 export class BenchmarkJob extends JobConfig {
@@ -36,9 +46,11 @@ export class BenchmarkJob extends JobConfig {
 
     private declare readonly _settings: Settings;
 
+    private declare readonly _indicatorOrder: IndicatorOrder;
+    /** @deprecated This field will be deleted since `v0.9.0`. */
     private declare readonly _statsColumnOrder: StatisticColumnOrder;
 
-    private declare readonly _reports: Report<unknown>[];
+    private declare readonly reporters: Reporter<unknown>[];
 
     constructor(options?: Readonly<BenchmarkJobOptions>) {
         super();
@@ -50,22 +62,24 @@ export class BenchmarkJob extends JobConfig {
         this._setupCount = 0;
         this._cleanupCount = 0;
 
+        this._indicatorOrder = new IndicatorOrder();
         this._statsColumnOrder = new StatisticColumnOrder();
 
-        const { columns, ...settings } = options ?? {};
+        const { columns, indicators, ...settings } = options ?? {};
 
         this._settings = Settings.from(settings);
 
-        this._reports = [];
+        this.reporters = [];
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
         }
-    }
 
-    setColumnOrder(order: StatisticColumn[]): this {
-        this._statsColumnOrder.addOrder(order);
-        return this;
+        if (indicators) {
+            this.addIndicator(
+                indicators.map((indicator) => (typeof indicator === 'function' ? indicator() : indicator)),
+            );
+        }
     }
 
     add<T extends TestFn>(bench: Benchmark<T>): this;
@@ -137,8 +151,23 @@ export class BenchmarkJob extends JobConfig {
         return this;
     }
 
-    addReport(report: Report<unknown>): this {
-        this._reports.push(report);
+    /**
+     * @deprecated Use `addIndicator` instead. This method will be deleted since `v0.9.0`.
+     *
+     * NOTE: `addIndicator` has high priority than this method, this method will do nothing once you use `addIndicator`.
+     */
+    setColumnOrder(order: StatisticColumn[]): this {
+        this._statsColumnOrder.addOrder(order);
+        return this;
+    }
+
+    addIndicator(indicators: LooseArray<IIndicator>): this {
+        this._indicatorOrder.add(indicators);
+        return this;
+    }
+
+    addReport(reporter: Reporter<unknown>): this {
+        this.reporters.push(reporter);
         return this;
     }
 
@@ -177,32 +206,29 @@ export class BenchmarkJob extends JobConfig {
 
         logger.writeLineHeader('* Summary *\n');
 
-        RuntimeInfo.log();
-
-        const table = new SummaryTable();
-        table.temporary_generate({
-            argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-            columns: this._statsColumnOrder.getOrder(),
-            paramNames: this._paramStore?.names ?? [],
-            statsGroups: tasks.map((task) => task.stats),
-        });
-        logger.writeLineStatistic(table.report!);
-
         // generate reports
 
-        for (const report of this._reports) {
-            if (report instanceof SummaryTable) {
-                // won't check the instance type once finishing `generate` design
+        const result: BenchmarkResult = {
+            argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
+            indicators: this._indicatorOrder.isCustomized()
+                ? this._indicatorOrder.getOrder()
+                : this._statsColumnOrder.getOrder().map((column) => column.toIndicator()),
+            paramNames: this._paramStore?.names ?? [],
+            statisticGroups: tasks.map((task) => task.stats),
+        };
 
-                report.temporary_generate({
-                    argLen: Math.max(...this._benchs.map((bench) => bench.testArgStore.argsLength)),
-                    columns: this._statsColumnOrder.getOrder(),
-                    paramNames: this._paramStore?.names ?? [],
-                    statsGroups: tasks.map((task) => task.stats),
-                });
-            } else {
-                report.generate();
-            }
+        {
+            const reporter = new SummaryTable();
+            const report = reporter.generate(result).report!;
+            logger.writeLineInfo(report.runtime!);
+            logger.writeLine();
+            logger.writeLineStatistic(report.table);
+            logger.writeLine();
+            logger.writeLineStatistic(report.description!);
+        }
+
+        for (const report of this.reporters) {
+            report.generate(result);
         }
     }
 

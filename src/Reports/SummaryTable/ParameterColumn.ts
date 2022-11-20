@@ -1,11 +1,10 @@
-import { Formatter } from '../Tools/Formatter';
+import { Formatter } from '../../Tools/Formatter';
 
-import { BaseColumn } from './BaseColumn';
-import { ColumnType } from './ColumnType';
+import { Column } from './Column';
 
-export class ParameterColumn extends BaseColumn<string> {
+export class ParameterColumn extends Column {
     constructor(title: string, index: number) {
-        super(ColumnType.PARAMETER, title, (stats) => {
+        super(title, (stats) => {
             const param = stats.params![index];
 
             const typeofParam = typeof param;
