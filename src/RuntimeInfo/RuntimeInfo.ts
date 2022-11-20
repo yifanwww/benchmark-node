@@ -1,26 +1,16 @@
 import os from 'os';
 
-import { ConsoleLogger } from '../Tools/ConsoleLogger';
-import type { Optional } from '../types.internal';
-
 import { CpuInfo } from './CpuInfo';
 
 export class RuntimeInfo {
+    /** The version of `benchmark-node`. */
     static readonly version = '0.8.0-next.0';
 
-    static readonly node = process.versions.node;
-    static readonly v8 = process.versions.v8;
+    static readonly versions: Readonly<NodeJS.ProcessVersions> = process.versions;
 
     static readonly platform = RuntimeInfo.getPlatform();
 
-    private static _cpu: Optional<CpuInfo> = null;
-
-    static get cpu(): CpuInfo {
-        if (RuntimeInfo._cpu === null) {
-            RuntimeInfo._cpu = new CpuInfo();
-        }
-        return RuntimeInfo._cpu;
-    }
+    static readonly cpu = CpuInfo.instance;
 
     private static getPlatform() {
         switch (process.platform) {
@@ -34,13 +24,5 @@ export class RuntimeInfo {
             default:
                 return 'unknown';
         }
-    }
-
-    static log() {
-        const logger = ConsoleLogger.default;
-        logger.writeLineInfo(`BenchmarkNode v${RuntimeInfo.version}, ${RuntimeInfo.platform}`);
-        logger.writeLineInfo(RuntimeInfo.cpu.toString());
-        logger.writeLineInfo(`Node.JS ${RuntimeInfo.node} (V8 ${RuntimeInfo.v8})`);
-        logger.writeLine();
     }
 }

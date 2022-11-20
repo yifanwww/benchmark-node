@@ -8,7 +8,6 @@ import type { MapToParams } from '../Parameterization';
 import { ParameterStore, ParameterStoreView } from '../ParameterizationStore';
 import { SummaryTable } from '../Reports';
 import type { BenchmarkResult, Report } from '../Reports';
-import { RuntimeInfo } from '../RuntimeInfo';
 import { ConsoleLogger } from '../Tools/ConsoleLogger';
 import type { BenchmarkingSettings, LooseArray, TestFn } from '../types';
 import type { AnyFn, Optional } from '../types.internal';
@@ -207,8 +206,6 @@ export class BenchmarkJob extends JobConfig {
 
         logger.writeLineHeader('* Summary *\n');
 
-        RuntimeInfo.log();
-
         // generate reports
 
         const result: BenchmarkResult = {
@@ -221,8 +218,12 @@ export class BenchmarkJob extends JobConfig {
         };
 
         const table = new SummaryTable();
-        table.generate(result);
-        logger.writeLineStatistic(table.report!);
+        const tableReport = table.generate(result).report!;
+        logger.writeLineInfo(tableReport.runtime!);
+        logger.writeLine();
+        logger.writeLineStatistic(tableReport.table);
+        logger.writeLine();
+        logger.writeLineStatistic(tableReport.description!);
 
         for (const report of this._reports) {
             report.generate(result);

@@ -1,5 +1,8 @@
 import { StatisticIndicator } from '../../Indicators';
+import type { IIndicator } from '../../Indicators';
+import { RuntimeInfo } from '../../RuntimeInfo';
 import { TimeUnitHelper } from '../../Tools/TimeUnit';
+import type { TimeUnit } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
 import { Report } from '../Report';
 import type { BenchmarkResult, ReportOptions } from '../Report';
@@ -11,8 +14,34 @@ import { ParameterColumn } from './ParameterColumn';
 
 export interface SummaryTableOptions extends ReportOptions {}
 
-export class SummaryTable extends Report<string> {
+export interface SummaryTableReport {
+    description: string | undefined;
+    runtime: string | undefined;
+    table: string;
+}
+
+export class SummaryTable extends Report<SummaryTableReport> {
     private static readonly fnColumn = new Column('Function', (stats) => stats.fnName);
+
+    private generateRuntimeInfo(): string {
+        return [
+            `BenchmarkNode v${RuntimeInfo.version}, ${RuntimeInfo.platform}`,
+            RuntimeInfo.cpu.toString(),
+            `Node.JS ${RuntimeInfo.versions.node} (V8 ${RuntimeInfo.versions.v8})`,
+        ].join('\n');
+    }
+
+    private generateDescription(indicators: readonly IIndicator[], timeUnit: TimeUnit): string {
+        const maxLen = indicators.reduce((prev, curr) => Math.max(prev, curr.indicatorName.length), 0);
+
+        const description = [
+            'Description:',
+            ...indicators.map((indicator) => `- ${indicator.indicatorName.padEnd(maxLen)}: ${indicator.legend}`),
+            `- ${TimeUnitHelper.getFullDescription(timeUnit, maxLen)}`,
+        ];
+
+        return description.join('\n');
+    }
 
     generate(result: BenchmarkResult): this {
         const { argLen, indicators, paramNames, statisticGroups } = result;
@@ -63,23 +92,15 @@ export class SummaryTable extends Report<string> {
             }
         }
 
+        table.chooseTimeUnit(table.findColumn(StatisticIndicator.Mean.indicatorName));
+
         // generate report
 
-        const report: string[] = [];
-
-        table.chooseTimeUnit(table.findColumn(StatisticIndicator.Mean.indicatorName));
-        report.push(table.render());
-
-        if (this._description) {
-            report.push('\nDescription:');
-            const maxLen = indicators.reduce((prev, curr) => Math.max(prev, curr.indicatorName.length), 0);
-            for (const indicator of indicators) {
-                report.push(`- ${indicator.indicatorName.padEnd(maxLen)}: ${indicator.legend}`);
-            }
-            report.push(`- ${TimeUnitHelper.getFullDescription(table.timeUnit, maxLen)}`);
-        }
-
-        this._report = report.join('\n');
+        this._report = {
+            description: !this.descriptionFlag ? undefined : this.generateDescription(indicators, table.timeUnit),
+            runtime: !this.runtimeFlag ? undefined : this.generateRuntimeInfo(),
+            table: table.render(),
+        };
 
         return this;
     }

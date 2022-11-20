@@ -3,6 +3,15 @@ import os from 'os';
 import { exec } from '../Tools/exec';
 
 export class CpuInfo {
+    private static _instance: CpuInfo | null;
+
+    static get instance(): CpuInfo {
+        if (!this._instance) {
+            this._instance = new CpuInfo();
+        }
+        return this._instance;
+    }
+
     declare readonly name: string;
     declare readonly processors: number;
     declare readonly logicalCores: number;
