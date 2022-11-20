@@ -1,11 +1,10 @@
-import { Formatter } from '../Tools/Formatter';
+import { Formatter } from '../../Tools/Formatter';
 
-import { BaseColumn } from './BaseColumn';
-import { ColumnType } from './ColumnType';
+import { Column } from './Column';
 
-export class ArgumentColumn extends BaseColumn<string> {
+export class ArgumentColumn extends Column {
     constructor(index: number) {
-        super(ColumnType.FN_ARGUMENT, `arg ${index}`, (stats) => {
+        super(`arg ${index}`, (stats) => {
             const args = stats.args?.args;
 
             if (!args || index >= args.length) {
