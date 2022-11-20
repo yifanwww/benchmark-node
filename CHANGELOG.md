@@ -2,9 +2,21 @@
 ## benchmark-node v0.8.0 (Unreleased)
 ### Features
 
+- Users can build custom indicators by implementing `IIndicator` interface
+- Users can build custom reporters by inheriting `Reporter` class
+- `RuntimeInfo` is accessible now
+
+### Deprecating Changes
+
+- Deprecate `Column` and `StatisticColumn`, use `StatisticIndicator` instead
+- Deprecate `BenchmarkJobOptions.columns`, use `BenchmarkJobOptions.indicators` instead
+- Deprecate `BenchmarkJob.prototype.setColumnOrder`, use `BenchmarkJob.prototype.addIndicator` instead
+
+### Breaking Changes
+
 ### Bug Fixes
 
-- Export `BenchmarkOptions` and `BenchmarkJobOptions`
+- Missing exports `BenchmarkOptions` and `BenchmarkJobOptions`
 
 ## benchmark-node v0.7.2 (2022-09-23)
 ### Notable Changes
