@@ -24,8 +24,17 @@ export interface BenchmarkJobOptions extends BenchmarkingSettings {
      *
      * By default the summary table contains the Mean column, Standard Error column and Standard Deviation column,
      * you cannot disable them.
+     *
+     * @deprecated Use `indicators` instead, this field will be deleted since `v0.9.0`.
      */
     columns?: (StatisticColumn | (() => StatisticColumn))[];
+    /**
+     * The indicators specifying what statistic data should be collected and reported.
+     *
+     * Mean indicator, Standard Error indicator and Standard Deviation indicator will be collected and reported by
+     * default, you cannot disable them.
+     */
+    indicators?: (IIndicator | (() => IIndicator))[];
 }
 
 export class BenchmarkJob extends JobConfig {
@@ -57,7 +66,7 @@ export class BenchmarkJob extends JobConfig {
         this._indicatorOrder = new IndicatorOrder();
         this._statsColumnOrder = new StatisticColumnOrder();
 
-        const { columns, ...settings } = options ?? {};
+        const { columns, indicators, ...settings } = options ?? {};
 
         this._settings = Settings.from(settings);
 
@@ -65,6 +74,12 @@ export class BenchmarkJob extends JobConfig {
 
         if (columns) {
             this.setColumnOrder(columns.map((column) => (typeof column === 'function' ? column() : column)));
+        }
+
+        if (indicators) {
+            this.addIndicator(
+                indicators.map((indicator) => (typeof indicator === 'function' ? indicator() : indicator)),
+            );
         }
     }
 

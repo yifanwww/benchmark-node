@@ -1,10 +1,12 @@
 import crypto from 'crypto';
 
-import { BenchmarkJob, Column, Params } from '../src';
+import { BenchmarkJob, Params, StatisticIndicator } from '../src';
 
 let buffer: Buffer;
 
-new BenchmarkJob({ columns: [Column.Median, Column.Min, Column.Max, Column.Ops] })
+new BenchmarkJob({
+    indicators: [StatisticIndicator.Median, StatisticIndicator.Min, StatisticIndicator.Max, StatisticIndicator.Ops],
+})
     .setSetup(
         (size: number) => {
             buffer = crypto.randomBytes(size);

@@ -36,7 +36,7 @@ export class StatisticIndicator implements IIndicator {
 
     static readonly Q1 = new StatisticIndicator(Indicator.Q1, 'Quartile 1 (25th percentile)', (stats) => stats.q1);
 
-    static readonly Mediam = new StatisticIndicator(
+    static readonly Median = new StatisticIndicator(
         Indicator.MEDIAN,
         'Value separating the higher half of all measurements (50th percentile)',
         (stats) => stats.median,

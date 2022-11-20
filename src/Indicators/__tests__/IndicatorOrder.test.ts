@@ -16,15 +16,15 @@ describe(`Test method \`${IndicatorOrder.name}.prototype.${IndicatorOrder.protot
         const order = new IndicatorOrder();
         order.add(StatisticIndicator.Min);
         order.add([StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev]);
-        order.add([StatisticIndicator.Mediam, StatisticIndicator.Min, StatisticIndicator.Max]);
-        order.add([StatisticIndicator.Mediam, StatisticIndicator.Max, StatisticIndicator.Min]);
-        order.add([StatisticIndicator.Q1, StatisticIndicator.Mediam, StatisticIndicator.Q3]);
+        order.add([StatisticIndicator.Median, StatisticIndicator.Min, StatisticIndicator.Max]);
+        order.add([StatisticIndicator.Median, StatisticIndicator.Max, StatisticIndicator.Min]);
+        order.add([StatisticIndicator.Q1, StatisticIndicator.Median, StatisticIndicator.Q3]);
         expect(order.getOrder()).toStrictEqual([
             StatisticIndicator.Mean,
             StatisticIndicator.Error,
             StatisticIndicator.StdDev,
             StatisticIndicator.Min,
-            StatisticIndicator.Mediam,
+            StatisticIndicator.Median,
             StatisticIndicator.Max,
             StatisticIndicator.Q1,
             StatisticIndicator.Q3,
