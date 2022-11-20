@@ -4,15 +4,15 @@ import { RuntimeInfo } from '../../RuntimeInfo';
 import { TimeUnitHelper } from '../../Tools/TimeUnit';
 import type { TimeUnit } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
-import { Report } from '../Report';
-import type { BenchmarkResult, ReportOptions } from '../Report';
+import { Reporter } from '../Reporter';
+import type { BenchmarkResult, ReporterOptions } from '../Reporter';
 import { ColumnAlign, createColumnInfo, Table } from '../Table';
 
 import { ArgumentColumn } from './ArgumentColumn';
 import { Column } from './Column';
 import { ParameterColumn } from './ParameterColumn';
 
-export interface SummaryTableOptions extends ReportOptions {}
+export interface SummaryTableOptions extends ReporterOptions {}
 
 export interface SummaryTableReport {
     description: string | undefined;
@@ -20,7 +20,7 @@ export interface SummaryTableReport {
     table: string;
 }
 
-export class SummaryTable extends Report<SummaryTableReport> {
+export class SummaryTable extends Reporter<SummaryTableReport> {
     private static readonly fnColumn = new Column('Function', (stats) => stats.fnName);
 
     private generateRuntimeInfo(): string {

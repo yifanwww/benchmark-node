@@ -1,6 +1,6 @@
 import type { BenchmarkResult } from './types';
 
-export interface ReportOptions {
+export interface ReporterOptions {
     /**
      * Specifies whether to generate report with descriptions. Enabled by default.
      */
@@ -11,13 +11,13 @@ export interface ReportOptions {
     runtime?: boolean;
 }
 
-export abstract class Report<R> {
+export abstract class Reporter<R> {
     protected declare readonly descriptionFlag: boolean;
     protected declare readonly runtimeFlag: boolean;
 
     protected declare _report: R | null;
 
-    constructor(options?: ReportOptions) {
+    constructor(options?: ReporterOptions) {
         this.descriptionFlag = options?.description ?? true;
         this.runtimeFlag = options?.runtime ?? true;
 
