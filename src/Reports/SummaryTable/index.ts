@@ -1,40 +1,18 @@
 import { ArgumentColumn, BaseColumn, Column, ColumnType, ParameterColumn } from '../../Columns';
 import type { StatisticColumn } from '../../Columns';
-import type { Statistics } from '../../Data';
 import { TimeUnitHelper } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
 import { Report } from '../Report';
-import type { ReportOptions } from '../Report';
+import type { BenchmarkResult, ReportOptions } from '../Report';
 import { ColumnAlign, createColumnInfo, Table } from '../Table';
 
 export interface SummaryTableOptions extends ReportOptions {}
 
-/**
- * @deprecated The temporary interface to describe data.
- */
-export interface SummaryTableData {
-    argLen: number;
-    columns: readonly StatisticColumn[];
-    paramNames: readonly string[];
-    statsGroups: ReadonlyArray<readonly Statistics[]>;
-}
-
 export class SummaryTable extends Report<string> {
-    private static readonly _fnColumn = new BaseColumn(ColumnType.FN, 'Function', (stats) => stats.name);
+    private static readonly _fnColumn = new BaseColumn(ColumnType.FN, 'Function', (stats) => stats.fnName);
 
-    get report(): string | null {
-        return this._report;
-    }
-
-    generate(): this {
-        // TODO
-
-        return this;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    temporary_generate(data: SummaryTableData): this {
-        const { argLen, columns, paramNames, statsGroups } = data;
+    generate(result: BenchmarkResult): this {
+        const { argLen, columns, paramNames, statisticGroups } = result;
 
         const table = new Table();
         table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
@@ -74,8 +52,8 @@ export class SummaryTable extends Report<string> {
 
         const helpers = [SummaryTable._fnColumn, ...paramColumns, ...argColumns, ...statsColumns];
 
-        for (let groupId = 0; groupId < statsGroups.length; groupId++) {
-            const group = statsGroups[groupId];
+        for (let groupId = 0; groupId < statisticGroups.length; groupId++) {
+            const group = statisticGroups[groupId];
             for (let i = 0; i < group.length; i++) {
                 for (let j = 0; j < helpers.length; j++) {
                     table.setCell([groupId, i], j, helpers[j].getData(group[i]) as never);

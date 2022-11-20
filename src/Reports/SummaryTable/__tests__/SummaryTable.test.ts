@@ -6,16 +6,15 @@ import { SummaryTable } from '../index';
 describe(`Test class \`${SummaryTable.name}\``, () => {
     it('renders a simple table 1', () => {
         const table = new SummaryTable();
-        table.temporary_generate({
+        table.generate({
             argLen: 0,
             columns: [Column.Mean, Column.Error, Column.StdDev],
             paramNames: [],
-            statsGroups: [
+            statisticGroups: [
                 [new Statistics('fn 1', constantsTestTool.measurements.slice(), constantsTestTool.ops, [])],
                 [new Statistics('fn 2', constantsTestTool.measurements.slice(), constantsTestTool.ops, [])],
             ],
         });
-        table.generate();
 
         expect(table.report).toBe(
             `| Function |      Mean |     Error |    StdDev |
@@ -33,18 +32,17 @@ Description:
 
     it('renders a simple table 2', () => {
         const table = new SummaryTable();
-        table.temporary_generate({
+        table.generate({
             argLen: 0,
             columns: [Column.Mean, Column.Error, Column.StdDev],
             paramNames: [],
-            statsGroups: [
+            statisticGroups: [
                 [
                     new Statistics('fn 1', constantsTestTool.measurements.slice(), constantsTestTool.ops, []),
                     new Statistics('fn 2', constantsTestTool.measurements.slice(), constantsTestTool.ops, []),
                 ],
             ],
         });
-        table.generate();
 
         expect(table.report).toBe(`| Function |      Mean |     Error |    StdDev |
 |---------:|----------:|----------:|----------:|
@@ -60,11 +58,11 @@ Description:
 
     it('renders a complex table', () => {
         const table = new SummaryTable();
-        table.temporary_generate({
+        table.generate({
             argLen: 2,
             columns: [Column.Mean, Column.Error, Column.StdDev],
             paramNames: [],
-            statsGroups: [
+            statisticGroups: [
                 [
                     new Statistics('fn 1', constantsTestTool.measurements.slice(), constantsTestTool.ops, []),
                     new Statistics('fn 2', constantsTestTool.measurements.slice(), constantsTestTool.ops, []),
@@ -79,7 +77,6 @@ Description:
                 ],
             ],
         });
-        table.generate();
 
         expect(table.report).toBe(`| Function | arg 0 | arg 1 |      Mean |     Error |    StdDev |
 |---------:|------:|------:|----------:|----------:|----------:|

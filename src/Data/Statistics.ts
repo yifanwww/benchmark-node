@@ -8,7 +8,7 @@ import type { Optional } from '../types.internal';
  * Class for stats including mean, margin or error, and standard deviation.
  */
 export class Statistics {
-    private declare _name: string;
+    private declare _fnName: string;
 
     private declare _params: Optional<readonly unknown[]>;
     private declare _args?: Arguments;
@@ -31,8 +31,9 @@ export class Statistics {
 
     private declare _ops: number;
 
-    get name() {
-        return this._name;
+    /** The function name. */
+    get fnName() {
+        return this._fnName;
     }
 
     get params() {
@@ -116,7 +117,7 @@ export class Statistics {
         params: Optional<readonly unknown[]>,
         args?: Arguments,
     ) {
-        this._name = name;
+        this._fnName = name;
 
         this._params = params;
         this._args = args;
