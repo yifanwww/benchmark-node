@@ -1,5 +1,4 @@
 import { ArgumentColumn, BaseColumn, Column, ColumnType, ParameterColumn } from '../../Columns';
-import type { StatisticColumn } from '../../Columns';
 import { TimeUnitHelper } from '../../Tools/TimeUnit';
 import { UnitType } from '../../Tools/UnitType';
 import { Report } from '../Report';
@@ -12,7 +11,7 @@ export class SummaryTable extends Report<string> {
     private static readonly _fnColumn = new BaseColumn(ColumnType.FN, 'Function', (stats) => stats.fnName);
 
     generate(result: BenchmarkResult): this {
-        const { argLen, columns, paramNames, statisticGroups } = result;
+        const { argLen, indicators, paramNames, statisticGroups } = result;
 
         const table = new Table();
         table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, UnitType.ORIGIN));
@@ -20,7 +19,6 @@ export class SummaryTable extends Report<string> {
 
         const paramColumns: ParameterColumn[] = [];
         const argColumns: ArgumentColumn[] = [];
-        const statsColumns: StatisticColumn[] = [...columns];
 
         // FIXME: should not be `appending columns`
 
@@ -38,25 +36,25 @@ export class SummaryTable extends Report<string> {
             table.setHeader(i + paramColumns.length + 1, col.name);
         }
 
-        // setup columns
+        // setup indicator columns
 
         const start = table.columnCount;
 
-        for (let i = 0; i < columns.length; i++) {
-            const col = columns[i];
-            table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, col.unitType));
-            table.setHeader(start + i, col.name);
+        for (let i = 0; i < indicators.length; i++) {
+            const indicator = indicators[i];
+            table.appendColumn(createColumnInfo(ColumnAlign.RIGHT, indicator.unitType));
+            table.setHeader(start + i, indicator.indicatorName);
         }
 
         // setup statistics
 
-        const helpers = [SummaryTable._fnColumn, ...paramColumns, ...argColumns, ...statsColumns];
+        const helpers = [SummaryTable._fnColumn, ...paramColumns, ...argColumns, ...indicators];
 
         for (let groupId = 0; groupId < statisticGroups.length; groupId++) {
             const group = statisticGroups[groupId];
             for (let i = 0; i < group.length; i++) {
                 for (let j = 0; j < helpers.length; j++) {
-                    table.setCell([groupId, i], j, helpers[j].getData(group[i]) as never);
+                    table.setCell([groupId, i], j, helpers[j].getValue(group[i]));
                 }
             }
         }
@@ -70,9 +68,9 @@ export class SummaryTable extends Report<string> {
 
         if (this._description) {
             report.push('\nDescription:');
-            const maxLen = statsColumns.reduce((prev, curr) => Math.max(prev, curr.name.length), 0);
-            for (const column of statsColumns) {
-                report.push(`- ${column.name.padEnd(maxLen)}: ${column.desc}`);
+            const maxLen = indicators.reduce((prev, curr) => Math.max(prev, curr.indicatorName.length), 0);
+            for (const indicator of indicators) {
+                report.push(`- ${indicator.indicatorName.padEnd(maxLen)}: ${indicator.legend}`);
             }
             report.push(`- ${TimeUnitHelper.getFullDescription(table.timeUnit, maxLen)}`);
         }

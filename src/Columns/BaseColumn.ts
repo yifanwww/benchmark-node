@@ -28,4 +28,8 @@ export class BaseColumn<T> {
 
         this._getData = getData;
     }
+
+    getValue(stats: Statistics): T {
+        return this._getData(stats);
+    }
 }

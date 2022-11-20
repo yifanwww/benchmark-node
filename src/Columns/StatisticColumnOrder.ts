@@ -3,6 +3,9 @@ import type { LooseArray } from '../types';
 import { Column } from './Column';
 import type { StatisticColumn } from './StatisticColumn';
 
+/**
+ * @deprecated Use `IndicatorOrder` instead. This will be deleted since `v0.9.0`.
+ */
 export class StatisticColumnOrder {
     private declare _id: number;
     private declare readonly _order: Record<string, { column: StatisticColumn; order: number }>;

@@ -1,6 +1,6 @@
 import { constantsTestTool } from '../../../__tests__/constantsTestTool';
-import { Column } from '../../../Columns';
 import { Statistics } from '../../../Data';
+import { StatisticIndicator } from '../../../Indicators';
 import { SummaryTable } from '../index';
 
 describe(`Test class \`${SummaryTable.name}\``, () => {
@@ -8,7 +8,7 @@ describe(`Test class \`${SummaryTable.name}\``, () => {
         const table = new SummaryTable();
         table.generate({
             argLen: 0,
-            columns: [Column.Mean, Column.Error, Column.StdDev],
+            indicators: [StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev],
             paramNames: [],
             statisticGroups: [
                 [new Statistics('fn 1', constantsTestTool.measurements.slice(), constantsTestTool.ops, [])],
@@ -34,7 +34,7 @@ Description:
         const table = new SummaryTable();
         table.generate({
             argLen: 0,
-            columns: [Column.Mean, Column.Error, Column.StdDev],
+            indicators: [StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev],
             paramNames: [],
             statisticGroups: [
                 [
@@ -60,7 +60,7 @@ Description:
         const table = new SummaryTable();
         table.generate({
             argLen: 2,
-            columns: [Column.Mean, Column.Error, Column.StdDev],
+            indicators: [StatisticIndicator.Mean, StatisticIndicator.Error, StatisticIndicator.StdDev],
             paramNames: [],
             statisticGroups: [
                 [
