@@ -24,7 +24,10 @@ function getConfig() {
         modulePaths: [],
         moduleFileExtensions: ['js', 'json', 'node', 'ts'],
 
+        // https://jestjs.io/docs/configuration/#resetmocks-boolean
         resetMocks: true,
+        // https://jestjs.io/docs/configuration/#restoremocks-boolean
+        restoreMocks: true,
     };
 }
 
