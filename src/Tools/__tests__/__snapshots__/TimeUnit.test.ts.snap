@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test class \`TimeUnitHelper\` calls static method getFullDescription 1`] = `"1 ns  : 1 Nanosecond (0.000000001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getFullDescription\` should get time unit full description 1`] = `"1 ns  : 1 Nanosecond (0.000000001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getFullDescription 2`] = `"1 us  : 1 Microsecond (0.000001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getFullDescription\` should get time unit full description 2`] = `"1 us  : 1 Microsecond (0.000001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getFullDescription 3`] = `"1 ms  : 1 Millisecond (0.001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getFullDescription\` should get time unit full description 3`] = `"1 ms  : 1 Millisecond (0.001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getFullDescription 4`] = `"1 s   : 1 Second"`;
+exports[`Test static method \`TimeUnitHelper.getFullDescription\` should get time unit full description 4`] = `"1 s   : 1 Second"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitDescription 1`] = `"1 Nanosecond (0.000000001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getUnitDescription\` should get time unit description 1`] = `"1 Nanosecond (0.000000001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitDescription 2`] = `"1 Microsecond (0.000001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getUnitDescription\` should get time unit description 2`] = `"1 Microsecond (0.000001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitDescription 3`] = `"1 Millisecond (0.001 sec)"`;
+exports[`Test static method \`TimeUnitHelper.getUnitDescription\` should get time unit description 3`] = `"1 Millisecond (0.001 sec)"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitDescription 4`] = `"1 Second"`;
+exports[`Test static method \`TimeUnitHelper.getUnitDescription\` should get time unit description 4`] = `"1 Second"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitStr 1`] = `"ns"`;
+exports[`Test static method \`TimeUnitHelper.getUnitStr\` should get time unit string 1`] = `"ns"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitStr 2`] = `"us"`;
+exports[`Test static method \`TimeUnitHelper.getUnitStr\` should get time unit string 2`] = `"us"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitStr 3`] = `"ms"`;
+exports[`Test static method \`TimeUnitHelper.getUnitStr\` should get time unit string 3`] = `"ms"`;
 
-exports[`Test class \`TimeUnitHelper\` calls static method getUnitStr 4`] = `"s"`;
+exports[`Test static method \`TimeUnitHelper.getUnitStr\` should get time unit string 4`] = `"s"`;

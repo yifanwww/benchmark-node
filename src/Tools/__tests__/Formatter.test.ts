@@ -1,6 +1,9 @@
+import { createClassJestHelper } from '../../__tests__/class';
 import { Formatter } from '../Formatter';
 
-describe(`Test method \`${Formatter.name}.${Formatter.beautifyNumber.name}\``, () => {
+const { buildStaticMethodName } = createClassJestHelper(Formatter);
+
+describe(`Test static method \`${buildStaticMethodName('beautifyNumber')}\``, () => {
     it('beautifies numbers', () => {
         expect(Formatter.beautifyNumber(100)).toBe('100');
         expect(Formatter.beautifyNumber(100.01)).toBe('100.01');
@@ -26,7 +29,7 @@ describe(`Test method \`${Formatter.name}.${Formatter.beautifyNumber.name}\``, (
     });
 });
 
-describe(`Test method \`${Formatter.name}.${Formatter.limitStringLength.name}\``, () => {
+describe(`Test static method \`${buildStaticMethodName('limitStringLength')}\``, () => {
     it('limit string length', () => {
         expect(Formatter.limitStringLength('Hello!')).toBe('Hello!');
         expect(Formatter.limitStringLength('Hello world!')).toBe('Hello worl...');

@@ -1,7 +1,10 @@
+import { createClassJestHelper } from '../../__tests__/class';
 import { IndicatorOrder } from '../IndicatorOrder';
 import { StatisticIndicator } from '../StatisticIndicator';
 
-describe(`Test method \`${IndicatorOrder.name}.prototype.${IndicatorOrder.prototype.getOrder.name}\``, () => {
+const { buildMethodName } = createClassJestHelper(IndicatorOrder);
+
+describe(`Test method \`${buildMethodName('getOrder')}\``, () => {
     it('should get the default indicator order', () => {
         expect(new IndicatorOrder().getOrder()).toStrictEqual([
             StatisticIndicator.Mean,
@@ -11,7 +14,7 @@ describe(`Test method \`${IndicatorOrder.name}.prototype.${IndicatorOrder.protot
     });
 });
 
-describe(`Test method \`${IndicatorOrder.name}.prototype.${IndicatorOrder.prototype.add.name}\``, () => {
+describe(`Test method \`${buildMethodName('add')}\``, () => {
     it('should change the indicator order', () => {
         const order = new IndicatorOrder();
         order.add(StatisticIndicator.Min);

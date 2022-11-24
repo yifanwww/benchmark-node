@@ -1,5 +1,8 @@
+import { createClassJestHelper } from '../../__tests__/class';
 import type { BenchmarkingSettings } from '../../types';
 import { Settings } from '../Settings';
+
+const { buildMethodName } = createClassJestHelper(Settings);
 
 describe(`Test class \`${Settings.name}\``, () => {
     it('should create an instance with default settings', () => {
@@ -45,7 +48,7 @@ describe(`Test class \`${Settings.name}\``, () => {
     });
 });
 
-describe(`Test class method \`${Settings.name}.${Settings.prototype.merge.name}\``, () => {
+describe(`Test method \`${buildMethodName('merge')}\``, () => {
     it('should merge two settings', () => {
         const isettings1: BenchmarkingSettings = {
             delay: 2,

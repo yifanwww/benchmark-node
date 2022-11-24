@@ -1,11 +1,14 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { createClassJestHelper } from '../__tests__/class';
 import type { UnknownFn } from '../types.internal';
 
 import { FunctionInfo } from './FunctionInfo';
 
-describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getFunctionName.name}\``, () => {
+const { buildStaticMethodName } = createClassJestHelper(FunctionInfo);
+
+describe(`Test static method \`${buildStaticMethodName('getFunctionName')}\``, () => {
     it('should get the function name', () => {
         expect(FunctionInfo.getFunctionName(function fn() {})).toBe('fn');
         expect(FunctionInfo.getFunctionName(function () {})).toBe(FunctionInfo.ANONYMOUS_NAME);
@@ -28,7 +31,7 @@ describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getFunc
     });
 });
 
-describe(`Test class static method \`${FunctionInfo.name}.${FunctionInfo.getParameterNames.name}\``, () => {
+describe(`Test static method \`${buildStaticMethodName('getParameterNames')}\``, () => {
     it('should get the function parameter names', () => {
         function _test<T extends UnknownFn>(fn: T, expected: string[]) {
             expect(FunctionInfo.getParameterNames(fn)).toStrictEqual(expected);

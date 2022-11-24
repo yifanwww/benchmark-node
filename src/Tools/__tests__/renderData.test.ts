@@ -2,7 +2,7 @@ import { renderData } from '../renderData';
 import { TimeUnit } from '../TimeUnit';
 import { UnitType } from '../UnitType';
 
-describe(`Test class \`${renderData.name}\``, () => {
+describe(`Test fn \`${renderData.name}\``, () => {
     it('renders dimensionless', () => {
         expect(renderData(1.23456, UnitType.DIMENSIONLESS, 1, TimeUnit.NS)).toBe('1.2');
         expect(renderData(1.23456, UnitType.DIMENSIONLESS, 2, TimeUnit.NS)).toBe('1.23');

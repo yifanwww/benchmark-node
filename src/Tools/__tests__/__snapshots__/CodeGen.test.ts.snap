@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test method \`CodeGen\` create tester with 0 argument 1`] = `
+exports[`Test class \`CodeGen\` create tester with 0 argument 1`] = `
 "function anonymous(context1
 ) {
 if (context1.setup) context1.setup();
@@ -21,7 +21,7 @@ return { elapsed: elapsed1, _internal_return: return1 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with 1 argument 1`] = `
+exports[`Test class \`CodeGen\` create tester with 1 argument 1`] = `
 "function anonymous(context2
 ) {
 if (context2.setup) context2.setup();
@@ -43,7 +43,7 @@ return { elapsed: elapsed2, _internal_return: return2 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with 2 arguments 1`] = `
+exports[`Test class \`CodeGen\` create tester with 2 arguments 1`] = `
 "function anonymous(context3
 ) {
 if (context3.setup) context3.setup();
@@ -66,7 +66,7 @@ return { elapsed: elapsed3, _internal_return: return3 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with 3 arguments 1`] = `
+exports[`Test class \`CodeGen\` create tester with 3 arguments 1`] = `
 "function anonymous(context4
 ) {
 if (context4.setup) context4.setup();
@@ -90,7 +90,7 @@ return { elapsed: elapsed4, _internal_return: return4 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with 4 arguments 1`] = `
+exports[`Test class \`CodeGen\` create tester with 4 arguments 1`] = `
 "function anonymous(context5
 ) {
 if (context5.setup) context5.setup();
@@ -115,7 +115,7 @@ return { elapsed: elapsed5, _internal_return: return5 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with normal arguments and rest arguments 1`] = `
+exports[`Test class \`CodeGen\` create tester with normal arguments and rest arguments 1`] = `
 "function anonymous(context7
 ) {
 if (context7.setup) context7.setup();
@@ -142,7 +142,7 @@ return { elapsed: elapsed7, _internal_return: return7 };
 }"
 `;
 
-exports[`Test method \`CodeGen\` create tester with rest arguments 1`] = `
+exports[`Test class \`CodeGen\` create tester with rest arguments 1`] = `
 "function anonymous(context6
 ) {
 if (context6.setup) context6.setup();

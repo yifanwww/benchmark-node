@@ -1,8 +1,11 @@
+import { createClassJestHelper } from '../../__tests__/class';
 import { TimeTool } from '../TimeTool';
 import { TimeUnit } from '../TimeUnit';
 
-describe(`Test class \`${TimeTool.name}\``, () => {
-    it(`calls static method ${TimeTool.convert.name}`, () => {
+const { buildStaticMethodName } = createClassJestHelper(TimeTool);
+
+describe(`Test static method \`${buildStaticMethodName('convert')}\``, () => {
+    it('should convert time from a unit to another unit', () => {
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.NS)).toBe(1);
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.US)).toBe(0.001);
         expect(TimeTool.convert(1, TimeUnit.NS, TimeUnit.MS)).toBe(0.000_001);
@@ -23,17 +26,23 @@ describe(`Test class \`${TimeTool.name}\``, () => {
         expect(TimeTool.convert(1, TimeUnit.S, TimeUnit.MS)).toBe(1_000);
         expect(TimeTool.convert(1, TimeUnit.S, TimeUnit.S)).toBe(1);
     });
+});
 
-    it(`calls static method ${TimeTool.ms2ns.name}`, () => {
+describe(`Test static method \`${buildStaticMethodName('ms2ns')}\``, () => {
+    it('should convert ms time to ns time', () => {
         expect(TimeTool.ms2ns(1)).toBe(1_000_000);
     });
+});
 
-    it(`calls static method ${TimeTool.hrtime2ns.name}`, () => {
+describe(`Test static method \`${buildStaticMethodName('hrtime2ns')}\``, () => {
+    it('should convert hrtime to ns time', () => {
         expect(TimeTool.hrtime2ns([0, 1000])).toBe(1_000);
         expect(TimeTool.hrtime2ns([1, 1])).toBe(1_000_000_001);
     });
+});
 
-    it(`calls static method ${TimeTool.sleep.name}`, () => {
+describe(`Test static method \`${buildStaticMethodName('sleep')}\``, () => {
+    it('should sleep for some time', () => {
         const begin = process.hrtime();
 
         TimeTool.sleep(10_000);
