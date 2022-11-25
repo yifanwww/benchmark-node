@@ -29,7 +29,7 @@ specifiers:
   husky: ^8.0.1
   jest: ^29.0.3
   lint-staged: ^13.0.3
-  prettier: 2.7.1
+  prettier: 2.8.0
   rimraf: ^3.0.2
   semver: ^7.3.7
   type-fest: ^3.2.0
@@ -62,11 +62,11 @@ devDependencies:
   eslint-plugin-import: 2.26.0_2azyxy5wfmd73v3pbt5rvmgcsm
   eslint-plugin-jest: 27.0.4_2m2ou27oxlec5bzg2xuqbekqly
   eslint-plugin-node: 11.1.0_eslint@8.24.0
-  eslint-plugin-prettier: 4.2.1_cfn5x6ujhhgzv3423d6k7r2zzm
+  eslint-plugin-prettier: 4.2.1_ymb4ahmlfudfhplmme7qtcehse
   husky: 8.0.1
   jest: 29.0.3_@types+node@16.11.60
   lint-staged: 13.0.3
-  prettier: 2.7.1
+  prettier: 2.8.0
   rimraf: 3.0.2
   semver: 7.3.7
   type-fest: 3.2.0
@@ -4566,7 +4566,7 @@ packages:
       semver: 6.3.0
     dev: true
 
-  /eslint-plugin-prettier/4.2.1_cfn5x6ujhhgzv3423d6k7r2zzm:
+  /eslint-plugin-prettier/4.2.1_ymb4ahmlfudfhplmme7qtcehse:
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
@@ -4579,7 +4579,7 @@ packages:
     dependencies:
       eslint: 8.24.0
       eslint-config-prettier: 8.5.0_eslint@8.24.0
-      prettier: 2.7.1
+      prettier: 2.8.0
       prettier-linter-helpers: 1.0.0
     dev: true
 
@@ -6116,8 +6116,8 @@ packages:
       fast-diff: 1.2.0
     dev: true
 
-  /prettier/2.7.1:
-    resolution: {integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==}
+  /prettier/2.8.0:
+    resolution: {integrity: sha512-9Lmg8hTFZKG0Asr/kW9Bp8tJjRVluO8EJQVfY2T7FMw9T5jy4I/Uvx0Rca/XWf50QQ1/SS48+6IJWnrb+2yemA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
