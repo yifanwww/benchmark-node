@@ -10,7 +10,7 @@ export class RuntimeInfo {
 
     static readonly platform = RuntimeInfo._getPlatform();
 
-    static readonly cpu = CpuInfo.instance;
+    static readonly cpu = CpuInfo.getInstance();
 
     private static _getPlatform() {
         switch (process.platform) {

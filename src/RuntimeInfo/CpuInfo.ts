@@ -5,7 +5,7 @@ import { exec } from '../Tools/exec';
 export class CpuInfo {
     private static _instance: CpuInfo | null;
 
-    static get instance(): CpuInfo {
+    static getInstance(): CpuInfo {
         if (!this._instance) {
             this._instance = new CpuInfo();
         }

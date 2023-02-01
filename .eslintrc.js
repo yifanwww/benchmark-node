@@ -1,5 +1,6 @@
 const naming = [
     'error',
+    { selector: 'accessor', modifiers: ['static'], format: ['UPPER_CASE'], leadingUnderscore: 'forbid' },
     { selector: 'accessor', format: ['camelCase'], leadingUnderscore: 'forbid' },
 
     {
