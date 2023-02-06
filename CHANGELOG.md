@@ -1,4 +1,9 @@
 # CHANGELOG
+## benchmark-node v0.7.3 (2023-02-07)
+### Bug Fixes
+
+- Turn on TSConfig option `inlineSources` for debugging
+
 ## benchmark-node v0.7.2 (2022-09-23)
 ### Notable Changes
 
