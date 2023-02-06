@@ -3,6 +3,7 @@
     "compilerOptions": {
         "declaration": false,
         // "declarationDir": "../dist",
+        "inlineSources": false,
         "module": "CommonJS",
         "outDir": "../dist",
         "removeComments": true,
